@@ -29,13 +29,26 @@ function SeparatorsBalanced() {
         const g  = new Graph(graph1, d3.select(graph_container.current));
         const g2 = new Graph(graph2, d3.select(graph_container2.current));
         const t  = new Tree(tree, d3.select(tree_container.current));
-        g.render();
+        
         g2.render();
+
+        let X = removed_nodes.map(node => parseInt(node.id.slice(0, -1))).sort((a, b) => a - b);
+        let C = g2.find_components(id => parseInt(id.slice(0, -1)));
+
+        t.X = X;
+        t.C = C;
+        g.X = X;
+        g.C = C;
+        g2.X = X;
+        g2.C = C;
+        g.render();
         t.render();
+        g.svg_set_component_color();
+        g2.svg_set_component_color(id => parseInt(id.slice(0, -1)));
 
-        setSeparator(removed_nodes.map(node => parseInt(node.id.slice(0, -1))).sort((a, b) => a - b));
-        setComponents(g2.find_components(id => parseInt(id.slice(0, -1))));
-
+        setSeparator(X);
+        setComponents(C);
+        
 
         // Add an event listener to the nodes to handle the click event
         g.svg_nodes.on("click", function() {
@@ -43,7 +56,7 @@ function SeparatorsBalanced() {
             const node = d3.select(this);
             const node_id = node.attr("idx").toString()+"'";
 
-            if(!node.classed("highlight")){
+            if(!node.classed("X")){
                 // remove node from graph and save removed nodes+links in arrays here
                 const removed  = g2.remove_node(node_id);
                 removed_nodes.push(...removed.nodes);
@@ -64,11 +77,24 @@ function SeparatorsBalanced() {
                 g2.add_nodes(nodes.remove);
             }
             //toggle highlight
-            node.classed("highlight", !node.classed("highlight"));
+            // node.classed("highlight", !node.classed("highlight"));
             g2.render();
 
-            setSeparator(removed_nodes.map(node => parseInt(node.id.slice(0, -1))).sort((a, b) => a - b));
-            setComponents(g2.find_components(id => parseInt(id.slice(0, -1))));
+
+            X = removed_nodes.map(node => parseInt(node.id.slice(0, -1))).sort((a, b) => a - b);
+            C = g2.find_components(id => parseInt(id.slice(0, -1)));
+            t.X = X;
+            t.C = C;
+            g.X = X;
+            g.C = C;
+            g2.X = X;
+            g2.C = C;
+            t.render();
+            g.svg_set_component_color();
+            g2.svg_set_component_color(id => parseInt(id.slice(0, -1)));
+
+            setSeparator(X);
+            setComponents(C);
         });
 
 
@@ -85,24 +111,34 @@ function SeparatorsBalanced() {
         it must hold that <InlineMath math="|W \cap C_i| \leq |W|/2"/> for every part of the split.</p>
         <h3>Exercise</h3>
         <p>Try clicking on nodes on the right to split the graph, for instance node 9 and 10.</p>
-        <InlineMath math={"X  = \\{" + separator.toString() + "\\}"}/>
-        <br/>
-        {components.map((item, idx) => {
+        <div className='items'>
+            <InlineMath math={"X  = \\{"}/>
+            <div className={"X"}><InlineMath math={separator.toString()} /></div>
+            <InlineMath math={"\\}"}/>
+        </div>
+        {/* <br/> */}
+        {/* {components.map((item, idx) => {
             const line = "C_"+(idx+1).toString()+" = \\{" + item.toString() + "\\}";
             return (
             <React.Fragment key={idx}>
-                <InlineMath math={line} />
-                <br />
+                <div className='items'>
+                    <InlineMath math={line} />
+                </div>
             </React.Fragment>
-        )})}
-        <br/>
+        )})} */}
+        {/* <br/> */}
         {components.map((item, idx) => {
             const CW = item.filter(e => w.bag.includes(e));
-            const line = "C_"+(idx+1).toString()+"\\cap W = \\{" + CW.toString() + "\\}";
+            const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
+            const m = CW.toString();
+            const e = "\\}";
             return (
             <React.Fragment key={idx}>
-                <InlineMath math={line} />
-                <br />
+                <div className='items'>
+                <InlineMath math={s} />
+                <div className={"C"+(idx+1).toString()}><InlineMath math={m} /></div>
+                <InlineMath math={e} />
+                </div>
             </React.Fragment>
         )})}
 
@@ -121,16 +157,16 @@ function SeparatorsBalanced() {
         <div className='horizontal-split'>
         <div className='svg_container'>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
-            <svg id="nolo" ref={graph_container} className="cy" width="100%" height="100%"></svg>
+            <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
         </div>
         <div className='svg_container'>
             <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
-            <svg id="yolo" ref={graph_container2} className="cy" width="100%" height="100%"></svg>
+            <svg id="yolo" ref={graph_container2} className="cy graph" width="100%" height="100%"></svg>
         </div>
         </div>
         <div className='svg_container'>
             <div className='svg_label'>Tree Decomposition - <InlineMath math="T"/></div>
-            <svg ref={tree_container} className="cy" width="100%" height="100%"></svg>
+            <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
         </div>
     </div>
     </>

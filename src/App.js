@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import cytoscape from 'cytoscape';
-import cola from 'cytoscape-cola';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
 import Home from './pages/Home';
 import Flow from './pages/Flow';
-import Skrillex from './pages/Skrillex';
 import './styles/main.sass';
 import TreeDecomposition from './pages/TreeDecomposition';
 import Separators from './pages/Separators';
 import SeparatorsBalanced from './pages/SeparatorsBalanced';
 import SplitTree from './pages/SplitTree';
+import SplitTree2 from './pages/SplitTree2';
 
 
 
@@ -22,12 +20,13 @@ function App() {
     <Router>
       <div className='container'>
         <div className='header'>
-          <Link to="/">Home</Link>
-          <Link to="/flow">Flow</Link>
-          <Link to="/treedecomposition">Tree Decomposition</Link>
-          <Link to="/separators">Separators</Link>
-          <Link to="/balanced-separators">Balanced Separators</Link>
-          <Link to="/splitting-tree">Split Tree Decomposition</Link>
+          <NavLink exact activeClassName='active' to="/">Home</NavLink>
+          <NavLink activeClassName='active' to="/flow">Flow</NavLink>
+          <NavLink activeClassName='active' to="/treedecomposition">Tree Decomposition</NavLink>
+          <NavLink activeClassName='active' to="/separators">Separators</NavLink>
+          <NavLink activeClassName='active' to="/balanced-separators">Balanced Separators</NavLink>
+          <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink>
+          <NavLink activeClassName='active' to="/splitting-tree2">Split Tree Story</NavLink>
         </div>
         <div className='main'>
         <Routes>
@@ -37,6 +36,7 @@ function App() {
           <Route path="separators/*" element={<Separators />} /> 
           <Route path="balanced-separators/*" element={<SeparatorsBalanced />} /> 
           <Route path="splitting-tree/*" element={<SplitTree />} /> 
+          <Route path="splitting-tree2/*" element={<SplitTree2 />} /> 
         </Routes>
         </div>
       </div>

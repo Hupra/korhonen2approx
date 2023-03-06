@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import cytoscape from 'cytoscape';
-import cola from 'cytoscape-cola';
-cytoscape.use( cola ); // register extension
 
 
 function Skrillex() {

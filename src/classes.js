@@ -73,8 +73,11 @@ export class Graph {
 
       this.link_width  = 2;
       this.link_color  = "#ccc";
-      this.node_radius = 22;
+      this.node_radius = 16;
       this.node_color  = "honeydew";
+
+      this.C = [];
+      this.X = [];
     }
 
     render(){
@@ -84,6 +87,13 @@ export class Graph {
         this.svg_nodes       = this.create_svg_nodes();
         this.svg_node_labels = this.create_svg_node_labels();
         this.create_svg_simulation_tick();
+    }
+
+    get_component(element){
+        for (let i = 0; i < this.C.length; i++) {
+            if(this.C[i].includes(parseInt(element))) return i+1;
+        }
+        return 0;
     }
 
     create_svg_links(){
@@ -134,8 +144,35 @@ export class Graph {
         .data(this.nodes)
         .enter().append("text")
         .text(text_function)
+        .classed("x", d => {
+            // console.log(d);
+            return this.X.includes(d.id);
+        })
         .attr("text-anchor", "middle")
         .attr('fill', "black")
+    }
+
+    svg_set_component_color(f = id => id){
+        this.svg_nodes.attr('class', d => {
+            if(this.X.includes(f(d.id))) return "X";
+            return "C"+this.get_component(f(d.id)).toString();
+        });
+        this.svg_node_labels.classed("X", d => {
+            // console.log(d);
+            return this.X.includes(f(d.id));
+        });
+        this.svg_links.classed("opacity", d => {
+            return this.X.includes(f(d.source.id)) || this.X.includes(f(d.target.id));
+        });
+    }
+
+    // think this can be removed now
+    svg_set_highlight(){
+        this.svg_node_labels
+        .classed("X", d => {
+            // console.log(d);
+            return this.X.includes(d.id);
+        });
     }
 
     create_svg_simulation(){
@@ -143,9 +180,9 @@ export class Graph {
         const h = this.svg.node().getBoundingClientRect().height;
 
         return d3.forceSimulation(this.nodes)
-        .force("boundary", forceBoundary(20,100,w-20,h-20))
+        .force("boundary", forceBoundary(20,60,w-20,h-20))
         .force('link',   d3.forceLink(this.links).id(d => d.id))
-        .force('charge', d3.forceManyBody().strength(-666))
+        .force('charge', d3.forceManyBody().strength(-400))
         .force('center', d3.forceCenter(w/2, h/2))
         // .force("x", d3.forceX().strength(0.07).x(d => Math.max(this.node_radius, Math.min(h - this.node_radius, d.x))))
         // .force("y", d3.forceY().strength(0.07).y(d => Math.max(this.node_radius, Math.min(w - this.node_radius, d.y))));
@@ -174,7 +211,7 @@ export class Graph {
             if(this.svg_node_labels){
                 this.svg_node_labels
                 .attr("x", d => d.x)
-                .attr("y", d => d.y + 7); // adjust the y-coordinate as needed to center the text vertically        
+                .attr("y", d => d.y + 5); // adjust the y-coordinate as needed to center the text vertically        
             }
         });
     }
@@ -208,15 +245,21 @@ export class Graph {
 
 export class Tree {
     constructor(graph, svg) {
-      this.nodes = graph.nodes;
-      this.links = graph.edges;
-      this.svg = svg;
+        this.nodes = graph.nodes.map(node => {return {...node}});
+        this.links = graph.edges.map(link => {return {...link}});
+        this.svg = svg;
 
-      this.link_color = "#ccc";
-    //   this.link_color = "black";
-      this.link_width = 3;
+        this.link_color = "#ccc";
+        this.link_color = "white";
+        this.link_color = "#757575";
+        
+        //   this.link_color = "black";
+        this.link_width = 2;
 
-      this.node_color  = "whitesmoke";
+        this.C = [];
+        this.X = [];
+
+        this.node_color  = "whitesmoke";
     }
 
     render(){
@@ -232,6 +275,33 @@ export class Tree {
     tree_labels(node){
         return node.bag.join(", ")
     }
+
+    get_component(element){
+        for (let i = 0; i < this.C.length; i++) {
+            if(this.C[i].includes(parseInt(element))) return i+1;
+        }
+        return 99;
+    }
+
+
+    color_class(d,i){
+        for (let i = 0; i < this.C.length; i++) {
+            if(this.C[i].includes(parseInt(d))) return "C"+(i+1).toString();
+        }
+        if(this.X.includes(parseInt(d))) return "X";
+        return "";
+    }
+
+
+    svg_hide_stuff(show){
+        this.svg_nodes.classed("hidden", d => !show.includes(d.name[0]));
+        this.svg_node_labels.classed("hidden", d => !show.includes(d.name[0]));
+        this.svg_node_names.classed("hidden", d => !show.includes(d.name[0]));
+        this.svg_links.classed("hidden", d => !show.includes(d.source.name[0]) || !show.includes(d.target.name[0]));
+        // this.svg_nodes.classed("opacity", d => !show.includes(d.name[0]));
+    }
+
+    
 
     create_svg_links(){
         return this.svg
@@ -251,13 +321,15 @@ export class Tree {
         .selectAll('rect')
         .data(this.nodes)
         .enter().append('rect')
-        .attr('width', node => node.bag.length*30)
-        .attr('height', 50)
-        .attr('fill', node => node.color ? node.color : this.node_color)
-        .attr('stroke', 'black')
-        .attr('stroke-width', 3)
-        .attr('rx', 10) // set the x radius of the corners to 10 pixels
-        .attr('ry', 10) // set the y radius of the corners to 10 pixels   
+        .attr('width', node => Math.max(24, node.bag.length*20))
+        .attr('height', 30)
+        // .attr('stroke', node => node.color ? node.color : this.node_color)
+        .attr('stroke', node => node.name === "W<<<" ? "pink" : "#454545")
+        // .attr('fill', 'white')
+        .attr('fill', '#101010')
+        .attr('stroke-width', 2)
+        .attr('rx', 2) // set the x radius of the corners to 10 pixels
+        .attr('ry', 2) // set the y radius of the corners to 10 pixels   
         .call(d3.drag()
             .on('start', (e,d) => {
                 if (!e.active) this.simulation.alphaTarget(0.3).restart();
@@ -276,20 +348,37 @@ export class Tree {
         ));
     }
 
-    create_svg_node_labels(text_function = node => node.id){
-        return this.svg
-        .append("g")
-        .attr("class", "node-labels")
-        .selectAll("text")
-        .data(this.nodes)
-        .enter().append("text")
-        .text(text_function)
-        .attr("text-anchor", "middle")
-        .attr('fill', "white")
-        .attr("stroke", "black") // add white stroke color
-        .attr("stroke-width", "4px") // set stroke width to 1px
-        .style("paint-order", "stroke");
-    }
+create_svg_node_labels(text_function = node => node.id) {
+  let label = this.svg
+    .append("g")
+    .attr("class", "node-labels")
+    .selectAll("text")
+    .data(this.nodes)
+    .enter()
+    .append("text")
+    // .text(text_function)
+    .attr("text-anchor", "middle")
+    .attr('fill', "white")
+    // .attr("stroke", "black")
+    // .attr("stroke-width", "6px")
+    // .attr("letter-spacing", "0.3em")
+    // .style("paint-order", "stroke");
+
+    label
+    .selectAll("div")
+    .data((d) => {
+        d.bag.sort((a, b) => (this.get_component(a) === this.get_component(b) ? a-b : this.get_component(a) - this.get_component(b)));
+        return d.bag.flatMap(x => [x, ","]).slice(0,-1)
+    })
+    .enter()
+    .append("tspan")
+    // .attr("dy", "1.2em")
+    // .attr("fill", (d,i) => this.color_function(d,i) ) // assign a different color to each letter
+    .attr("class", (d,i) => this.color_class(d,i) ) // assign a different color to each letter
+    // .attr("stroke", (d,i) => d === " , " ? "transparent" : "black" ) // assign a different color to each letter
+    .text(function(d) { return d; });
+    return label;
+}
 
     create_svg_node_names(text_function = node => node.name){
         return this.svg
@@ -310,16 +399,23 @@ export class Tree {
         const w = this.svg.node().getBoundingClientRect().width;
         const h = this.svg.node().getBoundingClientRect().height;
 
-        const boundary_force = (width, height) => this.nodes.forEach( d => {
-            d.x = Math.max(this.node_radius+5, Math.min(width - this.node_radius+5, d.x));
-            d.y = Math.max(this.node_radius+5, Math.min(height - this.node_radius+5, d.y));
-        });
+        this.nodes.forEach(node => {
+            if(node.name === "W"){
+                node.fx = w/2;
+                node.fy = (h/2)-60;
+            }
+            if(node.name === "X"){
+                node.fx = w/2;
+                node.fy = (h/2)-10;
+            }
+            
+        })
         
         return d3.forceSimulation(this.nodes)
-        .force("boundary", forceBoundary(20,110,w-20,h-20))
+        .force("boundary", forceBoundary(20,60,w-20,h-20))
         .force('link',   d3.forceLink(this.links).id(d => d.id))
-        .force('charge', d3.forceManyBody().strength(-20000))
-        .force('center', d3.forceCenter(w/2, h/2));
+        .force('charge', d3.forceManyBody().strength(-4_000))
+        .force('center', d3.forceCenter(w/2, (h/2)+30));
     }
 
     create_svg_simulation_tick(svg_links=null,svg_nodes=null,svg_node_labels=null){
@@ -334,18 +430,18 @@ export class Tree {
             }
             if(this.svg_nodes){
                 this.svg_nodes
-                .attr('x', d => d.x-d.bag.length*15) // use 'cx' and 'cy' attributes to set the circle center
-                .attr('y', d => d.y-24) // use 'cx' and 'cy' attributes to set the circle center        
+                .attr('x', d => d.x - Math.max(24, d.bag.length*20)/2) // use 'cx' and 'cy' attributes to set the circle center
+                .attr('y', d => d.y-15) // use 'cx' and 'cy' attributes to set the circle center        
             }
             if(this.svg_node_labels){
                 this.svg_node_labels
                 .attr("x", d => d.x)
-                .attr("y", d => d.y + 7); // adjust the y-coordinate as needed to center the text vertically        
+                .attr("y", d => d.y+5); // adjust the y-coordinate as needed to center the text vertically        
             }
             if(this.svg_node_names){
                 this.svg_node_names
                 .attr("x", d => d.x)
-                .attr("y", d => d.y - 30); // adjust the y-coordinate as needed to center the text vertically        
+                .attr("y", d => d.y - 20); // adjust the y-coordinate as needed to center the text vertically        
             }
         });
     }
