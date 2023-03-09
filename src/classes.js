@@ -67,17 +67,21 @@ export class FindComponents{
 
 export class Graph {
     constructor(graph, svg) {
-      this.nodes = graph.nodes.map(node => {return {...node}});
-      this.links = graph.edges.map(link => {return {...link}});
-      this.svg   = svg;
 
-      this.link_width  = 2;
-      this.link_color  = "#ccc";
-      this.node_radius = 16;
-      this.node_color  = "honeydew";
+        this.nodes = graph.nodes.map(node => {return {...node}});
+        this.links = graph.edges.map(link => {return {...link}});
+        this.svg   = svg;
 
-      this.C = [];
-      this.X = [];
+        this.link_width  = 2;
+        this.link_color  = "#ccc";
+        this.node_radius = 16;
+        this.node_color  = "honeydew";
+        this.w_ratio = 0;
+        this.h_ratio = 0;
+        this.parent = null;
+
+        this.C = [];
+        this.X = [];
     }
 
     render(){
@@ -178,12 +182,23 @@ export class Graph {
     create_svg_simulation(){
         const w = this.svg.node().getBoundingClientRect().width;
         const h = this.svg.node().getBoundingClientRect().height;
+        const w_offset = this.w_ratio * w;
+        const h_offset = this.h_ratio * h;
+
+        // const w_offset = -0.5 * w;
+        // const h_offset = 0.5 * h;
+
+        // const { top, left, bottom, right } = this.parent.getBoundingClientRect();
+        // console.log(`Position: top=${top}, left=${left}, bottom=${bottom}, right=${right}`);
+        console.log(20,60+h_offset,w-20+w_offset,h-20);
+
+        // maybe remove boundary while draggin if possible
 
         return d3.forceSimulation(this.nodes)
-        .force("boundary", forceBoundary(20,60,w-20,h-20))
+        .force("boundary", forceBoundary(20,60+h_offset,w-20+w_offset,h-35))
         .force('link',   d3.forceLink(this.links).id(d => d.id))
         .force('charge', d3.forceManyBody().strength(-400))
-        .force('center', d3.forceCenter(w/2, h/2))
+        .force('center', d3.forceCenter((w/2)+w_offset/2, (h/2)+h_offset/2))
         // .force("x", d3.forceX().strength(0.07).x(d => Math.max(this.node_radius, Math.min(h - this.node_radius, d.x))))
         // .force("y", d3.forceY().strength(0.07).y(d => Math.max(this.node_radius, Math.min(w - this.node_radius, d.y))));
 
@@ -395,7 +410,7 @@ create_svg_node_labels(text_function = node => node.id) {
         .style("paint-order", "stroke");
     }
 
-    create_svg_simulation(svg_links=null,svg_nodes=null,svg_node_labels=null){
+    create_svg_simulation(){
         const w = this.svg.node().getBoundingClientRect().width;
         const h = this.svg.node().getBoundingClientRect().height;
 
@@ -407,8 +422,7 @@ create_svg_node_labels(text_function = node => node.id) {
             if(node.name === "X"){
                 node.fx = w/2;
                 node.fy = (h/2)-10;
-            }
-            
+            }    
         })
         
         return d3.forceSimulation(this.nodes)

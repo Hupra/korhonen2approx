@@ -142,17 +142,8 @@ function SplitTree() {
     <>
     <div className='sidebar'>
         <h2>Splitting Tree Decomposition</h2>
-        <p>A <InlineMath math="{balanced}"/> separator <InlineMath math="X"/> of <InlineMath math="W"/> is 
-        a separator that splits the vertices 
-        of <InlineMath math="G"/> in such a way that it also splits <InlineMath math="W"/> into 
-        multiple parts <InlineMath math="W \cap C_1, ..., W \cap C_h"/>. Additionally, 
-        it must hold that <InlineMath math="|W \cap C_i| \leq |W|/2"/> for every part of the split.</p>
         <h3>Exercise</h3>
         <p>Try clicking on nodes on the right to split the graph, for instance node 9 and 10.</p>
-        <div className='svg_container interactive'>
-            <div className='svg_label'>Graph - <InlineMath math="G"/></div>
-            <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
-        </div>
         <br/>
         <div className='items'>
             <InlineMath math={"X  = \\{"}/>
@@ -198,7 +189,10 @@ function SplitTree() {
     </div>
     <div className='content'>
         <div className='horizontal-split w1-3'>
-            
+            <div className='svg_container interactive active'>
+                <div className='svg_label'>Graph - <InlineMath math="G"/></div>
+                <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
+            </div>
             <div className='svg_container'>
                 <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
                 <svg id="yolo" ref={graph_container2} className="cy graph" width="100%" height="100%"></svg>

@@ -3,13 +3,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import graph from '../graphs/graph1.json'
 import tree from '../graphs/graph1-tree.json'
 import { BlockMath, InlineMath } from 'react-katex';
+import { Routes, Route, Link } from 'react-router-dom';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
-import {split} from "../functions.js"
+import {split, cup, cap, list_is_same} from "../functions.js"
+
+
 
 
 function SplitTree2() {
+
+
+
     const graph_container = useRef();
     const graph_container2 = useRef();
     const tree_container = useRef();
@@ -19,9 +25,13 @@ function SplitTree2() {
     // const [show, set_show] = useState(["W", "B"]);
     const [show, set_show] = useState([]);
     const [tprime, set_tprime] = useState(null);
+    const [page_ready, set_page_ready] = useState(false);
     const w = tree.nodes.find(node => node.name === "W");
+    const node_name = tree.nodes.map(x => x.name);
+    const node_bag = tree.nodes.map(x => x.bag);
 
     useEffect(() => {
+        console.log("page render");
         let removed_nodes = [];
         let removed_links = [];
         let nodes1 = graph.nodes.map(node => w.bag.some(x => x === node.id) ? {...node, color: w.color} : node);
@@ -92,15 +102,115 @@ function SplitTree2() {
         t2.render();
         t2.svg_hide_stuff(show);
         set_tprime(t2);
+        set_page_ready(true);
 
     }, []);
+
+    const Puzzle = (props) => {
+        const i = props.i;
+        const B = node_name[i];
+        const bag = node_bag[i];
+
+        const [ic1, set_ic1] = useState('');
+        const [ic2, set_ic2] = useState('');
+        const [ic3, set_ic3] = useState('');
+
+        useEffect(()=>{
+            tprime.render();
+            tprime.svg_hide_stuff(node_name.slice(0,i));
+            set_ic1("");
+            set_ic2("");
+            set_ic3("");
+        },[i])
+        
+        const check_input = (input, C) => {
+            if (input.length === 0) return false;
+            if (input.slice(-1) === ",") input = input.slice(0,-1);
+            let input_answer = input.split(",").map(x => parseInt(x));
+            let correct = cap(cup(C, separator), bag);
+            // console.log(input_answer, correct);
+            return list_is_same(input_answer, correct);
+        }
+
+        const handleInputChange = (event, set) => {
+            const regex = /^([0-9]+[,]?)*$/;
+            const inputValue = event.target.value;        
+            if (regex.test(inputValue)) set(inputValue);
+          };
+
+        return (
+            <div className='build-a-bag'>
+                <h3>Tasks</h3>
+                <div>Fill out the correct inputs in the formulas below for each of the three new bags created for the original bag {B}:</div>
+                <br/>
+                <div className='task'>
+                    <div>
+                        <InlineMath math={B+"^1 = "+B+" \\cap (C_1 \\cup X) = \\{"}/>
+                        <input value={ic1} onChange={e => handleInputChange(e, set_ic1)} placeholder="4,8,3,7"></input>
+                        <InlineMath math={"\\}"}/>
+                    </div>
+                    <div>
+                        <ion-icon name={check_input(ic1, components[0]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                    </div>
+                </div>
+                <div className='task'>
+                    <div>
+                        <InlineMath math={B+"^2 = "+B+" \\cap (C_2 \\cup X) = \\{"}/>
+                        <input value={ic2} onChange={e => handleInputChange(e, set_ic2)}></input>
+                        <InlineMath math={"\\}"}/>
+                    </div>
+                    <div>
+                        <ion-icon name={check_input(ic2, components[1]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                    </div>
+                </div>
+                <div className='task'>
+                    <div>
+                        <InlineMath math={B+"^3 = "+B+" \\cap (C_3 \\cup X) = \\{"}/>
+                        <input value={ic3} onChange={e => handleInputChange(e, set_ic3)}></input>
+                        <InlineMath math={"\\}"}/>
+                    </div>
+                    <div>
+                        <ion-icon name={check_input(ic3, components[2]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                    </div>
+                </div>
+                <Link to={"/splitting-tree2/"+(i+2).toString()}>Next</Link><h1>{i}</h1>
+            </div>)
+    }
+
+    const PuzzleSeparator = (props) => {
+        const i = props.i;
+        useEffect(()=>{
+            tprime.render();
+            tprime.svg_hide_stuff(node_name.slice(0,i));
+        },[i])
+        return<>
+            <p>Now that we have created three new bags for each bag -- see T'</p>
+            <p>This gives us three new tree decompositions T1, T2 and T3. These are then connected to a new bag X that contains all the vertices that were chosen as the separator.</p>
+            <Link to={"/splitting-tree2/"+(i+2).toString()}>Next</Link><h1>{i}</h1>
+        </>
+    }
+
+    const PuzzleDone = (props) => {
+        const i = props.i;
+        useEffect(()=>{
+            tprime.render();
+            tprime.svg_hide_stuff(node_name.concat("X"));
+        },[i])
+        return<>
+            <p>DONE - T'</p>
+            <p>go to next section ...</p>
+            <Link to={"/splitting-tree2/"}>Next</Link><h1>{i}</h1>
+        </>
+    }
+    
+        
 
   return (
     <>
     <div className='sidebar'>
         <h2>Splitting Tree Decomposition</h2>
-        <p>Once a split(X,c1,c2,c3) is found this split is then used to build a new tree decomposition T'
-        For the following graph a split could be the following:</p>
+        <p>After finding a balanced separator and combining components to find a split <InlineMath math={"(C_1, C_2, C_3, X)"}/> of <InlineMath math={"W"}/>, we can create a new tree decomposition T' by spltting each bag in T based on the components in our split.</p>
+        <p>We do this by going through each bag and taking its intersection with <InlineMath math="C_1 \cup X"/>, <InlineMath math="C_2 \cup X"/>, <InlineMath math="C_3 \cup X"/> respectively.</p>
         <br/>
         <div className='items flex'>
             <div>
@@ -129,13 +239,24 @@ function SplitTree2() {
                     </div>
                 </React.Fragment>
             )})}
-            <div className='button-container'>
+            <h2>Creating <InlineMath math={"T'"}/></h2>
+            { page_ready ?
+            (<Routes>
+                    <Route path="/*" element={<Puzzle i={0}/>}/>
+                    <Route path="/2" element={<Puzzle i={1}/>}/>
+                    <Route path="/3" element={<Puzzle i={2}/>}/>
+                    <Route path="/4" element={<PuzzleSeparator i={3}/>}/>
+                    <Route path="/5" element={<PuzzleDone i={4}/>}/>
+            </Routes>) : 
+            (<div>loading...</div>) }
+            
+
+            {/* <div className='button-container'>
                 <button onClick={() => {show.push("W");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>W</button>
                 <button onClick={() => {show.push("A");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>A</button>
                 <button onClick={() => {show.push("B");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>B</button>
                 <button onClick={() => {show.push("X");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>X</button>
-            </div>
-
+            </div> */}
     </div>
     <div className='content'>
         <div className='horizontal-split w1-3'>

@@ -143,3 +143,17 @@ export function split(list, remove) {
       return acc;
   }, { keep: [], remove: []});
 }
+
+export function cap(a,b){
+  return a.filter(x => b.includes(x));
+}
+export function cup(a,b){
+  return [...new Set([...a, ...b])]
+}
+export function list_is_same(a,b){
+  let x = [...a];
+  let y = [...b];
+  x.sort((a,b)=>a-b);
+  y.sort((a,b)=>a-b);
+  return (JSON.stringify(x) === JSON.stringify(y))
+}

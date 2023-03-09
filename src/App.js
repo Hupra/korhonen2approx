@@ -8,7 +8,7 @@ import Separators from './pages/Separators';
 import SeparatorsBalanced from './pages/SeparatorsBalanced';
 import SplitTree from './pages/SplitTree';
 import SplitTree2 from './pages/SplitTree2';
-
+import ConnectComponents from './pages/ConnectComponents';
 
 
 
@@ -27,6 +27,7 @@ function App() {
           <NavLink activeClassName='active' to="/balanced-separators">Balanced Separators</NavLink>
           <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink>
           <NavLink activeClassName='active' to="/splitting-tree2">Split Tree Story</NavLink>
+          <NavLink activeClassName='active' to="/connect-components">Connect Components</NavLink>
         </div>
         <div className='main'>
         <Routes>
@@ -37,6 +38,7 @@ function App() {
           <Route path="balanced-separators/*" element={<SeparatorsBalanced />} /> 
           <Route path="splitting-tree/*" element={<SplitTree />} /> 
           <Route path="splitting-tree2/*" element={<SplitTree2 />} /> 
+          <Route path="connect-components/*" element={<ConnectComponents />} /> 
         </Routes>
         </div>
       </div>
