@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 // import graph from '../graphs/intro-treedecomposition-graph.json'
 import graph from '../graphs/graph1.json'
 import tree from '../graphs/graph1-tree.json'
+// import graph from '../graphs/graph-X.json'
+// import tree from '../graphs/graph-X-tree.json'
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
@@ -30,6 +32,8 @@ function SplitTree() {
         const g  = new Graph(graph1, d3.select(graph_container.current));
         const g2 = new Graph(graph2, d3.select(graph_container2.current));
         const t  = new Tree(tree, d3.select(tree_container.current));
+        g.W = w.bag;
+        g2.W = w.bag;
   
         g2.render();
 
@@ -142,8 +146,7 @@ function SplitTree() {
     <>
     <div className='sidebar'>
         <h2>Splitting Tree Decomposition</h2>
-        <h3>Exercise</h3>
-        <p>Try clicking on nodes on the right to split the graph, for instance node 9 and 10.</p>
+        Try selecting different nodes in <InlineMath math={"G"}/>, to create various splits, and see what resulting <InlineMath math={"T'"}/> that spplit will yeild.<br/>
         <br/>
         <div className='items'>
             <InlineMath math={"X  = \\{"}/>
@@ -176,16 +179,6 @@ function SplitTree() {
             </React.Fragment>
         )})}
 
-        <h4>Tasks</h4>
-        <div className='task'>
-            <span>Split into 2 components.</span>
-            <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
-        </div>
-        <div className='task'>
-            <span><InlineMath math="|W \cap C_i| \leq |W|/2"/>.</span>
-            <ion-icon name={components.reduce((acc, x)=> Math.max(acc, x.filter(y => w.bag.includes(y)).length), 0)
-            <=4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
-        </div>
     </div>
     <div className='content'>
         <div className='horizontal-split w1-3'>

@@ -55,7 +55,7 @@ export class FindComponents{
       }
 
       run() {
-        for (let i = 0; i < 20; i++) {
+        for (let i = 0; i < this.n; i++) {
           if (this.visited(i)) continue;
           this.components.push(this.dfs(i));
         }
@@ -76,12 +76,19 @@ export class Graph {
         this.link_color  = "#ccc";
         this.node_radius = 16;
         this.node_color  = "honeydew";
+        this.node_class = "";
         this.w_ratio = 0;
         this.h_ratio = 0;
+        this.h_top = 0;
+        this.h_bot = 0;
+        this.w_left = 0;
+        this.w_right = 0;
         this.parent = null;
+        this.charge = -400;
 
         this.C = [];
         this.X = [];
+        this.W = [];
     }
 
     render(){
@@ -123,6 +130,7 @@ export class Graph {
         .attr('stroke', 'black')
         .attr('stroke-width', 2)
         .attr('idx', node => node.id)
+        .classed("node_in_w", d => this.W.includes(d.id))
         .call(d3.drag()
             .on('start', (e,d) => {
                 if (!e.active) this.simulation.alphaTarget(0.3).restart();
@@ -157,10 +165,16 @@ export class Graph {
     }
 
     svg_set_component_color(f = id => id){
+        // this.svg_nodes.attr('class', d => {
+        //     if(this.X.includes(f(d.id))) return "X";
+        //     return "C"+this.get_component(f(d.id)).toString();
+        // });
         this.svg_nodes.attr('class', d => {
             if(this.X.includes(f(d.id))) return "X";
-            return "C"+this.get_component(f(d.id)).toString();
+            if(this.W.includes(f(d.id))) return "C"+this.get_component(f(d.id)).toString();
+            return "";
         });
+        this.svg_nodes.classed("node_in_w", d => this.W.includes(d.id));
         this.svg_node_labels.classed("X", d => {
             // console.log(d);
             return this.X.includes(f(d.id));
@@ -182,23 +196,12 @@ export class Graph {
     create_svg_simulation(){
         const w = this.svg.node().getBoundingClientRect().width;
         const h = this.svg.node().getBoundingClientRect().height;
-        const w_offset = this.w_ratio * w;
-        const h_offset = this.h_ratio * h;
-
-        // const w_offset = -0.5 * w;
-        // const h_offset = 0.5 * h;
-
-        // const { top, left, bottom, right } = this.parent.getBoundingClientRect();
-        // console.log(`Position: top=${top}, left=${left}, bottom=${bottom}, right=${right}`);
-        console.log(20,60+h_offset,w-20+w_offset,h-20);
-
-        // maybe remove boundary while draggin if possible
 
         return d3.forceSimulation(this.nodes)
-        .force("boundary", forceBoundary(20,60+h_offset,w-20+w_offset,h-35))
-        .force('link',   d3.forceLink(this.links).id(d => d.id))
-        .force('charge', d3.forceManyBody().strength(-400))
-        .force('center', d3.forceCenter((w/2)+w_offset/2, (h/2)+h_offset/2))
+        .force("boundary", forceBoundary(20+(this.w_left*w),60+(this.h_top*h),w-20-(this.w_right*w),h-35-(this.h_bot*h)))
+        .force('link',   d3.forceLink(this.links).id(d => d.id).distance(this.node_radius*2.5))
+        .force('charge', d3.forceManyBody().strength(this.charge))
+        .force('center', d3.forceCenter((w/2)+(this.w_left*w/2)-(this.w_right*w/2), (h/2)+(this.h_top*h/2)-(this.h_bot*h/2)));
         // .force("x", d3.forceX().strength(0.07).x(d => Math.max(this.node_radius, Math.min(h - this.node_radius, d.x))))
         // .force("y", d3.forceY().strength(0.07).y(d => Math.max(this.node_radius, Math.min(w - this.node_radius, d.y))));
 
@@ -250,8 +253,15 @@ export class Graph {
         this.links = this.links.concat(links);
     }
 
+    svg_show_only(show){
+        this.svg_nodes.classed("hidden", d => !show.includes(d.id));
+        this.svg_node_labels.classed("hidden", d => !show.includes(d.id));
+        this.svg_links.classed("hidden", d => !show.includes(d.source.id) || !show.includes(d.target.id));
+        this.svg_nodes.classed(this.node_class, d => this.W.includes(d.id));
+    }
+
     find_components(f = id => parseInt(id)){
-        const fc = new FindComponents(20); // hard coded WATCH OUT, fix add max N to the graph
+        const fc = new FindComponents(50); // hard coded WATCH OUT, fix add max N to the graph
         this.links.forEach(link => fc.add_edge(f(link.source.id), f(link.target.id)));
         this.nodes.forEach(node => fc.v[f(node.id)] = false);
         return fc.run();
@@ -314,6 +324,12 @@ export class Tree {
         this.svg_node_names.classed("hidden", d => !show.includes(d.name[0]));
         this.svg_links.classed("hidden", d => !show.includes(d.source.name[0]) || !show.includes(d.target.name[0]));
         // this.svg_nodes.classed("opacity", d => !show.includes(d.name[0]));
+    }
+
+    svg_set_node_pos(id, x, y){
+        const node = this.nodes.filter(node => node.id === id)[0];
+        node.fx = x;
+        node.fy = y;
     }
 
     
@@ -432,7 +448,7 @@ create_svg_node_labels(text_function = node => node.id) {
         .force('center', d3.forceCenter(w/2, (h/2)+30));
     }
 
-    create_svg_simulation_tick(svg_links=null,svg_nodes=null,svg_node_labels=null){
+    create_svg_simulation_tick(){
         this.simulation
         .on('tick', () => {
             if(this.svg_links){

@@ -43,6 +43,9 @@ function SplitTree2() {
         const g  = new Graph(graph1, d3.select(graph_container.current));
         const g2 = new Graph(graph1, d3.select(graph_container2.current));
         const t  = new Tree(tree, d3.select(tree_container.current));
+
+        g.W = w.bag;
+        g2.W = w.bag;
   
         g2.render();
 

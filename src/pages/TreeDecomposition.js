@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import graph from '../graphs/intro-treedecomposition-graph.json'
-// import graph from '../graphs/graph1.json'
 import tree from '../graphs/intro-treedecomposition-tree.json'
+// import graph from '../graphs/graph-X.json'
+// import tree from '../graphs/graph-X-tree.json'
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';

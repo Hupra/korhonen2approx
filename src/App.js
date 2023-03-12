@@ -25,8 +25,8 @@ function App() {
           <NavLink activeClassName='active' to="/treedecomposition">Tree Decomposition</NavLink>
           <NavLink activeClassName='active' to="/separators">Separators</NavLink>
           <NavLink activeClassName='active' to="/balanced-separators">Balanced Separators</NavLink>
-          <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink>
           <NavLink activeClassName='active' to="/splitting-tree2">Split Tree Story</NavLink>
+          <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink>
           <NavLink activeClassName='active' to="/connect-components">Connect Components</NavLink>
         </div>
         <div className='main'>
@@ -36,8 +36,8 @@ function App() {
           <Route path="treedecomposition/*" element={<TreeDecomposition />} /> 
           <Route path="separators/*" element={<Separators />} /> 
           <Route path="balanced-separators/*" element={<SeparatorsBalanced />} /> 
-          <Route path="splitting-tree/*" element={<SplitTree />} /> 
           <Route path="splitting-tree2/*" element={<SplitTree2 />} /> 
+          <Route path="splitting-tree/*" element={<SplitTree />} /> 
           <Route path="connect-components/*" element={<ConnectComponents />} /> 
         </Routes>
         </div>

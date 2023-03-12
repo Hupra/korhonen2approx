@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import graph1 from '../../graphs/graph1.json'
+import graph from '../../graphs/graph-X.json'
 import * as d3 from 'd3';
 import {Graph, Tree} from "../../classes.js"
 
@@ -10,7 +10,7 @@ function Sandbox() {
 
   useEffect(() => {
     const svg = d3.select(svgRef.current);
-    const g = new Graph(graph1, svg);
+    const g = new Graph(graph, svg);
     g.render();
 
   }, []);

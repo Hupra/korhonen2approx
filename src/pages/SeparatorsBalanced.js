@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-// import graph from '../graphs/intro-treedecomposition-graph.json'
 import graph from '../graphs/graph1.json'
 import tree from '../graphs/graph1-tree.json'
+
+// import graph from '../graphs/graph-X.json'
+// import tree from '../graphs/graph-X-tree.json'
+
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
@@ -15,12 +18,12 @@ function SeparatorsBalanced() {
     const tree_container = useRef();
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
-    const w = tree.nodes.find(node => node.name === "W");
+    const W = tree.nodes.find(node => node.name === "W");
 
     useEffect(() => {
         let removed_nodes = [];
         let removed_links = [];
-        let nodes1 = graph.nodes.map(node => w.bag.some(x => x === node.id) ? {...node, color: w.color} : node);
+        let nodes1 = graph.nodes.map(node => W.bag.some(x => x === node.id) ? {...node, color: W.color} : node);
         let edges2 = graph.edges.map(edge => {return { source: edge.source.toString() + "'", target: edge.target.toString() + "'", color: edge.color }});
        
         let graph1 = {nodes: nodes1, edges: graph.edges}
@@ -29,6 +32,9 @@ function SeparatorsBalanced() {
         const g  = new Graph(graph1, d3.select(graph_container.current));
         const g2 = new Graph(graph2, d3.select(graph_container2.current));
         const t  = new Tree(tree, d3.select(tree_container.current));
+        g.W = W.bag;
+        g2.W = W.bag;
+        console.log(g.W);
         
         g2.render();
 
@@ -128,7 +134,7 @@ function SeparatorsBalanced() {
         )})} */}
         {/* <br/> */}
         {components.map((item, idx) => {
-            const CW = item.filter(e => w.bag.includes(e));
+            const CW = item.filter(e => W.bag.includes(e));
             const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
             const m = CW.toString();
             const e = "\\}";
@@ -149,7 +155,7 @@ function SeparatorsBalanced() {
             </div>
             <div className='task'>
                 <span><InlineMath math="|W \cap C_i| \leq |W|/2"/>.</span>
-                <ion-icon name={components.reduce((acc, x)=> Math.max(acc, x.filter(y => w.bag.includes(y)).length), 0)
+                <ion-icon name={components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)
                 <=4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
             </div>
     </div>
