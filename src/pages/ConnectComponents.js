@@ -8,6 +8,8 @@ import * as d3 from 'd3';
 import forceBoundary from 'd3-force-boundary';
 import {Graph, Tree} from "../classes.js"
 import {split} from "../functions.js"
+import AnimatedPage from './components/AnimatedPage';
+import { Link } from 'react-router-dom';
 
 
 function ConnectComponents() {
@@ -209,6 +211,8 @@ function ConnectComponents() {
 
   return (
     <>
+    <AnimatedPage>
+
     <div className='sidebar'>
         <h2>Connected Components</h2>
         Given a balanced split where every component is leq W/2. It is always possible to reduce our number of components to at most 3, by combining some of them.
@@ -234,9 +238,12 @@ function ConnectComponents() {
         <br/>
         <div>
             <button onClick={() => set_show_G(!show_G)}>{show_G ? "Hide Graph" : "Show Graph"}</button>
+        <Link to="/" className='button'>Next</Link>
+
         </div>  
     </div>
     <div className='content'>
+        <div className='cc'>
             <div className={'svg_popup'  + (show_G?"":" to_the_depths")}>
                 <div className='svg_container'>
                     <div className='svg_label'>Graph - <InlineMath math="G"/></div>
@@ -268,8 +275,10 @@ function ConnectComponents() {
                 </div>
                 <svg ref={graph_container_c3} className="cy graph"></svg>                
             </div>
+            </div>
         
     </div>
+    </AnimatedPage>
     </>
   );
 }

@@ -10,6 +10,9 @@ import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import {split} from "../functions.js"
+import AnimatedPage from './components/AnimatedPage';
+import { Link } from 'react-router-dom';
+
 
 
 function SeparatorsBalanced() {
@@ -108,6 +111,7 @@ function SeparatorsBalanced() {
 
   return (
     <>
+    <AnimatedPage>
     <div className='sidebar'>
         <h2>Balanced Separators</h2>
         <p>A <InlineMath math="{balanced}"/> separator <InlineMath math="X"/> of <InlineMath math="W"/> is 
@@ -158,12 +162,14 @@ function SeparatorsBalanced() {
                 <ion-icon name={components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)
                 <=4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
             </div>
+        <Link to="/splitting-tree2" className='button'>Next</Link>
+
     </div>
     <div className='content'>
         <div className='horizontal-split'>
         <div className='svg_container  interactive active'>
-            <div className='svg_label'>Graph - <InlineMath math="G"/></div>
             <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
+            <div className='svg_label'>Graph - <InlineMath math="G"/></div>
         </div>
         <div className='svg_container'>
             <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
@@ -175,7 +181,9 @@ function SeparatorsBalanced() {
             <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
         </div>
     </div>
+    </AnimatedPage>
     </>
+    
   );
 }
 

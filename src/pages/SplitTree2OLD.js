@@ -27,7 +27,6 @@ function SplitTree2() {
     const [show, set_show] = useState([]);
     const [tprime, set_tprime] = useState(null);
     const [page_ready, set_page_ready] = useState(false);
-    const [page_state, set_page_state] = useState(0);
     const w = tree.nodes.find(node => node.name === "W");
     const node_name = tree.nodes.map(x => x.name);
     const node_bag = tree.nodes.map(x => x.bag);
@@ -178,7 +177,7 @@ function SplitTree2() {
                         <ion-icon name={check_input(ic3, components[2]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                     </div>
                 </div>
-                <button onClick={() => set_page_state(page_state+1)}>NEXT</button>
+                <Link to={"/splitting-tree2/"+(i+2).toString()}>Next</Link><h1>{i}</h1>
             </div>)
     }
 
@@ -191,7 +190,7 @@ function SplitTree2() {
         return<>
             <p>Now that we have created three new bags for each bag -- see T'</p>
             <p>This gives us three new tree decompositions T1, T2 and T3. These are then connected to a new bag X that contains all the vertices that were chosen as the separator.</p>
-            <button onClick={() => set_page_state(page_state+1)}>NEXT</button>
+            <Link to={"/splitting-tree2/"+(i+2).toString()}>Next</Link><h1>{i}</h1>
         </>
     }
 
@@ -204,7 +203,7 @@ function SplitTree2() {
         return<>
             <p>DONE - T'</p>
             <p>go to next section ...</p>
-            <Link to="/splitting-tree" className='button'>Next</Link>
+            <Link to={"/splitting-tree2/"}>Next</Link><h1>{i}</h1>
         </>
     }
     
@@ -247,13 +246,16 @@ function SplitTree2() {
                 </React.Fragment>
             )})}
             <h2>Creating <InlineMath math={"T'"}/></h2>
-            { page_ready && page_state === 0 && <Puzzle i={page_state}/>}
-            { page_ready && page_state === 1 && <Puzzle i={page_state}/>}
-            { page_ready && page_state === 2 && <Puzzle i={page_state}/>}
-            { page_ready && page_state === 3 && <PuzzleSeparator i={page_state}/>}
-            { page_ready && page_state === 4 && <PuzzleDone i={page_state}/>}
-
-            
+            { page_ready ?
+            (<Routes>
+                    <Route path="/*" element={<Puzzle i={0}/>}/>
+                    <Route path="/2" element={<Puzzle i={1}/>}/>
+                    <Route path="/3" element={<Puzzle i={2}/>}/>
+                    <Route path="/4" element={<PuzzleSeparator i={3}/>}/>
+                    <Route path="/5" element={<PuzzleDone i={4}/>}/>
+            </Routes>) : 
+            </Routes>) : 
+            (<div>loading...</div>) }
             
 
             {/* <div className='button-container'>
@@ -266,12 +268,12 @@ function SplitTree2() {
     <div className='content'>
         <div className='horizontal-split w1-3'>
             <div className='svg_container'>
-                <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
                 <div className='svg_label'>Graph - <InlineMath math="G"/></div>
+                <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
             </div>
             <div className='svg_container hidden'>
-                <svg id="yolo" ref={graph_container2} className="cy graph" width="100%" height="100%"></svg>
                 <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
+                <svg id="yolo" ref={graph_container2} className="cy graph" width="100%" height="100%"></svg>
             </div>
             <div className='svg_container'>
                 <div className='svg_label'>Tree Decomposition - <InlineMath math="T"/></div>

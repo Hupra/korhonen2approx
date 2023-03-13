@@ -1,11 +1,12 @@
-$border-settings: 2px solid black
+$border-settings: 1px solid black
 $c1: skyblue
 $c2: #D56EFF
 $c3: chartreuse
 $c4: orange
 $c5: red
 $c6: blue
-$cx: white
+$cx: orange
+$gap: 10px
 $sebbe: 'https://www.onlygfx.com/wp-content/uploads/2019/02/7-noise-texture-overlays-1-768x589.png'
 // $sebbe: 'https://www.onlygfx.com/wp-content/uploads/2019/02/7-noise-texture-overlays-4-768x538.png' 
 
@@ -47,7 +48,7 @@ body
     max-height: 1080px
     background-color: blue
     display: flex
-    flex-direction: column
+    // flex-direction: column USED WITH TOP HEADER
     // overflow: hidden
     // border: 4px solid #373737
 .header
@@ -67,10 +68,19 @@ body
         &.active
             color: $c1
 
+.location
+    background: #303030
+    width: 60px
+
+.animated-page
+    position: absolute
 .main
+    position: relative
+
+.main, .animated-page
     width: 100%
     flex: 1
-    background-color: orange
+    background-color: #303030
     display: flex
     justify-content: center
     align-items: center
@@ -82,10 +92,11 @@ body
         background-color: honeydew
         width: 25%
         height: 100%
+        // padding: 20px 0px 20px 10px
         padding: 20px
-        border-right: $border-settings
+        // border-right: $border-settings
         overflow-x: hide
-        overflow-y: scroll
+        // overflow-y: scroll
         > *:first-child
             margin-top: 0
     .content
@@ -93,25 +104,53 @@ body
         width: 80%
         height: 100%
         background-color: #151515
+        // background-color: black
         display: flex
         justify-content: center
         align-items: center
         position: relative
+        padding: $gap
+        gap: $gap
 
-        > *:first-child
-            border-right: $border-settings
+        .cy
+            border: $border-settings
+            border-radius: 7px
+            background-color: #252525
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
 
         .horizontal-split
             height: 100%
             width: 100%
             display: flex
+            gap: $gap
             flex-direction: column
             position: relative
+        
+        .cc
+            width: 100%
+            height: 100%
+            background-color: #252525
+            display: flex
+            justify-content: center
+            align-items: center
+            position: relative
+            gap: $gap
+            border: $border-settings
+            border-radius: 7px
+            gap: 0
+            background-color: #252525
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
+            .cy
+                background-color: transparent
+                box-shadow: none
+                border: none
+            >*:last-child
+                border: none !important
 
-            > *
-                border-bottom: $border-settings
-            > *:last-child
-                border-bottom: none
+            // > *
+            //     border-bottom: $border-settings
+            // > *:last-child
+            //     border-bottom: none
         
         .svg_popup
             position: absolute
@@ -140,14 +179,15 @@ body
         height: 100%
     .svg_label
         position: absolute
-        top: 5px
-        left: 5px
+        top: 7px
+        left: 7px
         color: white
         background-color: #101010
         border-radius: 5px
         padding: 5px 10px
         font-size: 14px
-        border: 2px solid black
+        border: $border-settings
+        font-weight: 300
 
     .svg_counter
         position: absolute
@@ -167,6 +207,9 @@ body
     &.interactive
         circle
             cursor: pointer
+        .cy
+            border-color: orange
+            border-width: 2px
     &.active
         // border-right: 3px solid green !important
         // border-left: 3px solid green !important
@@ -199,6 +242,7 @@ body
         z-index: 1
         circle
             pointer-events: auto
+
     &.full.top svg
         top: 0
         left: 0
@@ -209,7 +253,7 @@ body
         top: 0
         left: -200%
     &.full
-        border-right: 2px dotted black
+        border-right: 2px dotted #050505
 
 @keyframes sebbe
     0%
@@ -238,31 +282,48 @@ body
     // font-family: 'Times New Roman', Times, serif
     font-weight: 400
 
-.C1
-    fill: $c1
-.C2
-    fill: $c2
-.C3
-    fill: $c3
-.C4
-    fill: $c4
-.C5
-    fill: $c5
-.C6
-    fill: $c6
-.X
-    fill: $cx
+circle, tspan, text
+    &.C1
+        fill: $c1
+    &.C2
+        fill: $c2
+    &.C3
+        fill: $c3
+    &.C4
+        fill: $c4
+    &.C5
+        fill: $c5
+    &.C6
+        fill: $c6
+    &.X
+        fill: $cx
+
+line
+    &.C1
+        stroke: $c1
+    &.C2
+        stroke: $c2
+    &.C3
+        stroke: $c3
+    &.C4
+        stroke: $c4
+    &.C5
+        stroke: $c5
+    &.C6
+        stroke: $c6
+    &.X
+        stroke: $cx
 
 .graph
     .X
-        fill: white
+        fill: $cx
         // color: white
 circle.X
-    fill: #202020 !important
+    fill: #252525 !important
+    stroke: #303030
     // stroke: #202020 !important
 circle
-    filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 1))
-    stroke-width: 1px !important                                                                                                       ortant
+    stroke-width: 2px !important
 // circle.node_in_w
 //     stroke-width: 4px !important
 //     // filter: drop-shadow(0px 0px 2px rgba(135, 206, 235, 1))
@@ -362,7 +423,7 @@ p
     background-color: #101010
     border-radius: 3px
     justify-content: space-between
-button
+button, .button
     align-items: center
     background-color: orange
     border: 1px solid rgba(0, 0, 0, 0.1)
@@ -414,7 +475,7 @@ button
         font-size: 18px
         text-align: center
         border: none
-        border-bottom: 1px dotted white
+        border-bottom: 2px dotted orange
         min-width: 70px
         width: 50px
         max-width: 200px

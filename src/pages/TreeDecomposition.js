@@ -7,6 +7,7 @@ import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
+import AnimatedPage from './components/AnimatedPage';
 
 
 function TreeDecomposition() {
@@ -22,6 +23,8 @@ function TreeDecomposition() {
 
   return (
     <>
+    <AnimatedPage>
+
     <div className='sidebar'>
         <h2>Formel Description</h2>
         <div>
@@ -62,6 +65,8 @@ function TreeDecomposition() {
             <svg ref={tree_container} className="cy" width="100%" height="100%"></svg>
         </div>
     </div>
+    </AnimatedPage>
+
     </>
   );
 }

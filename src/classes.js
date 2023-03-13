@@ -179,6 +179,15 @@ export class Graph {
             // console.log(d);
             return this.X.includes(f(d.id));
         });
+        
+        this.svg_links.attr('class', d => {
+            const ac = this.get_component(f(d.source.id));
+            const bc = this.get_component(f(d.target.id));
+            console.log(d, ac,bc, ac === bc)
+            if(ac === bc) return "C"+ac.toString();
+            return "";
+        });
+
         this.svg_links.classed("opacity", d => {
             return this.X.includes(f(d.source.id)) || this.X.includes(f(d.target.id));
         });
@@ -256,7 +265,8 @@ export class Graph {
     svg_show_only(show){
         this.svg_nodes.classed("hidden", d => !show.includes(d.id));
         this.svg_node_labels.classed("hidden", d => !show.includes(d.id));
-        this.svg_links.classed("hidden", d => !show.includes(d.source.id) || !show.includes(d.target.id));
+        this.svg_links.classed("hidden", d => !show.includes(d.source.id) || !show.includes(d.target.id)); //show sebbe when this is hidden
+        this.svg_links.classed(this.node_class, d => show.includes(d.source.id) && show.includes(d.target.id)); 
         this.svg_nodes.classed(this.node_class, d => this.W.includes(d.id));
     }
 

@@ -9,6 +9,9 @@ import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import {split} from "../functions.js"
+import AnimatedPage from './components/AnimatedPage';
+import { Link } from 'react-router-dom';
+
 
 
 function SplitTree() {
@@ -144,6 +147,8 @@ function SplitTree() {
 
   return (
     <>
+    <AnimatedPage>
+
     <div className='sidebar'>
         <h2>Splitting Tree Decomposition</h2>
         Try selecting different nodes in <InlineMath math={"G"}/>, to create various splits, and see what resulting <InlineMath math={"T'"}/> that spplit will yeild.<br/>
@@ -178,17 +183,18 @@ function SplitTree() {
                 </div>
             </React.Fragment>
         )})}
+        <Link to="/connect-components" className='button'>Next</Link>
 
     </div>
     <div className='content'>
         <div className='horizontal-split w1-3'>
             <div className='svg_container interactive active'>
-                <div className='svg_label'>Graph - <InlineMath math="G"/></div>
                 <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
+                <div className='svg_label'>Graph - <InlineMath math="G"/></div>
             </div>
             <div className='svg_container'>
-                <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
                 <svg id="yolo" ref={graph_container2} className="cy graph" width="100%" height="100%"></svg>
+                <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
             </div>
             <div className='svg_container'>
                 <div className='svg_label'>Tree Decomposition - <InlineMath math="T"/></div>
@@ -212,6 +218,8 @@ function SplitTree() {
             </div>
         </div> */}
     </div>
+    </AnimatedPage>
+
     </>
   );
 }

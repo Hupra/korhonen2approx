@@ -7,6 +7,8 @@ import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import {split} from "../functions.js"
+import AnimatedPage from './components/AnimatedPage';
+import { Link } from 'react-router-dom';
 
 
 function Separators() {
@@ -90,6 +92,7 @@ function Separators() {
 
   return (
     <>
+    <AnimatedPage>
     <div className='sidebar'>
         <h2>Separators</h2>
         <p>A separator is a set of vertices <InlineMath math="X"/> in <InlineMath math="G"/> that splits <InlineMath math="G"/> into multiple connected components, i.e., all the vertices 
@@ -138,18 +141,21 @@ function Separators() {
         <div className='task'>
             <span>Split into 4 components.</span>
             <ion-icon name={components.length>=4? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
-        </div>        
+        </div>    
+        <Link to="/balanced-separators" className='button'>Next</Link>
+
     </div>
     <div className='content'>
         <div className='svg_container interactive active'>
-            <div className='svg_label'>Graph - <InlineMath math="G"/></div>
             <svg id="nolo" ref={graph_container} className="cy" width="100%" height="100%"></svg>
+            <div className='svg_label'>Graph - <InlineMath math="G"/></div>
         </div>
         <div className='svg_container'>
-            <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
             <svg id="yolo" ref={graph_container2} className="cy" width="100%" height="100%"></svg>
+            <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
         </div>
     </div>
+    </AnimatedPage>
     </>
   );
 }

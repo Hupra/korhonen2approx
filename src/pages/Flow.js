@@ -3,6 +3,7 @@ import graph1 from '../graphs/graph1.json'
 import { create_flownetwork_simple, flownetwork_to_cyto, graph_to_cyto, create_flownetwork } from '../functions';
 import cytoscape from 'cytoscape';
 import cola from 'cytoscape-cola';
+import AnimatedPage from './components/AnimatedPage';
 cytoscape.use( cola ); // register extension
 
 
@@ -118,6 +119,8 @@ function Flow() {
 
   return (
     <>
+    <AnimatedPage>
+
       <div className='sidebar'>
       {splits.map((item, index) => (
         <SplitLine key={index} arr={item} />
@@ -126,6 +129,8 @@ function Flow() {
       <div className='content'>
       <div id="cy" className="cy"></div>
       </div>
+    </AnimatedPage>
+
     </>
   );
 }
