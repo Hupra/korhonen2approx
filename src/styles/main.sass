@@ -34,7 +34,7 @@ body
     width: 50% !important
 
 #root
-    background-color: #343434
+    background-color: #151515
     width: 100%
     height: 100vh
     display: flex
@@ -46,7 +46,6 @@ body
     max-width: 1920px
     height: 100%
     max-height: 1080px
-    background-color: blue
     display: flex
     // flex-direction: column USED WITH TOP HEADER
     // overflow: hidden
@@ -65,13 +64,30 @@ body
         margin: 5px 10px 8px
         font-size: 14px
         font-weight: 300
+        display: block
         &.active
             color: $c1
-
 .location
-    background: #303030
+    background: transparent
     width: 60px
-
+    // background-color: yellow
+    display: flex
+    padding: $gap
+    gap: $gap
+    flex-direction: column
+    a
+        border: $border-settings
+        padding: 20px
+        height: 42px
+        border-radius: 7px
+        background: #252525
+        color: white
+        content: ""
+        color: transparent
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
+        &.active
+            border-color: $cx
+            
 .animated-page
     position: absolute
 .main
@@ -137,6 +153,7 @@ body
             gap: $gap
             border: $border-settings
             border-radius: 7px
+            border-color: $cx
             gap: 0
             background-color: #252525
             box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
@@ -208,7 +225,7 @@ body
         circle
             cursor: pointer
         .cy
-            border-color: orange
+            border-color: $cx
             border-width: 2px
     &.active
         // border-right: 3px solid green !important

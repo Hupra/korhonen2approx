@@ -15,30 +15,30 @@ export async function loadJSON(file) {
   }
 
 
-  export function graph_to_cyto(input) {
-    const nodes = input.nodes.map(node => {
-      return { data: { id: node.id, label: node.label, content: node.content } };
-    });
+//   export function graph_to_cyto(input) {
+//     const nodes = input.nodes.map(node => {
+//       return { data: { id: node.id, label: node.label, content: node.content } };
+//     });
     
-    const edges = input.edges.map(edge => {
-      return { data: { source: edge.source, target: edge.target } };
-    });
+//     const edges = input.edges.map(edge => {
+//       return { data: { source: edge.source, target: edge.target } };
+//     });
     
-    return { nodes, edges };
-  }
+//     return { nodes, edges };
+//   }
 
 
-export function flownetwork_to_cyto(input, zeroes=false) {
-    const nodes = input.nodes.map(node => {
-        return { data: { id: node.id, label: node.label, content: node.content }, style: { "background-color": node.color} };
-      });
+// export function flownetwork_to_cyto(input, zeroes=false) {
+//     const nodes = input.nodes.map(node => {
+//         return { data: { id: node.id, label: node.label, content: node.content }, style: { "background-color": node.color} };
+//       });
 
-    const edges = input.edges.filter(edge => edge.capacity !== 0).map(edge => {
-        return { data: { source: edge.source, target: edge.target } };
-    });
+//     const edges = input.edges.filter(edge => edge.capacity !== 0).map(edge => {
+//         return { data: { source: edge.source, target: edge.target } };
+//     });
 
-    return { nodes, edges };
-}
+//     return { nodes, edges };
+// }
 
 
 export function create_flownetwork(graph, A, B) {

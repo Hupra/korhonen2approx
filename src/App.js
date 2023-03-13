@@ -21,10 +21,14 @@ function App() {
   return (
       <div className='container'>
         <div className='location'>
-            <div>a</div>
-            <div>b</div>
-            <div>c</div>
-            <div>d</div>
+          <NavLink exact activeClassName='active' to="/">Home</NavLink>
+          <NavLink activeClassName='active' to="/flow">Flow</NavLink>
+          <NavLink activeClassName='active' to="/treedecomposition">Tree Decomposition</NavLink>
+          <NavLink activeClassName='active' to="/separators">Separators</NavLink>
+          <NavLink activeClassName='active' to="/balanced-separators">Balanced Separators</NavLink>
+          <NavLink activeClassName='active' to="/splitting-tree2">Split Tree Story</NavLink>
+          <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink>
+          <NavLink activeClassName='active' to="/connect-components">Connect Components</NavLink>
           </div>
         {/* <div className='header'>
           <NavLink exact activeClassName='active' to="/">Home</NavLink>

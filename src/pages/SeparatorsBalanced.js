@@ -167,7 +167,7 @@ function SeparatorsBalanced() {
     </div>
     <div className='content'>
         <div className='horizontal-split'>
-        <div className='svg_container  interactive active'>
+        <div className='svg_container interactive active'>
             <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
         </div>
