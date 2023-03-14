@@ -9,6 +9,7 @@ import SeparatorsBalanced from './pages/SeparatorsBalanced';
 import SplitTree from './pages/SplitTree';
 import SplitTree2 from './pages/SplitTree2';
 import ConnectComponents from './pages/ConnectComponents';
+import Page1 from './pages/Page1';
 import { AnimatePresence } from 'framer-motion';
 
 
@@ -29,7 +30,8 @@ function App() {
           <NavLink activeClassName='active' to="/splitting-tree2">Split Tree Story</NavLink>
           <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink>
           <NavLink activeClassName='active' to="/connect-components">Connect Components</NavLink>
-          </div>
+          <NavLink activeClassName='active' to="/page1">Page1</NavLink>
+        </div>
         {/* <div className='header'>
           <NavLink exact activeClassName='active' to="/">Home</NavLink>
           <NavLink activeClassName='active' to="/flow">Flow</NavLink>
@@ -51,7 +53,8 @@ function App() {
               <Route path="balanced-separators/*" element={<SeparatorsBalanced />} /> 
               <Route path="splitting-tree2/*" element={<SplitTree2 />} /> 
               <Route path="splitting-tree/*" element={<SplitTree />} /> 
-              <Route path="connect-components/*" element={<ConnectComponents />} /> 
+              <Route path="connect-components/*" element={<ConnectComponents />} />
+              <Route path="page1/*" element={<Page1 />} />
             </Routes>
          </AnimatePresence>
         </div>

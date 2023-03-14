@@ -145,7 +145,7 @@ function SplitTree2() {
 
         return (
             <div className='build-a-bag'>
-                <h3>Tasks</h3>
+                <h2>Tasks</h2>
                 <div>Fill out the correct inputs in the formulas below for each of the three new bags created for the original bag {B}:</div>
                 <br/>
                 <div className='task'>
@@ -189,6 +189,7 @@ function SplitTree2() {
             tprime.svg_hide_stuff(node_name.slice(0,i));
         },[i])
         return<>
+            <h2>Connecting Tree</h2>
             <p>Now that we have created three new bags for each bag -- see T'</p>
             <p>This gives us three new tree decompositions T1, T2 and T3. These are then connected to a new bag X that contains all the vertices that were chosen as the separator.</p>
             <button onClick={() => set_page_state(page_state+1)}>NEXT</button>
@@ -202,6 +203,7 @@ function SplitTree2() {
             tprime.svg_hide_stuff(node_name.concat("X"));
         },[i])
         return<>
+            <h2>New tree decomposition done</h2>
             <p>DONE - T'</p>
             <p>go to next section ...</p>
             <Link to="/splitting-tree" className='button'>Next</Link>
@@ -246,7 +248,6 @@ function SplitTree2() {
                     </div>
                 </React.Fragment>
             )})}
-            <h2>Creating <InlineMath math={"T'"}/></h2>
             { page_ready && page_state === 0 && <Puzzle i={page_state}/>}
             { page_ready && page_state === 1 && <Puzzle i={page_state}/>}
             { page_ready && page_state === 2 && <Puzzle i={page_state}/>}

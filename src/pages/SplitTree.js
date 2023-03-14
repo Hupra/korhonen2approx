@@ -104,7 +104,6 @@ function SplitTree() {
                 "nodes" : [{ "id": 0, "bag": X, "name": "X"}],
                 "edges" : []
             };
-            console.log("tree",tree);
             for (let i = 0; i < C.length; i++) {
                 for (let j = 0; j < tree.nodes.length; j++) {
                     const tree_node = {...tree.nodes[j]};
@@ -136,6 +135,8 @@ function SplitTree() {
             t2.X = X;
             t2.C = C;
             t2.render();
+
+            console.log(X,C)
 
             // update elements
             setSeparator(X);
