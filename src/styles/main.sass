@@ -2,9 +2,9 @@ $border-settings: 1px solid black
 $c1: skyblue
 $c2: #D56EFF
 $c3: chartreuse
-$c4: orange
-$c5: red
-$c6: blue
+$c4: purple
+$c5: blue
+$c6: purple
 $cx: orange
 $gap: 10px
 $sebbe: 'https://www.onlygfx.com/wp-content/uploads/2019/02/7-noise-texture-overlays-1-768x589.png'
@@ -18,6 +18,31 @@ body
 
 .hidden
     display: none !important
+
+rect.error
+    fill: white !important
+    stroke: red !important
+text.error
+    tspan:nth-of-type(even)
+        // fill: black
+        stroke: black
+        stroke-width: 4px
+        paint-order: stroke
+
+    .X, .C1, .C2, .C3, .C4, .C5, .C6
+        stroke: black
+        stroke-width: 4px
+        paint-order: stroke
+
+rect.homebag
+    fill: #50C878 !important
+    // stroke: red !important
+text.homebag
+    tspan
+        // fill: black
+        stroke: black
+        stroke-width: 4px
+        paint-order: stroke
 
 .to_the_depths
     visibility: hidden !important

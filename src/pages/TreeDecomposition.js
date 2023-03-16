@@ -8,6 +8,7 @@ import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import AnimatedPage from './components/AnimatedPage';
+import { Link } from 'react-router-dom';
 
 
 function TreeDecomposition() {
@@ -45,15 +46,7 @@ function TreeDecomposition() {
         </div>
         <h3>Simple Description</h3>
         <div><p>...</p>For more about tree decompositions check out <a href='https://frederikjorgensen.github.io/graph-width/'>https://frederikjorgensen.github.io/graph-width/</a></div>
-        <div className='nav2'>
-            {[1,2,3,4,5,6,7,8].map((item, idx) => {
-            const klass = (item === 3) ? "box active" : "box" 
-            return (
-            <React.Fragment key={idx}>
-                <div className={klass}></div>
-            </React.Fragment>
-        )})}
-        </div>
+        <Link to="/separators" className='button'>Next</Link>        
     </div>
     <div className='content'>
         <div className='svg_container'>

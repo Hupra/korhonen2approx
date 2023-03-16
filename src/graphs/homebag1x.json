@@ -1,0 +1,25 @@
+{
+    "nodes": [
+        { "id": 0, "bag": [8,11], "name": "X", "y_div": 3, "y_offset": -120 },
+        { "id": 1, "bag": [8,11], "name": "W", "sup": "X", "y_div": 3, "y_offset": -40  },
+        { "id": 2, "bag": [], "name": "B", "sup": "X"  },
+        { "id": 3, "bag": [], "name": "D", "sup": "X"  },
+        { "id": 4, "bag": [], "name": "E", "sup": "X"  },
+        { "id": 5, "bag": [8], "name": "A", "sup": "X"  },
+        { "id": 6, "bag": [8], "name": "Z", "sup": "X"  },
+        { "id": 7, "bag": [], "name": "F", "sup": "X"  },
+        { "id": 8, "bag": [], "name": "G", "sup": "X"  },
+        { "id": 9, "bag": [], "name": "H", "sup": "X"  }
+    ],
+    "edges": [
+        { "source": 0, "target": 1},
+        { "source": 1, "target": 2},
+        { "source": 2, "target": 3},
+        { "source": 2, "target": 4},
+        { "source": 1, "target": 5},
+        { "source": 5, "target": 6},
+        { "source": 6, "target": 7},
+        { "source": 7, "target": 8},
+        { "source": 7, "target": 9}
+    ]
+}

@@ -238,7 +238,7 @@ function ConnectComponents() {
         <br/>
         <div>
             <button onClick={() => set_show_G(!show_G)}>{show_G ? "Hide Graph" : "Show Graph"}</button>
-        <Link to="/" className='button'>Next</Link>
+        <Link to="/page1" className='button'>Next</Link>
 
         </div>  
     </div>

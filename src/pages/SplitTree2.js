@@ -7,7 +7,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
-import {split, cup, cap, list_is_same} from "../functions.js"
+import {split, cup, cap, list_is_same, T_2_TD} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 
 
@@ -75,32 +75,8 @@ function SplitTree2() {
         setSeparator(X);
         setComponents(C);
 
-        const Tp = {
-            "nodes" : [{ "id": 0, "bag": X, "name": "X"}],
-            "edges" : []
-        };
-        for (let i = 0; i < C.length; i++) {
-            for (let j = 0; j < tree.nodes.length; j++) {
-                const tree_node = {...tree.nodes[j]};
-                tree_node.name = tree_node.name + (i+1).toString();
-                tree_node.id = tree_node.id + (i*tree.nodes.length);
-                const Ci_union_X = Array.from(new Set([...C[i], ...X]));
-                const CiX_intersect_bag = Ci_union_X.filter(x => tree_node.bag.includes(x));
-                tree_node.bag = CiX_intersect_bag;
-                Tp.nodes.push(tree_node);
-                
-                if(tree_node.name.startsWith("W")){
-                    Tp.edges.push({"source": 0, "target": tree_node.id});
-                }
-            }
-            for (let j = 0; j < tree.edges.length; j++) {
-                const tree_edge = {...tree.edges[j]};
-                tree_edge.source = tree_edge.source + (i*tree.nodes.length);
-                tree_edge.target = tree_edge.target + (i*tree.nodes.length);
-                Tp.edges.push(tree_edge);
-            }
-        }
-        const t2  = new Tree(Tp, d3.select(tree_container2.current));
+        const Tp = T_2_TD(tree, C, X);
+        const t2 = new Tree(Tp, d3.select(tree_container2.current));
         t2.X = X;
         t2.C = C;
 

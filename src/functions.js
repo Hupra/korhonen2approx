@@ -166,7 +166,7 @@ export function T_2_TD(tree, C, X){
   for (let i = 0; i < C.length; i++) {
     for (let j = 0; j < tree.nodes.length; j++) {
       const tree_node = {...tree.nodes[j]};
-      tree_node.name = tree_node.name + (i+1).toString();
+      tree_node.sup = (i+1).toString();
       tree_node.id = tree_node.id + (i*tree.nodes.length);
       const Ci_union_X = Array.from(new Set([...C[i], ...X]));
       const CiX_intersect_bag = Ci_union_X.filter(x => tree_node.bag.includes(x));

@@ -290,6 +290,8 @@ export class Tree {
         
         //   this.link_color = "black";
         this.link_width = 2;
+        
+        this.charge = -4_000;
 
         this.C = [];
         this.X = [];
@@ -428,12 +430,20 @@ create_svg_node_labels(text_function = node => node.id) {
         .selectAll("text")
         .data(this.nodes)
         .enter().append("text")
-        .text(text_function)
         .attr("text-anchor", "middle")
         .attr('fill', "white")
         .attr("stroke", "black") // add white stroke color
         .attr("stroke-width", "4px") // set stroke width to 1px
-        .style("paint-order", "stroke");
+        .style("paint-order", "stroke")
+        .each(function (d) {
+            const text = d3.select(this);
+            console.log(d);
+            text.append("tspan").text(text_function(d));
+            if(d.sup) text.append("tspan")
+                        .attr("baseline-shift", "super")
+                        .attr("font-size", "80%")
+                        .text(d.sup);
+        });
     }
 
     create_svg_simulation(){
@@ -441,11 +451,15 @@ create_svg_node_labels(text_function = node => node.id) {
         const h = this.svg.node().getBoundingClientRect().height;
 
         this.nodes.forEach(node => {
-            if(node.name === "W"){
+            if(node.y_div && node.y_offset){
+                node.fx = w/2;
+                node.fy = (h/node.y_div)+node.y_offset;
+            }
+            else if(node.name === "W" && !node.sup){
                 node.fx = w/2;
                 node.fy = (h/2)-60;
             }
-            if(node.name === "X"){
+            else if(node.name === "X" && !node.sup){
                 node.fx = w/2;
                 node.fy = (h/2)-10;
             }    
@@ -454,7 +468,7 @@ create_svg_node_labels(text_function = node => node.id) {
         return d3.forceSimulation(this.nodes)
         .force("boundary", forceBoundary(20,60,w-20,h-20))
         .force('link',   d3.forceLink(this.links).id(d => d.id))
-        .force('charge', d3.forceManyBody().strength(-4_000))
+        .force('charge', d3.forceManyBody().strength(this.charge))
         .force('center', d3.forceCenter(w/2, (h/2)+30));
     }
 
@@ -484,5 +498,10 @@ create_svg_node_labels(text_function = node => node.id) {
                 .attr("y", d => d.y - 20); // adjust the y-coordinate as needed to center the text vertically        
             }
         });
+        
+    }
+    svg_set_node_class(clazz, errors){
+        this.svg_nodes.classed(clazz, node => errors.includes(node.name));
+        this.svg_node_labels.classed(clazz, node => errors.includes(node.name));
     }
 }

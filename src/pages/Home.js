@@ -9,7 +9,7 @@ function Home() {
     <AnimatedPage>
 
     <div className='sidebar'>
-    <Link to="/separators" className='button'>Next</Link>
+    <Link to="/treedecomposition" className='button'>Next</Link>
 
     </div>
     <div className='content'>

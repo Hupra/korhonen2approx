@@ -1,0 +1,25 @@
+{
+    "nodes": [
+        { "id": 0, "bag": [8,11], "name": "X", "y_div": 3, "y_offset": -120 },
+        { "id": 1, "bag": [1,2,3,4,5,8,11], "name": "W∪W", "sup": "X", "y_div": 3, "y_offset": -40 },
+        { "id": 2, "bag": [2,11], "name": "B∪B", "sup": "X" },
+        { "id": 3, "bag": [2,12], "name": "D∪D", "sup": "X" },
+        { "id": 4, "bag": [11,13], "name": "E∪E", "sup": "X" },
+        { "id": 5, "bag": [5,6,8], "name": "A∪A", "sup": "X" },
+        { "id": 6, "bag": [6,7,8], "name": "Z∪Z", "sup": "X" },
+        { "id": 7, "bag": [7,8], "name": "F∪F", "sup": "X" },
+        { "id": 8, "bag": [8,9], "name": "G∪G", "sup": "X" },
+        { "id": 9, "bag": [8,10], "name": "H∪H", "sup": "X" }
+    ],
+    "edges": [
+        { "source": 0, "target": 1},
+        { "source": 1, "target": 2},
+        { "source": 2, "target": 3},
+        { "source": 2, "target": 4},
+        { "source": 1, "target": 5},
+        { "source": 5, "target": 6},
+        { "source": 6, "target": 7},
+        { "source": 7, "target": 8},
+        { "source": 7, "target": 9}
+    ]
+}
