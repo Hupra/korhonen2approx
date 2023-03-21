@@ -24,17 +24,28 @@ function App() {
   return (
       <div className='container'>
         <div className='location'>
-          <NavLink exact activeClassName='active' to="/">Home</NavLink>
-          <NavLink activeClassName='active' to="/flow">Flow</NavLink>
+          {/* <NavLink activeClassName='active' to="/flow">Flow</NavLink> */}
+          <NavLink exact activeClassName='active' to="/"><ion-icon name="home-outline"></ion-icon></NavLink>
+          <NavLink activeClassName='active' to="/treedecomposition"><ion-icon name="leaf-outline"></ion-icon></NavLink>
+          <NavLink activeClassName='active' to="/separators">S</NavLink>
+          <NavLink activeClassName='active' to="/balanced-separators">BS</NavLink>
+          <NavLink activeClassName='active' to="/connect-components">CC</NavLink>
+          <NavLink activeClassName='active' to="/splitting-tree2"><ion-icon name="git-merge-outline"></ion-icon></NavLink>
+          <NavLink activeClassName='active' to="/page1">P1</NavLink>
+          <NavLink activeClassName='active' to="/page2">P2</NavLink>
+          <NavLink activeClassName='active' to="/page3">P3</NavLink>
+          <NavLink activeClassName='active' to="/splitting-tree">T</NavLink>
+
+          {/* <NavLink exact activeClassName='active' to="/"><ion-icon name="home-outline"></ion-icon></NavLink>
           <NavLink activeClassName='active' to="/treedecomposition">Tree Decomposition</NavLink>
           <NavLink activeClassName='active' to="/separators">Separators</NavLink>
           <NavLink activeClassName='active' to="/balanced-separators">Balanced Separators</NavLink>
-          <NavLink activeClassName='active' to="/splitting-tree2">Split Tree Story</NavLink>
-          <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink>
           <NavLink activeClassName='active' to="/connect-components">Connect Components</NavLink>
+          <NavLink activeClassName='active' to="/splitting-tree2">Split Tree Story</NavLink>
           <NavLink activeClassName='active' to="/page1">Page1</NavLink>
           <NavLink activeClassName='active' to="/page2">Page2</NavLink>
           <NavLink activeClassName='active' to="/page3">Page3</NavLink>
+          <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink> */}
         </div>
         {/* <div className='header'>
           <NavLink exact activeClassName='active' to="/">Home</NavLink>

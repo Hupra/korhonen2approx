@@ -36,7 +36,7 @@ function Page1() {
     return(
     <>
     <AnimatedPage>
-        <div className='sidebar'>
+        <div className='sidebar'><div className='sidebar_bubble'>
             <h2>Homebag Page 1</h2>
             <p>When building the new tree decomposition T’ it must still follow the 3 rules for a tree decomposition. But if the separator X contains vertices that are outside of W, T’ can break rule 3 that says:</p>
             <p> For every vertex <InlineMath math="v"/> contained in both bags <InlineMath math="B_i"/> and <InlineMath math="B_j"/>, the path in <InlineMath math="T"/> going from <InlineMath math="B_i"/> to <InlineMath math="B_j"/> must be of only bags containing <InlineMath math="v"/>.
@@ -44,7 +44,7 @@ function Page1() {
 
         <Link to="/page2" className='button'>Next</Link>
             
-        </div>
+        </div></div>
         <div className='content'>
             <div className='svg_container'>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>

@@ -1,12 +1,12 @@
-$border-settings: 1px solid black
+$border-settings: 2px solid black
 $c1: skyblue
 $c2: #D56EFF
 $c3: chartreuse
-$c4: purple
+$c4: yellow
 $c5: blue
 $c6: purple
 $cx: orange
-$gap: 10px
+$gap: 5px
 $sebbe: 'https://www.onlygfx.com/wp-content/uploads/2019/02/7-noise-texture-overlays-1-768x589.png'
 // $sebbe: 'https://www.onlygfx.com/wp-content/uploads/2019/02/7-noise-texture-overlays-4-768x538.png' 
 
@@ -102,16 +102,24 @@ text.homebag
     flex-direction: column
     a
         border: $border-settings
-        padding: 20px
+        display: flex
+        justify-content: center
+        align-items: center
         height: 42px
         border-radius: 7px
         background: #252525
         color: white
-        content: ""
-        color: transparent
+        text-decoration: none
         box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
+        font-wight: 600
+
+        ion-icon
+            font-size: 20px
+
         &.active
+            // background-color: $cx
             border-color: $cx
+            color: $cx
             
 .animated-page
     position: absolute
@@ -121,7 +129,7 @@ text.homebag
 .main, .animated-page
     width: 100%
     flex: 1
-    background-color: #303030
+    // background-color: #303030
     display: flex
     justify-content: center
     align-items: center
@@ -131,16 +139,27 @@ text.homebag
     .sidebar
         font-size: 13px
         position: relative
-        background-color: honeydew
+        
         width: 25%
         height: 100%
         // padding: 20px 0px 20px 10px
-        padding: 20px
         // border-right: $border-settings
         overflow-x: hide
         // overflow-y: scroll
-        > *:first-child
-            margin-top: 0
+        padding: $gap
+        padding-right: 0
+        padding-left: 0
+        .sidebar_bubble
+            height: 100%
+            width: 100%
+            padding: 20px
+            background-color: rgba(240,255,255,.9)
+            border: $border-settings
+            border-radius: 7px
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
+
+            > *:first-child
+                margin-top: 0
     .content
         // padding: 20px
         width: 80%
@@ -157,6 +176,7 @@ text.homebag
         .cy
             border: $border-settings
             border-radius: 7px
+            // background-image: linear-gradient(200deg,#252525 0%,rgba(25, 25, 25, 0.95) 10%,rgba(25, 25, 25, 0.9) 20%,rgba(25, 25, 25, 0.85) 30%,rgba(25, 25, 25, 0.8) 40%,rgba(25, 25, 25, 0.75) 50%,rgba(25, 25, 25, 0.7) 60%,rgba(25, 25, 25, 0.65) 70%,rgba(25, 25, 25, 0.6) 80%,rgba(25, 25, 25, 0.55) 90%,#252525 100%)
             background-color: #252525
             box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
 
@@ -178,6 +198,7 @@ text.homebag
             position: relative
             gap: $gap
             border: $border-settings
+            border-width: 2px
             border-radius: 7px
             border-color: $cx
             gap: 0
@@ -357,6 +378,27 @@ line
     &.X
         stroke: $cx
 
+span.color-reverse
+    color: white
+    background-color: #101010
+    padding: 3px
+    border-radius: 8px
+span
+    &.C1
+        color: $c1
+    &.C2
+        color: $c2
+    &.C3
+        color: $c3
+    &.C4
+        color: $c4
+    &.C5
+        color: $c5
+    &.C6
+        color: $c6
+    &.X
+        color: $cx
+
 .graph
     .X
         fill: $cx
@@ -367,10 +409,10 @@ circle.X
     // stroke: #202020 !important
 circle
     stroke-width: 2px !important
-// circle.node_in_w
-//     stroke-width: 4px !important
-//     // filter: drop-shadow(0px 0px 2px rgba(135, 206, 235, 1))
-//     stroke: red
+circle.node_in_w
+    stroke-width: 2px !important
+    filter: drop-shadow(0px 0px 2px rgba(0,0,0, 1))
+    stroke: red
 .opacity
     opacity: 15%
 // .highlight
@@ -379,7 +421,8 @@ circle
 //     stroke: black !important
 //     // stroke-width: 5px !important
 
-
+.node_w
+    font-size: 12px
 .items
     color: white
     border-radius: 3px
@@ -427,14 +470,19 @@ circle
     ion-icon
         position: relative
         font-size: 1.7em
-        // top: 1px
+        margin-left: 10px
         &[name="star"] 
             color: #FFDF00
         &[name="checkmark-circle"], &[name="checkmark-circle-outline"]
             color: Chartreuse
         &[name="alert-circle"], &[name="alert-circle-outline"]
             color: white
-        
+    &.locked
+        justify-content: center
+        ion-icon
+            font-size: 1.4em
+            margin: 0
+
 h1,h2,h3,h4,h5,h6
     margin-bottom: 10px
 
@@ -469,8 +517,9 @@ p
     justify-content: space-between
 button, .button
     align-items: center
-    background-color: orange
-    border: 1px solid rgba(0, 0, 0, 0.1)
+    // background-color: #3FFF00
+    background-color: #202020
+    border: 3px solid chartreuse
     border-radius: .25rem
     box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0
     box-sizing: border-box
@@ -478,13 +527,18 @@ button, .button
     cursor: pointer
     display: inline-flex
     font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif
+    font-family: 'Roboto Slab', serif
+    color: black
+    color: white
+    text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000
     font-size: 16px
     font-weight: 600
     justify-content: center
     line-height: 1.25
     margin: 10px
-    min-height: 3rem
-    padding: 10px 30px
+    margin-left: 0
+    min-height: 1rem
+    padding: 5px 10px
     position: relative
     text-decoration: none
     transition: all 250ms
@@ -493,18 +547,29 @@ button, .button
     touch-action: manipulation
     vertical-align: baseline
     width: auto
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px
+
     &:hover, &:focus
-        border-color: rgba(0, 0, 0, 0.15)
         box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px
-        color: rgba(0, 0, 0, 0.65)
     &:hover
         transform: translateY(-1px)
     &:active
-        background-color: #F0F0F1
         border-color: rgba(0, 0, 0, 0.15)
         box-shadow: rgba(0, 0, 0, 0.06) 0 2px 4px
-        color: rgba(0, 0, 0, 0.65)
         transform: translateY(0)
+    &.disable
+        border-color: rgba(255,255,255, 0.4)
+        color: rgba(255,255,255, 0.8)
+        ion-icon
+            color: rgba(255,255,255, 0.8)
+
+    ion-icon
+        margin-left: 2px
+        margin-top: 2px
+        text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000
+        color: white
+        border-radius: 50%
+
 
 
 .build-a-bag
@@ -526,3 +591,10 @@ button, .button
         resize: vertical
         &:focus
             outline: none
+
+
+.wall
+    display: flex
+    justify-content: center
+    align-content: center
+    color: white

@@ -121,7 +121,7 @@ function SplitTree() {
     <>
     <AnimatedPage>
 
-    <div className='sidebar'>
+    <div className='sidebar'><div className='sidebar_bubble'>
         <h2>Splitting Tree Decomposition</h2>
         Try selecting different nodes in <InlineMath math={"G"}/>, to create various splits, and see what resulting <InlineMath math={"T'"}/> that spplit will yeild.<br/>
         <br/>
@@ -157,7 +157,7 @@ function SplitTree() {
         )})}
         <Link to="/connect-components" className='button'>Next</Link>
 
-    </div>
+    </div></div>
     <div className='content'>
         <div className='horizontal-split w1-3'>
             <div className='svg_container interactive active'>
@@ -173,6 +173,8 @@ function SplitTree() {
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
             </div>
         </div>
+        <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>
+
         <div className='svg_container w2-3'>
             <div className='svg_label'>Tree Decomposition - <InlineMath math="T'"/></div>
             <svg ref={tree_container2} className="cy tree" width="100%" height="100%"></svg>

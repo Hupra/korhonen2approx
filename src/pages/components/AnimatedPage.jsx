@@ -1,6 +1,7 @@
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
-const speed = 0.5;
+const speed = 0.65;
 
 const scroll = {
     initial: {opacity: 1, y: "100%"},
@@ -9,7 +10,7 @@ const scroll = {
         // type: "spring",
         // stiffness: 2
       } },
-    exit: {opacity: 1, y: "-96%", transition: {
+    exit: {opacity: 1, y: "-100%", transition: {
         duration: speed,
         // type: "spring",
         // stiffness: 2
@@ -26,7 +27,10 @@ const layer = {
       } }
 }
 
-const AnimatedPage = ({children}) => {
+const AnimatedPage = ({ children }) => {
+  const location = useLocation();
+  console.log(1,location);
+  
     return (
         <motion.div
             className="animated-page"

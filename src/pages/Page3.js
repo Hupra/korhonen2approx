@@ -57,28 +57,105 @@ function Page3() {
         // tux.render();
         // t.svg_set_node_class("homebag", ["F", "B"]);
 
+
+        // state handler
+        // Add an event listener to the nodes to handle the click event
+        let page_state_loc = page_state;
+        t.svg_nodes.on("click", function(e,node) {
+            if(page_state_loc === 0 && node.name==="B"){
+                t.svg_set_node_class("homebag", ["B"]);
+                page_state_loc+=1;
+                set_page_state(page_state_loc);
+            }
+            if(page_state_loc === 2 && node.name==="G"){
+                t.svg_set_node_class("homebag", ["B","G"]);
+                page_state_loc+=1;
+                set_page_state(page_state_loc);
+            }
+            if(page_state_loc === 4 && node.name==="H"){
+                t.svg_set_node_class("homebag", ["B","G","H"]);
+                page_state_loc+=1;
+                set_page_state(page_state_loc);
+            }
+        });
+
     }, []);
+
     
     return(
     <>
     <AnimatedPage>
-        <div className='sidebar'>
+        <div className='sidebar'><div className='sidebar_bubble'>
             <h2>Homebag Page 2</h2>
+            <h2>Tasks</h2>
             <div className='task'>
                 <div>
-                    Click on the homebag for <InlineMath math="10"/> in figure <InlineMath math="1"/>
+                    Click on <InlineMath math="hb(11)"/> in figure <InlineMath math="1"/>
                 </div>
                 <div>
-                    <ion-icon name={true ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                    <ion-icon name={page_state===0 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
             </div>
-        </div>
+
+            <div className='task'>
+                <div>
+                    Click on bags between <InlineMath math="hb(11)"/> and <InlineMath math="X"/> in figure <InlineMath math="2"/> to add missing elements
+                </div>
+                <div>
+                    <ion-icon name={page_state>1 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                </div>
+            </div>
+
+            <div className='task'>
+                <div>
+                    Click on <InlineMath math="hb(13)"/> in figure <InlineMath math="1"/>
+                </div>
+                <div>
+                    <ion-icon name={page_state>2 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                </div>
+            </div>
+
+            <div className='task'>
+                <div>
+                    Click on bags between <InlineMath math="hb(11)"/> and <InlineMath math="X"/> in figure <InlineMath math="2"/> to add missing elements
+                </div>
+                <div>
+                    <ion-icon name={page_state>3 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                </div>
+            </div>
+
+            <div className='task'>
+                <div>
+                    Click on <InlineMath math="hb(15)"/> in figure <InlineMath math="1"/>
+                </div>
+                <div>
+                    <ion-icon name={page_state>4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                </div>
+            </div>
+
+            <div className='task'>
+                <div>
+                    Click on bags between <InlineMath math="hb(11)"/> and <InlineMath math="X"/> in figure <InlineMath math="2"/> to add missing elements
+                </div>
+                <div>
+                    <ion-icon name={page_state>5 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                </div>
+            </div>
+
+            <div className='task locked'>
+                <div>
+                    <ion-icon name="lock-closed-outline" checkmark-circle></ion-icon>
+                </div>
+            </div>
+            <button onClick={() => set_page_state(page_state+1)}>test</button>
+
+        </div></div>
         <div className='content'>
-            <div className='svg_container'>
+            <div className={'svg_container' + (page_state%2===0 ? " interactive" : "")}>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <InlineMath math="T+X"/></div>
             </div>
-            <div className='svg_container'>
+            <div className={'svg_container' + (page_state%2===1 ? " interactive" : "")}>
                 <svg ref={tree_containerx} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="2."/> Tree - <InlineMath math="T^X + X"/></div>
             </div>

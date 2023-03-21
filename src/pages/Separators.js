@@ -21,24 +21,24 @@ function Separators() {
     useEffect(() => {
         let removed_nodes = [];
         let removed_links = [];
-        const nodes  = graph.nodes.map(node => {return {...node, "id" : node.id + "'"}});
-        const edges  = graph.edges.map(edge => {return { source: edge.source.toString() + "'", target: edge.target.toString() + "'", color: edge.color }});
-        const graph2 = {nodes, edges}
         const g  = new Graph(graph,  d3.select(graph_container.current));
-        const g2 = new Graph(graph2, d3.select(graph_container2.current));
+        const g2 = new Graph(graph, d3.select(graph_container2.current));
         g.render();
         g2.render();
 
-        let X = removed_nodes.map(node => parseInt(node.id.slice(0, -1))).sort((a, b) => a - b);
-        let C = g2.find_components(id => parseInt(id.slice(0, -1)));
+        let X = removed_nodes.map(node => node.id).sort((a, b) => a - b);
+        let C = g2.find_components();
 
+        // const fake_W = graph.nodes.map(node => node.id);
+        // g.W = fake_W;
         g.X = X;
         g.C = C;
         g2.X = X;
         g2.C = C;
+        
         g.render();
         g.svg_set_component_color();
-        g2.svg_set_component_color(id => parseInt(id.slice(0, -1)));
+        g2.svg_set_component_color();
 
         setSeparator(X);
         setComponents(C);
@@ -47,7 +47,7 @@ function Separators() {
         g.svg_nodes.on("click", function() {
 
             const node = d3.select(this);
-            const node_id = node.attr("idx").toString()+"'";
+            const node_id = parseInt(node.attr("idx"));
 
             if(!node.classed("X")){
                 // remove node from graph and save removed nodes+links in arrays here
@@ -73,15 +73,15 @@ function Separators() {
             // node.classed("highlight", !node.classed("highlight"));
             g2.render();
 
-
-            X = removed_nodes.map(node => parseInt(node.id.slice(0, -1))).sort((a, b) => a - b);
-            C = g2.find_components(id => parseInt(id.slice(0, -1)));
+            X = removed_nodes.map(node => node.id).sort((a, b) => a - b);
+            C = g2.find_components();
+            console.log(C);
             g.X = X;
             g.C = C;
             g2.X = X;
             g2.C = C;
             g.svg_set_component_color();
-            g2.svg_set_component_color(id => parseInt(id.slice(0, -1)));
+            g2.svg_set_component_color();
 
             setSeparator(X);
             setComponents(C);
@@ -93,13 +93,46 @@ function Separators() {
   return (
     <>
     <AnimatedPage>
-    <div className='sidebar'>
+    <div className='sidebar'><div className='sidebar_bubble'>
         <h2>Separators</h2>
-        <p>A separator is a set of vertices <InlineMath math="X"/> in <InlineMath math="G"/> that splits <InlineMath math="G"/> into multiple connected components, i.e., all the vertices 
-        within a component are connected, but the components are not connected to each other. 
-        We refer to these components as <InlineMath math="C_1,...,C_h"/> with <InlineMath math="h"/> being the number of components.</p>
-        <h3>Exercise</h3>
-        <p>Try clicking on nodes on the right to split the graph, for instance node 9 and 10.</p>
+        <p>A separator is a set of vertices <InlineMath math="X"/> in <InlineMath math="G"/> that when removed, splits <InlineMath math="G"/> into multiple separated components. 
+        We denote these components as <InlineMath math="C_1,...,C_h"/> where <InlineMath math="h"/> represents the number of components.
+        </p><hr></hr>
+        <h2>Tasks</h2>
+        <h4>Description</h4>
+        
+        <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
+
+
+        <div className='task'>
+            <span>Split into 2 components.</span>
+            <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+        </div>
+
+
+        
+        {components.length>=2 ?
+            <div className='task'>
+                <span>Split into 3 components.</span>
+                <ion-icon name={components.length>=3? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+            </div>
+            :
+            <div className='task locked'>
+                <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
+            </div>
+        }
+        
+        {components.length>=3 ?
+        <div className='task'>
+            <span>Split into 4 components.</span>
+            <ion-icon name={components.length>=4? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+        </div>
+        :
+        <div className='task locked'>
+            <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
+        </div>
+        }
+        <h4>Variables</h4>
         <div className='items'>
             <InlineMath math={"X  = \\{"}/>
             <div className={"X"}><InlineMath math={separator.toString()} /></div>
@@ -127,29 +160,22 @@ function Separators() {
                 </div>
             </React.Fragment>
         )})}
+        <br/>
+        <hr/>
+        {components.length>=4 ?
+        <><Link to="/balanced-separators" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Balanced Separators</i></>
+        :
+        <><Link to="/balanced-separators" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Balanced Separators</i></>
+        }
 
-        <h4>Tasks</h4>
-
-        <div className='task'>
-            <span>Split into 2 components.</span>
-            <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
-        </div>
-        <div className='task'>
-            <span>Split into 3 components.</span>
-            <ion-icon name={components.length>=3? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
-        </div>
-        <div className='task'>
-            <span>Split into 4 components.</span>
-            <ion-icon name={components.length>=4? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
-        </div>    
-        <Link to="/balanced-separators" className='button'>Next</Link>
-
-    </div>
+    </div></div>
     <div className='content'>
+        
         <div className='svg_container interactive active'>
             <svg id="nolo" ref={graph_container} className="cy" width="100%" height="100%"></svg>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
         </div>
+        <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>
         <div className='svg_container'>
             <svg id="yolo" ref={graph_container2} className="cy" width="100%" height="100%"></svg>
             <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>

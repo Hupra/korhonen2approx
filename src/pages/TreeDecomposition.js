@@ -26,10 +26,10 @@ function TreeDecomposition() {
     <>
     <AnimatedPage>
 
-    <div className='sidebar'>
-        <h2>Formel Description</h2>
+    <div className='sidebar'><div className='sidebar_bubble'>
+        <h2>Tree Decomposition</h2>
         <div>
-            For a graph <InlineMath math={'G=(V,E)'}/> a tree decomposition <InlineMath math={'T'}/> is a tree of <InlineMath math={'n'}/> nodes and <InlineMath math={'n'}/> bags, with each node pointing to exactly one bag. Additionally the following must hold:
+            For a graph <InlineMath math={'G=(V,E)'}/> a tree decomposition <InlineMath math={'T'}/> is a tree of <InlineMath math={'n'}/> nodes and <InlineMath math={'n'}/> bags, with each node pointing to exactly one bag. Additionally the following must be satisfied:
             <div>
             <ol>
                 <li>
@@ -44,10 +44,19 @@ function TreeDecomposition() {
             </ol>
             </div>
         </div>
-        <h3>Simple Description</h3>
-        <div><p>...</p>For more about tree decompositions check out <a href='https://frederikjorgensen.github.io/graph-width/'>https://frederikjorgensen.github.io/graph-width/</a></div>
-        <Link to="/separators" className='button'>Next</Link>        
-    </div>
+        An example of a such graph with a corresponsing tree decomposition can be seen on the right side.
+        <h3>Tree width</h3>
+        <p>The width of a tree decomposition is defined as <InlineMath math="|largest"/> <InlineMath math="bag| − 1"/>, and the treewidth of a graph <InlineMath math="tw(G)"/> is the minimum width among all its valid tree decompositions.</p>
+        <p>In our example on the right, <InlineMath math="tw(G)=2"/> as the largest bag contains <InlineMath math="3"/> elements.</p>
+
+
+
+        <h3>Learn more</h3>
+        <div>For more information about tree decomposition check out <a href='https://frederikjorgensen.github.io/graph-width/'>https://frederikjorgensen.github.io/graph-width/</a></div>
+        <br/><hr/>
+        <Link to="/separators" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
+        <br/><i>Next: Separators</i>
+    </div></div>
     <div className='content'>
         <div className='svg_container'>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>

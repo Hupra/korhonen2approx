@@ -112,16 +112,29 @@ function SeparatorsBalanced() {
   return (
     <>
     <AnimatedPage>
-    <div className='sidebar'>
+    <div className='sidebar'><div className='sidebar_bubble'>
         <h2>Balanced Separators</h2>
         <p>A <InlineMath math="{balanced}"/> separator <InlineMath math="X"/> of <InlineMath math="W"/> is 
-        a separator that splits the vertices 
-        of <InlineMath math="G"/> in such a way that it also splits <InlineMath math="W"/> into 
-        multiple parts <InlineMath math="W \cap C_1, ..., W \cap C_h"/>. Additionally, 
-        it must hold that <InlineMath math="|W \cap C_i| \leq |W|/2"/> for every part of the split.</p>
-        <h3>Exercise</h3>
-        <p>Try clicking on nodes on the right to split the graph, for instance node 9 and 10.</p>
-        <div className='items'>
+        a separator, that when removed from <InlineMath math="G"/> splits the vertices 
+        of <InlineMath math="G"/> in such a way that the intersection of <InlineMath math="W"/> with each separated component does not exceed <InlineMath math="|W|/2"/>.
+        <br/>More precisely <InlineMath math="\forall i: |W \cap C_i| \leq |W|/2"/>.</p>
+        <hr/><h2>Tasks</h2>
+        <p><i>In graph G, vertices are assigned distinct colors according to their respective component affiliation.</i></p>
+
+        <h4>Description</h4>
+        <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
+        <div className='task'>
+            <span>Split into 2 components.</span>
+            <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+        </div>
+        <div className='task'>
+            <span><InlineMath math="\forall i: |W \cap C_i| \leq |W|/2"/>.</span>
+            <ion-icon name={components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)
+            <=4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+        </div>
+
+    <h4>Variables</h4>
+    <div className='items'>
             <InlineMath math={"X  = \\{"}/>
             <div className={"X"}><InlineMath math={separator.toString()} /></div>
             <InlineMath math={"\\}"}/>
@@ -137,6 +150,23 @@ function SeparatorsBalanced() {
             </React.Fragment>
         )})} */}
         {/* <br/> */}
+        {/* {components.map((item, idx) => {
+            return (
+                <React.Fragment key={idx}>
+                    <div className='items flex'>
+                        <div>
+                            <InlineMath math={"C_"+(idx+1).toString()+" = \\{"} />
+                            <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                            <InlineMath math={"\\}"} />
+                        </div>
+                        <div>
+                            <InlineMath math={"C_"+(idx+1).toString()+"\\cap W = \\{"} />
+                            <div className={"C"+(idx+1).toString()}><InlineMath math={item.filter(e => W.bag.includes(e)).toString()} /></div>
+                            <InlineMath math={"\\}"} />
+                        </div>
+                    </div>
+                </React.Fragment>
+            )})} */}
         {components.map((item, idx) => {
             const CW = item.filter(e => W.bag.includes(e));
             const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
@@ -151,35 +181,33 @@ function SeparatorsBalanced() {
                 </div>
             </React.Fragment>
         )})}
+        <br></br><hr></hr>
+        {components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)<=4 ?
+        <><Link to="/connect-components" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Connected Components</i></>
+        :
+        <><Link to="/connect-components" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Connected Components</i></>
+        }
 
-    <h4>Tasks</h4>
-        <div className='task'>
-                <span>Split into 2 components.</span>
-                <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
-            </div>
-            <div className='task'>
-                <span><InlineMath math="|W \cap C_i| \leq |W|/2"/>.</span>
-                <ion-icon name={components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)
-                <=4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
-            </div>
-        <Link to="/splitting-tree2" className='button'>Next</Link>
-
-    </div>
+    </div></div>
     <div className='content'>
-        <div className='horizontal-split'>
-        <div className='svg_container interactive active'>
+    <div className='svg_container interactive active'>
             <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
         </div>
-        <div className='svg_container'>
-            <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
-            <svg id="yolo" ref={graph_container2} className="cy graph" width="100%" height="100%"></svg>
+        <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>
+
+        <div className='horizontal-split'>
+            <div className='svg_container'>
+                <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
+                <svg id="yolo" ref={graph_container2} className="cy graph" width="100%" height="100%"></svg>
+            </div>
+            <div className='svg_container'>
+                <div className='svg_label'>Tree Decomposition - <InlineMath math="T"/></div>
+                <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
+            </div>
         </div>
-        </div>
-        <div className='svg_container'>
-            <div className='svg_label'>Tree Decomposition - <InlineMath math="T"/></div>
-            <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
-        </div>
+
+        
     </div>
     </AnimatedPage>
     </>

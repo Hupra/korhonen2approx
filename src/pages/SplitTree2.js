@@ -121,12 +121,23 @@ function SplitTree2() {
 
         return (
             <div className='build-a-bag'>
-                <h2>Tasks</h2>
-                <div>Fill out the correct inputs in the formulas below for each of the three new bags created for the original bag {B}:</div>
+                <h4>Description</h4>
+                {/* <div>Fill out the correct inputs in the formulas below for each of the three newly created bags derived from the original bag {B}</div> */}
+                {/* <div>A simple approach is to look at the current bag in <InlineMath math="T"/> and look at the different colors. Each of these new bags will be the union of orange and one of the other colors.</div> */}
+                <p>To determine the correct inputs for the formulas of the three newly created bags derived from the original
+                     bag <InlineMath math={B}/>, follow this simple approach: Examine
+                      the current bag in tree decomposition <InlineMath math="T"/> and identify the
+                       distinct colors present. Each of these new bags will be the union of the orange
+                        elements <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span> and one of the other colors <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span>.</p>
                 <br/>
                 <div className='task'>
                     <div>
-                        <InlineMath math={B+"^1 = "+B+" \\cap (C_1 \\cup X) = \\{"}/>
+                        <InlineMath math={B+"^1 = "+B+" \\cap ("}/>
+                        <span className='C1'><InlineMath math="C_1 "/></span><span> </span> 
+                        <InlineMath math={"\\cup"}/><span> </span>
+                        <span className='X'><InlineMath math="X"/></span>
+                        <InlineMath math={")=\\{"}/>
+
                         <input value={ic1} onChange={e => handleInputChange(e, set_ic1)} placeholder="4,8,3,7"></input>
                         <InlineMath math={"\\}"}/>
                     </div>
@@ -136,7 +147,12 @@ function SplitTree2() {
                 </div>
                 <div className='task'>
                     <div>
-                        <InlineMath math={B+"^2 = "+B+" \\cap (C_2 \\cup X) = \\{"}/>
+                        <InlineMath math={B+"^2 = "+B+" \\cap ("}/>
+                        <span className='C2'><InlineMath math="C_2 "/></span><span> </span> 
+                        <InlineMath math={"\\cup"}/><span> </span>
+                        <span className='X'><InlineMath math="X"/></span>
+                        <InlineMath math={")=\\{"}/>
+
                         <input value={ic2} onChange={e => handleInputChange(e, set_ic2)}></input>
                         <InlineMath math={"\\}"}/>
                     </div>
@@ -146,7 +162,12 @@ function SplitTree2() {
                 </div>
                 <div className='task'>
                     <div>
-                        <InlineMath math={B+"^3 = "+B+" \\cap (C_3 \\cup X) = \\{"}/>
+                        <InlineMath math={B+"^3 = "+B+" \\cap ("}/>
+                        <span className='C3'><InlineMath math="C_3 "/></span><span> </span> 
+                        <InlineMath math={"\\cup"}/><span> </span>
+                        <span className='X'><InlineMath math="X"/></span>
+                        <InlineMath math={")=\\{"}/>
+
                         <input value={ic3} onChange={e => handleInputChange(e, set_ic3)}></input>
                         <InlineMath math={"\\}"}/>
                     </div>
@@ -154,7 +175,8 @@ function SplitTree2() {
                         <ion-icon name={check_input(ic3, components[2]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                     </div>
                 </div>
-                <button onClick={() => set_page_state(page_state+1)}>NEXT</button>
+                <button onClick={() => set_page_state(page_state+1)}>Create bags</button>
+
             </div>)
     }
 
@@ -165,10 +187,9 @@ function SplitTree2() {
             tprime.svg_hide_stuff(node_name.slice(0,i));
         },[i])
         return<>
-            <h2>Connecting Tree</h2>
-            <p>Now that we have created three new bags for each bag -- see T'</p>
-            <p>This gives us three new tree decompositions T1, T2 and T3. These are then connected to a new bag X that contains all the vertices that were chosen as the separator.</p>
-            <button onClick={() => set_page_state(page_state+1)}>NEXT</button>
+            <h4>Description</h4>
+            <p>We have now generated three new bags for every bag in the original tree decomposition <InlineMath math="T"/>. These new bags constitute three distinct tree decompositions, which we refer to as <InlineMath math="T^1, T^2, T^3"/>. To merge these, we introduce a new bag, <InlineMath math="X"/>, that contains the vetices of the separator.</p>
+            <button onClick={() => set_page_state(page_state+1)}>Add X to T'</button>
         </>
     }
 
@@ -179,9 +200,8 @@ function SplitTree2() {
             tprime.svg_hide_stuff(node_name.concat("X"));
         },[i])
         return<>
-            <h2>New tree decomposition done</h2>
-            <p>DONE - T'</p>
-            <p>go to next section ...</p>
+            <h4>Description</h4>
+            <p>The process of identifying a largest bag <InlineMath math="W"/> in the tree decomposition <InlineMath math="T"/> and subsequently splitting it to generate a new tree decomposition <InlineMath math="T'"/> with a reduced width is applied iteratively. This continues, creating <InlineMath math="T'', T'''"/>, and so on, until we either obtain a tree decomposition with a width no greater than <InlineMath math="2k+1"/> or determine that <InlineMath math="tw(G)"/> is larger than <InlineMath math="k"/>. However, there remains an issue with <InlineMath math="T'"/> that requires resolution, which will be elaborated upon in the subsequent pages.</p>
             <Link to="/splitting-tree" className='button'>Next</Link>
         </>
     }
@@ -192,11 +212,22 @@ function SplitTree2() {
     <>
     <AnimatedPage>
 
-    <div className='sidebar'>
+    <div className='sidebar'><div className='sidebar_bubble'>
         <h2>Splitting Tree Decomposition</h2>
-        <p>After finding a balanced separator and combining components to find a split <InlineMath math={"(C_1, C_2, C_3, X)"}/> of <InlineMath math={"W"}/>, we can create a new tree decomposition T' by spltting each bag in T based on the components in our split.</p>
-        <p>We do this by going through each bag and taking its intersection with <InlineMath math="C_1 \cup X"/>, <InlineMath math="C_2 \cup X"/>, <InlineMath math="C_3 \cup X"/> respectively.</p>
-        <br/>
+        <p>After finding a balanced separator and combining components to obtain a split <InlineMath math={"(C_1, C_2, C_3, X)"}/> of <InlineMath math={"W"}/>, we can create a new tree decomposition T' by spltting each bag in T based on the components in our split.</p>
+        <p>We do this by iterating through each bag and generating three new bags, formed by determining the intersection between the original bag and the following sets, respectively: <InlineMath math="(C_1 \cup X)"/>, <InlineMath math="(C_2 \cup X)"/>, <InlineMath math="(C_3 \cup X)"/>
+        </p>    
+        <hr/>
+        <h2>Tasks</h2>
+        <i>In tree decomposition T, the elements in each bag are assigned distinct colors according to their respective component affiliation.</i>
+
+            { page_ready && page_state === 0 && <Puzzle i={page_state}/>}
+            { page_ready && page_state === 1 && <Puzzle i={page_state}/>}
+            { page_ready && page_state === 2 && <Puzzle i={page_state}/>}
+            { page_ready && page_state === 3 && <PuzzleSeparator i={page_state}/>}
+            { page_ready && page_state === 4 && <PuzzleDone i={page_state}/>}
+
+        {/* <h4>Variables</h4>
         <div className='items flex'>
             <div>
                 <InlineMath math={"X  = \\{"}/>
@@ -204,9 +235,9 @@ function SplitTree2() {
                 <InlineMath math={"\\}"}/>
             </div>
             <div>
-                {/* <InlineMath math={"W=\\{1,2,3,4,5,6,7,8\\}"}/> */}
             </div>
         </div>
+        
         {components.map((item, idx) => {
             return (
                 <React.Fragment key={idx}>
@@ -216,21 +247,11 @@ function SplitTree2() {
                             <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
                             <InlineMath math={"\\}"} />
                         </div>
-                        <div>
-                            <InlineMath math={"C_"+(idx+1).toString()+"\\cap W = \\{"} />
-                            <div className={"C"+(idx+1).toString()}><InlineMath math={item.filter(e => w.bag.includes(e)).toString()} /></div>
-                            <InlineMath math={"\\}"} />
-                        </div>
                     </div>
                 </React.Fragment>
-            )})}
-            { page_ready && page_state === 0 && <Puzzle i={page_state}/>}
-            { page_ready && page_state === 1 && <Puzzle i={page_state}/>}
-            { page_ready && page_state === 2 && <Puzzle i={page_state}/>}
-            { page_ready && page_state === 3 && <PuzzleSeparator i={page_state}/>}
-            { page_ready && page_state === 4 && <PuzzleDone i={page_state}/>}
+            )})} */}
 
-            
+            <br/><hr/>
             
 
             {/* <div className='button-container'>
@@ -239,13 +260,14 @@ function SplitTree2() {
                 <button onClick={() => {show.push("B");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>B</button>
                 <button onClick={() => {show.push("X");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>X</button>
             </div> */}
-    </div>
+    </div></div>
     <div className='content'>
         <div className='horizontal-split w1-3'>
             <div className='svg_container'>
                 <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
                 <div className='svg_label'>Graph - <InlineMath math="G"/></div>
             </div>
+
             <div className='svg_container hidden'>
                 <svg id="yolo" ref={graph_container2} className="cy graph" width="100%" height="100%"></svg>
                 <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
@@ -255,6 +277,8 @@ function SplitTree2() {
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
             </div>
         </div>
+        <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>
+
         <div className='svg_container w2-3'>
             <div className='svg_label'>Tree Decomposition - <InlineMath math="T'"/></div>
             <svg ref={tree_container2} className="cy tree" width="100%" height="100%"></svg>

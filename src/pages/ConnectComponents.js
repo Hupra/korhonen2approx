@@ -213,14 +213,18 @@ function ConnectComponents() {
     <>
     <AnimatedPage>
 
-    <div className='sidebar'>
+    <div className='sidebar'><div className='sidebar_bubble'>
         <h2>Connected Components</h2>
-        Given a balanced split where every component is leq W/2. It is always possible to reduce our number of components to at most 3, by combining some of them.
+        Given a balanced split where the cardinality of every component's intersection with <InlineMath math="W"/> is <InlineMath math="\leq"/> <InlineMath math="|W|/2"/>. It is always possible to reduce the number of components to at most 3, by combining some of them.
         This can be done, by for instance always combining the two smallets components.
-
-        <h4>Tasks</h4>
-        Find a balanced separator and combine the many components into just 3, and make sure that these new combined componentt do not reach a size of more than W/2
-        <div className='task'>
+        <br/>
+        <br/>
+        <hr/>
+        <h2>Tasks</h2>
+        <p><i>To see the graph from which these components are derived, click the show graph button.</i></p>
+        <h4>Description</h4>
+        <p>To the right, we have 3 windows, one for each final component that are needed for a split. The first window is now filled with all the initial separated components obtained from removing the separator <InlineMath math="X"/> from <InlineMath math="G"/>. <br/>Since we require at most 3 final components for a split, the task is to drag the lesser component to the other two windows until all three final components are balanced such that none of them intersected with <InlineMath math="W"/> are larger than <InlineMath math="|W|/2"/>.</p>
+        <br/><div className='task'>
             <span><InlineMath math={"|C_1 \\cap W| \\leq |W|/2"} /></span>
             <span><InlineMath math={container_size[0].toString() + "\\leq" + (W.bag.length/2).toString()}/></span>
             <ion-icon name={container_size[0]<=W.bag.length/2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
@@ -237,11 +241,19 @@ function ConnectComponents() {
         </div>
         <br/>
         <div>
-            <button onClick={() => set_show_G(!show_G)}>{show_G ? "Hide Graph" : "Show Graph"}</button>
-        <Link to="/page1" className='button'>Next</Link>
+        <button onClick={() => set_show_G(!show_G)}>{show_G ? "Hide Graph" : "Show Graph"}</button>
+        <hr/>
+        {(
+            container_size[0]<=W.bag.length/2 && 
+            container_size[1]<=W.bag.length/2 && 
+            container_size[2]<=W.bag.length/2) ?
+        <><Link to="/splitting-tree2" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting Tree Decomposition</i></>
+        :
+        <><Link to="/splitting-tree2" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting Tree Decomposition</i></>
+        }
 
         </div>  
-    </div>
+    </div></div>
     <div className='content'>
         <div className='cc'>
             <div className={'svg_popup'  + (show_G?"":" to_the_depths")}>

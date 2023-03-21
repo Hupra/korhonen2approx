@@ -50,12 +50,12 @@ function Page2() {
     return(
     <>
     <AnimatedPage>
-        <div className='sidebar'>
+        <div className='sidebar'><div className='sidebar_bubble'>
             <h2>Homebag Page 2</h2>
             <p>When building the new tree decomposition T’ it must still follow the 3 rules for a tree decomposition. But if the separator X contains vertices that are outside of W, T’ can break rule 3 that says:</p>
             <p>For every vertex <InlineMath math="v"/> contained in both bags <InlineMath math="B_i"/> and <InlineMath math="B_j"/>, the path in <InlineMath math="T"/> going from <InlineMath math="B_i"/> to <InlineMath math="B_j"/> must be of only bags containing <InlineMath math="v"/>.</p>
             <Link to="/page3" className='button'>Next</Link>
-        </div>
+        </div></div>
         <div className='content'>
             <div className='svg_container'>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
@@ -65,6 +65,8 @@ function Page2() {
                 <svg ref={tree_containerx} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="2."/> Tree - <InlineMath math="T^X + X"/></div>
             </div>
+        <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>
+
             <div className='svg_container'>
                 <svg ref={tree_containerux} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="3."/> Tree Decomposition - <InlineMath math="(T \cup T^X) + X"/></div>

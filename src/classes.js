@@ -97,6 +97,7 @@ export class Graph {
         this.svg_links       = this.create_svg_links();
         this.svg_nodes       = this.create_svg_nodes();
         this.svg_node_labels = this.create_svg_node_labels();
+        this.svg_node_W_label= this.create_svg_node_label_in_W();
         this.create_svg_simulation_tick();
     }
 
@@ -130,7 +131,7 @@ export class Graph {
         .attr('stroke', 'black')
         .attr('stroke-width', 2)
         .attr('idx', node => node.id)
-        .classed("node_in_w", d => this.W.includes(d.id))
+        // .classed("node_in_w", d => this.W.includes(d.id))
         .call(d3.drag()
             .on('start', (e,d) => {
                 if (!e.active) this.simulation.alphaTarget(0.3).restart();
@@ -157,11 +158,26 @@ export class Graph {
         .enter().append("text")
         .text(text_function)
         .classed("x", d => {
-            // console.log(d);
             return this.X.includes(d.id);
         })
         .attr("text-anchor", "middle")
         .attr('fill', "black")
+    }
+
+    create_svg_node_label_in_W(text_function = node => node.id){
+        return this.svg
+        .append("g")
+        .attr("class", "node-labels")
+        .selectAll("text")
+        .data(this.nodes.filter(node => this.W.includes(text_function(node))))
+        .enter().append("text")
+        .text("W")
+        .classed("node_w", true)
+        .attr("text-anchor", "middle")
+        .attr('fill', "white")
+        .attr("stroke", "black") // add white stroke color
+        .attr("stroke-width", "3px") // set stroke width to 1px
+        .style("paint-order", "stroke")
     }
 
     svg_set_component_color(f = id => id){
@@ -171,19 +187,18 @@ export class Graph {
         // });
         this.svg_nodes.attr('class', d => {
             if(this.X.includes(f(d.id))) return "X";
-            if(this.W.includes(f(d.id))) return "C"+this.get_component(f(d.id)).toString();
+            // if(this.W.includes(f(d.id))) return "C"+this.get_component(f(d.id)).toString();
+            return "C"+this.get_component(f(d.id)).toString();
             return "";
         });
-        this.svg_nodes.classed("node_in_w", d => this.W.includes(d.id));
+        // this.svg_nodes.classed("node_in_w", d => this.W.includes(d.id));
         this.svg_node_labels.classed("X", d => {
-            // console.log(d);
             return this.X.includes(f(d.id));
         });
         
         this.svg_links.attr('class', d => {
             const ac = this.get_component(f(d.source.id));
             const bc = this.get_component(f(d.target.id));
-            console.log(d, ac,bc, ac === bc)
             if(ac === bc) return "C"+ac.toString();
             return "";
         });
@@ -197,7 +212,6 @@ export class Graph {
     svg_set_highlight(){
         this.svg_node_labels
         .classed("X", d => {
-            // console.log(d);
             return this.X.includes(d.id);
         });
     }
@@ -240,6 +254,12 @@ export class Graph {
                 .attr("x", d => d.x)
                 .attr("y", d => d.y + 5); // adjust the y-coordinate as needed to center the text vertically        
             }
+            if(this.svg_node_W_label){
+                this.svg_node_W_label
+                .attr("x", d => d.x - 0)
+                .attr("y", d => d.y -11); // adjust the y-coordinate as needed to center the text vertically        
+            }
+            
         });
     }
 
@@ -264,10 +284,11 @@ export class Graph {
 
     svg_show_only(show){
         this.svg_nodes.classed("hidden", d => !show.includes(d.id));
+        this.svg_node_W_label.classed("hidden", d => !show.includes(d.id));
         this.svg_node_labels.classed("hidden", d => !show.includes(d.id));
         this.svg_links.classed("hidden", d => !show.includes(d.source.id) || !show.includes(d.target.id)); //show sebbe when this is hidden
         this.svg_links.classed(this.node_class, d => show.includes(d.source.id) && show.includes(d.target.id)); 
-        this.svg_nodes.classed(this.node_class, d => this.W.includes(d.id));
+        this.svg_nodes.classed(this.node_class, true);
     }
 
     find_components(f = id => parseInt(id)){
@@ -437,7 +458,6 @@ create_svg_node_labels(text_function = node => node.id) {
         .style("paint-order", "stroke")
         .each(function (d) {
             const text = d3.select(this);
-            console.log(d);
             text.append("tspan").text(text_function(d));
             if(d.sup) text.append("tspan")
                         .attr("baseline-shift", "super")
