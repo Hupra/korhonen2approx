@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import graph from '../graphs/graph1.json'
 import tree from '../graphs/homebag2.json'
 import treex from '../graphs/homebag2x.json'
-import treeux from '../graphs/homebag1ux.json'
+import treeux from '../graphs/homebag2ux.json'
 import { BlockMath, InlineMath } from 'react-katex';
 import { Routes, Route, Link } from 'react-router-dom';
 import 'katex/dist/katex.min.css';
@@ -27,7 +27,6 @@ function Page3() {
     const w = tree.nodes.find(node => node.name === "W");
 
     useEffect(() => {
-        console.log(tree);
         let X = tree.nodes.find(node => node.name === "X").bag;
         // let C = [[5, 6, 7, 8], [1, 2], [4]];
         let C = [[],[],[]];
@@ -41,20 +40,19 @@ function Page3() {
 
         const t   = new Tree(tree, d3.select(tree_container.current));
         const tx  = new Tree(e_treex, d3.select(tree_containerx.current));
-        // const tux = new Tree(treeux, d3.select(tree_containerux.current));
+        const tux = new Tree(treeux, d3.select(tree_containerux.current));
         set_t(t);
         set_tx(tx);
-        // set_tux(tux);
+        set_tux(tux);
     
         t.charge   = -450;
         tx.charge  = -450;
-        // tux.charge = -800;
+        tux.charge = -450;
         t.X = X;
         tx.X = X;
-        // tux.X = X;
+        tux.X = X;
         t.render();
         tx.render();
-        // tux.render();
         // t.svg_set_node_class("homebag", ["F", "B"]);
 
 
@@ -79,6 +77,62 @@ function Page3() {
             }
         });
 
+        function update_tx(tx) {
+            tx.svg_nodes.filter(node=>node.name!== "X").on("click", function(e,node) {
+                if(page_state_loc === 1)
+                {
+                    if(node.bag.includes(11)) node.bag = node.bag.filter(x => x !== 11);
+                    else node.bag.push(11);
+
+                    tx.render();
+                    update_tx(tx); // most cursed recursion ever seen 😈
+
+                    if(tx.nodes.flatMap(node => node.bag).filter(x => x === 11).length === 3 &&
+                    tx.nodes.find(node => node.name ==="W").bag.includes(11) &&
+                    tx.nodes.find(node => node.name ==="A").bag.includes(11)){
+                        page_state_loc+=1;
+                        set_page_state(page_state_loc);
+                    }
+                }
+                else if(page_state_loc === 3){
+                    if(node.bag.includes(13)){
+                        node.bag = node.bag.filter(x => x !== 13);
+                    }else{
+                        node.bag.push(13);
+                    }
+                    tx.render();
+                    update_tx(tx); // most cursed recursion ever seen 😈
+
+                    if(tx.nodes.flatMap(node => node.bag).filter(x => x === 13).length === 4 &&
+                    tx.nodes.find(node => node.name ==="W").bag.includes(13) &&
+                    tx.nodes.find(node => node.name ==="A").bag.includes(13) &&
+                    tx.nodes.find(node => node.name ==="F").bag.includes(13)){
+                        page_state_loc+=1;
+                        set_page_state(page_state_loc);
+                    }
+                }
+                else if(page_state_loc === 5){
+                    if(node.bag.includes(15)){
+                        node.bag = node.bag.filter(x => x !== 15);
+                    }else{
+                        node.bag.push(15);
+                    }
+                    tx.render();
+                    update_tx(tx); // most cursed recursion ever seen 😈
+
+                    if(tx.nodes.flatMap(node => node.bag).filter(x => x === 15).length === 2 &&
+                    tx.nodes.find(node => node.name ==="W").bag.includes(15)){
+                        page_state_loc+=1;
+                        set_page_state(page_state_loc);
+                    }
+                }
+            });
+
+
+        }
+        update_tx(tx);
+        // tasks done
+        // tux.render();
     }, []);
 
     
@@ -87,71 +141,115 @@ function Page3() {
     <AnimatedPage>
         <div className='sidebar'><div className='sidebar_bubble'>
             <h2>Homebag Page 2</h2>
-            <h2>Tasks</h2>
+            <h2>Exercises</h2>
+            <h4>Description</h4>
+            <p>In these exercises you will need to apply the knowledge of home bags learned on the 
+                previous page to add the extra vertices to T^X such that T’ does not break any 
+                rules for a tree decomposition. First you will need to 
+                find the home bag for a specific vertex in 
+                figure 1 and then add the vertex to all necessary 
+                bags in figure 2. In the end the two figures will be combined into 
+                figure 3 which can then be used as a substitute for T to make T’.</p>
+            <h4>Tasks</h4>
             <div className='task'>
                 <div>
                     Click on <InlineMath math="hb(11)"/> in figure <InlineMath math="1"/>
                 </div>
                 <div>
-                    <ion-icon name={page_state===0 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                    <ion-icon name={page_state>0 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
             </div>
 
+            {page_state>0 ?
             <div className='task'>
                 <div>
-                    Click on bags between <InlineMath math="hb(11)"/> and <InlineMath math="X"/> in figure <InlineMath math="2"/> to add missing elements
+                Click on bags where vertex <InlineMath math="11"/> is missing in <InlineMath math="figure"/> <InlineMath math="2"/>.
                 </div>
                 <div>
                     <ion-icon name={page_state>1 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
             </div>
+            :
+            <div className='task locked'>
+                <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
+            </div>
+            }
 
+            {page_state>1 ?
             <div className='task'>
                 <div>
-                    Click on <InlineMath math="hb(13)"/> in figure <InlineMath math="1"/>
+                    Click on <InlineMath math="hb(13)"/> in <InlineMath math="figure"/> <InlineMath math="1"/>
                 </div>
                 <div>
                     <ion-icon name={page_state>2 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
             </div>
+            :
+            <div className='task locked'>
+                <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
+            </div>
+            }
 
+            {page_state>2 ?
             <div className='task'>
                 <div>
-                    Click on bags between <InlineMath math="hb(11)"/> and <InlineMath math="X"/> in figure <InlineMath math="2"/> to add missing elements
+                Click on bags where vertex <InlineMath math="13"/> is missing in <InlineMath math="figure"/> <InlineMath math="2"/>.
                 </div>
                 <div>
                     <ion-icon name={page_state>3 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
             </div>
+            :
+            <div className='task locked'>
+                <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
+            </div>
+            }
 
+            {page_state>3 ?
             <div className='task'>
                 <div>
-                    Click on <InlineMath math="hb(15)"/> in figure <InlineMath math="1"/>
+                    Click on <InlineMath math="hb(15)"/> in <InlineMath math="figure"/> <InlineMath math="1"/>
                 </div>
                 <div>
                     <ion-icon name={page_state>4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
             </div>
+            :
+            <div className='task locked'>
+                <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
+            </div>
+            }
 
+            {page_state>4 ?
             <div className='task'>
                 <div>
-                    Click on bags between <InlineMath math="hb(11)"/> and <InlineMath math="X"/> in figure <InlineMath math="2"/> to add missing elements
+                    Click on bags where vertex <InlineMath math="15"/> is missing in <InlineMath math="figure"/> <InlineMath math="2"/>.
                 </div>
                 <div>
                     <ion-icon name={page_state>5 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
             </div>
-
+            :
             <div className='task locked'>
-                <div>
-                    <ion-icon name="lock-closed-outline" checkmark-circle></ion-icon>
-                </div>
+                <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
             </div>
+            }
+
+            {page_state>5 ?
+            <div className='task center'>
+            <button onClick={() => tux.render()}><div>Combine <InlineMath math="T"/> and <InlineMath math="T^X"/></div></button>
+            </div>
+            :
+            <div className='task locked'>
+                <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
+            </div>
+            }
+
             <button onClick={() => set_page_state(page_state+1)}>test</button>
 
         </div></div>
         <div className='content'>
-            <div className={'svg_container' + (page_state%2===0 ? " interactive" : "")}>
+            <div className={'svg_container' + ((page_state%2===0 && page_state<=4) ? " interactive" : "")}>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <InlineMath math="T+X"/></div>
             </div>
@@ -159,7 +257,7 @@ function Page3() {
                 <svg ref={tree_containerx} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="2."/> Tree - <InlineMath math="T^X + X"/></div>
             </div>
-            <div className='svg_container'>
+            <div className={'svg_container' + (page_state>=4 ? " interactice" : "")}>
                 <svg ref={tree_containerux} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="3."/> Tree Decomposition - <InlineMath math="(T \cup T^X) + X"/></div>
             </div>

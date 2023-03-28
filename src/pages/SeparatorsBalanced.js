@@ -33,7 +33,7 @@ function SeparatorsBalanced() {
         let graph2 = {nodes: nodes1.map(node => {return {...node, "id" : node.id + "'"}}), edges: edges2};
 
         const g  = new Graph(graph1, d3.select(graph_container.current));
-        const g2 = new Graph(graph2, d3.select(graph_container2.current));
+        const g2 = new Graph(graph1, d3.select(graph_container2.current));
         const t  = new Tree(tree, d3.select(tree_container.current));
         g.W = W.bag;
         g2.W = W.bag;
@@ -41,8 +41,8 @@ function SeparatorsBalanced() {
         
         g2.render();
 
-        let X = removed_nodes.map(node => parseInt(node.id.slice(0, -1))).sort((a, b) => a - b);
-        let C = g2.find_components(id => parseInt(id.slice(0, -1)));
+        let X = removed_nodes.map(node => node.id).sort((a, b) => a - b);
+        let C = g2.find_components();
 
         t.X = X;
         t.C = C;
@@ -53,7 +53,7 @@ function SeparatorsBalanced() {
         g.render();
         t.render();
         g.svg_set_component_color();
-        g2.svg_set_component_color(id => parseInt(id.slice(0, -1)));
+        g2.svg_set_component_color();
 
         setSeparator(X);
         setComponents(C);
@@ -63,7 +63,8 @@ function SeparatorsBalanced() {
         g.svg_nodes.on("click", function() {
 
             const node = d3.select(this);
-            const node_id = node.attr("idx").toString()+"'";
+            const node_id = parseInt(node.attr("idx"));
+
 
             if(!node.classed("X")){
                 // remove node from graph and save removed nodes+links in arrays here
@@ -90,8 +91,8 @@ function SeparatorsBalanced() {
             g2.render();
 
 
-            X = removed_nodes.map(node => parseInt(node.id.slice(0, -1))).sort((a, b) => a - b);
-            C = g2.find_components(id => parseInt(id.slice(0, -1)));
+            X = removed_nodes.map(node => node.id).sort((a, b) => a - b);
+            C = g2.find_components();
             t.X = X;
             t.C = C;
             g.X = X;
@@ -100,7 +101,7 @@ function SeparatorsBalanced() {
             g2.C = C;
             t.render();
             g.svg_set_component_color();
-            g2.svg_set_component_color(id => parseInt(id.slice(0, -1)));
+            g2.svg_set_component_color();
 
             setSeparator(X);
             setComponents(C);
@@ -118,11 +119,12 @@ function SeparatorsBalanced() {
         a separator, that when removed from <InlineMath math="G"/> splits the vertices 
         of <InlineMath math="G"/> in such a way that the intersection of <InlineMath math="W"/> with each separated component does not exceed <InlineMath math="|W|/2"/>.
         <br/>More precisely <InlineMath math="\forall i: |W \cap C_i| \leq |W|/2"/>.</p>
-        <hr/><h2>Tasks</h2>
-        <p><i>In graph G, vertices are assigned distinct colors according to their respective component affiliation.</i></p>
+        <hr/><h2>Exercises</h2>
+        <p><i>In graph G, vertices are assigned distinct colors according to their respective component affiliation. Vertices in G are marked with a W if they are also in the bag W in T.</i></p>
 
         <h4>Description</h4>
         <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
+        <h4>Tasks</h4>
         <div className='task'>
             <span>Split into 2 components.</span>
             <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
@@ -134,11 +136,15 @@ function SeparatorsBalanced() {
         </div>
 
     <h4>Variables</h4>
-    <div className='items'>
-            <InlineMath math={"X  = \\{"}/>
-            <div className={"X"}><InlineMath math={separator.toString()} /></div>
-            <InlineMath math={"\\}"}/>
-        </div>
+    <div className='items'><div>
+        <InlineMath math={"X  = \\{"}/>
+        <div className={"X"}><InlineMath math={separator.toString()} /></div>
+        <InlineMath math={"\\}"}/>
+    </div>
+
+    <InlineMath math={"|W|/2  = 4"}/>
+    </div>
+
         {/* <br/> */}
         {/* {components.map((item, idx) => {
             const line = "C_"+(idx+1).toString()+" = \\{" + item.toString() + "\\}";
@@ -175,9 +181,14 @@ function SeparatorsBalanced() {
             return (
             <React.Fragment key={idx}>
                 <div className='items'>
-                <InlineMath math={s} />
-                <div className={"C"+(idx+1).toString()}><InlineMath math={m} /></div>
-                <InlineMath math={e} />
+                    <div>
+                        <InlineMath math={s} />
+                        <div className={"C"+(idx+1).toString()}><InlineMath math={m} /></div>
+                        <InlineMath math={e} />
+                    </div>
+                    <div>
+                        <InlineMath math={"|C_"+(idx+1).toString()+"\\cap W| = " + CW.length.toString()} />
+                    </div>
                 </div>
             </React.Fragment>
         )})}

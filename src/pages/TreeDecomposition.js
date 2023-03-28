@@ -47,7 +47,7 @@ function TreeDecomposition() {
         An example of a such graph with a corresponsing tree decomposition can be seen on the right side.
         <h3>Tree width</h3>
         <p>The width of a tree decomposition is defined as <InlineMath math="|largest"/> <InlineMath math="bag| − 1"/>, and the treewidth of a graph <InlineMath math="tw(G)"/> is the minimum width among all its valid tree decompositions.</p>
-        <p>In our example on the right, <InlineMath math="tw(G)=2"/> as the largest bag contains <InlineMath math="3"/> elements.</p>
+        <p>In our example on the right, <InlineMath math="tw(G)=2"/> as the largest bag contains <InlineMath math="3"/> vertices.</p>
 
 
 

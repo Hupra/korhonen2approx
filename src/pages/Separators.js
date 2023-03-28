@@ -98,12 +98,12 @@ function Separators() {
         <p>A separator is a set of vertices <InlineMath math="X"/> in <InlineMath math="G"/> that when removed, splits <InlineMath math="G"/> into multiple separated components. 
         We denote these components as <InlineMath math="C_1,...,C_h"/> where <InlineMath math="h"/> represents the number of components.
         </p><hr></hr>
-        <h2>Tasks</h2>
+        <h2>Exercises</h2>
         <h4>Description</h4>
         
         <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
 
-
+        <h4>Tasks</h4>
         <div className='task'>
             <span>Split into 2 components.</span>
             <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
@@ -133,11 +133,11 @@ function Separators() {
         </div>
         }
         <h4>Variables</h4>
-        <div className='items'>
+        <div className='items'><div>
             <InlineMath math={"X  = \\{"}/>
             <div className={"X"}><InlineMath math={separator.toString()} /></div>
             <InlineMath math={"\\}"}/>
-        </div>
+        </div></div>
         {/* <br/> */}
         {/* {components.map((item, idx) => {
             const line = "C_"+(idx+1).toString()+" = \\{" + item.toString() + "\\}";
@@ -153,11 +153,11 @@ function Separators() {
             const e = "\\}";
             return (
             <React.Fragment key={idx}>
-                <div className='items'>
+                <div className='items'><div>
                 <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
                 <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
                 <InlineMath math={e} />
-                </div>
+                </div></div>
             </React.Fragment>
         )})}
         <br/>

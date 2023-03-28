@@ -19,6 +19,13 @@ body
 .hidden
     display: none !important
 
+.center
+    display: flex !important
+    justify-content: center !important
+    align-content: center !important
+    border: 4px solid $cx !important
+
+
 rect.error
     fill: white !important
     stroke: red !important
@@ -269,7 +276,7 @@ text.homebag
             border-color: black
 
     &.interactive
-        circle
+        circle, rect
             cursor: pointer
         .cy
             border-color: $cx
@@ -415,6 +422,8 @@ circle.node_in_w
     stroke: red
 .opacity
     opacity: 15%
+.opa-0
+    opacity: 0
 // .highlight
 //     // fill: Chartreuse !important
 //     fill: #202020 !important
@@ -425,10 +434,10 @@ circle.node_in_w
     font-size: 12px
 .items
     color: white
-    border-radius: 3px
+    border-radius: 5px
     margin-bottom: 2px
     display: flex
-    // justify-content: space-between
+    justify-content: space-between
     align-items: center
     background-color: #101010
     border: 2px solid black

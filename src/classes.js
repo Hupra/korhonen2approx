@@ -13,6 +13,78 @@ class Edge {
     }
 }
 
+export class FindHomebags {
+    constructor() {
+        this.n = 50;
+        this.nodes = [];
+        this.adj = Array.from({ length: this.n }, () => []);
+        this.v = [];
+                
+        // dist and homebag of vertex
+        this.d  = Array(this.n).fill(this.n+1); // d[tree_id] -> dist to root
+        this.hb = Array(this.n).fill(-1); // hb[vertex_element] -> tree_id
+        // dist of vertex element to root = d[hb[vertex_element]]
+
+        this.tx_nodes = [];
+        this.tx_edges = [];
+    }
+    add_node(node, root=false){
+        if(root) this.root = node.id;
+        this.nodes[node.id] = {name: node.name, bag: node.bag};
+        this.tx_nodes.push({id: node.id, name: node.name, bag: [], sup: "X"});
+    }
+    add_edge(a, b, c = null) {
+        const x = new Edge(a, b, c);
+        const y = new Edge(b, a, c);
+        this.adj[a].push(x);
+        this.adj[b].push(y);
+        this.tx_edges.push({source: a, target: b});
+    }
+    visited(vertex) {
+        return this.v[vertex];
+    }
+    visit(vertex) {
+        this.v[vertex] = true;
+    }
+    dfs() {
+        this.v = Array(this.n).fill(false);
+        const stack = [[this.root, 0]];
+        while (stack.length) {
+            const [node, distance] = stack.pop();
+            if (this.visited(node)) continue;
+            this.visit(node);
+
+            //set node dist
+            this.d[node] = distance;
+
+            //set homebag for each vertex
+            for (const vertex of this.nodes[node].bag) {
+                if(this.hb[vertex] === -1) this.hb[vertex] = node;}
+
+            // add children to stack
+            this.adj[node].forEach(edge => {
+                stack.push([edge.b, distance+1]);});
+        }
+        console.log(this.hb);
+    }
+    build_TX(X){
+        for (const x of X) {
+            const stack = [this.hb[x]]; // no stack needed, change to just a variable, as there is only 1 way to go
+            while(stack.length) {
+                const node = stack.pop();
+                this.adj[node].forEach(edge => {
+                    let da = this.d[edge.a];
+                    let db = this.d[edge.b];
+                    if(db<da){ // check if distance is shorter, aka do we move up the tree or not
+                        stack.push(edge.b);
+                        this.tx_nodes.find(node => node.id === edge.b).bag.push(x);           
+                    }
+                });
+            }
+        }
+    }
+}
+
 export class FindComponents{
     constructor(n) {
         this.n          = n;
@@ -54,12 +126,19 @@ export class FindComponents{
         return component;
       }
 
-      run() {
+      run(combine = false) {
         for (let i = 0; i < this.n; i++) {
           if (this.visited(i)) continue;
           this.components.push(this.dfs(i));
         }
-
+        if(combine){
+            while(this.components.length>3){
+                let li = this.components.length-1;
+                let comb = [...this.components[li - 1], ...this.components[li]];
+                this.components.splice(li - 1, 2, comb);
+                this.components.sort((a, b) => b.length - a.length);
+            }
+        }
         this.components.sort((a, b) => b.length - a.length);
         return this.components;
       }
@@ -291,11 +370,11 @@ export class Graph {
         this.svg_nodes.classed(this.node_class, true);
     }
 
-    find_components(f = id => parseInt(id)){
+    find_components(combine = false, f = id => parseInt(id)){
         const fc = new FindComponents(50); // hard coded WATCH OUT, fix add max N to the graph
         this.links.forEach(link => fc.add_edge(f(link.source.id), f(link.target.id)));
         this.nodes.forEach(node => fc.v[f(node.id)] = false);
-        return fc.run();
+        return fc.run(combine);
     }
 }
 
@@ -475,11 +554,11 @@ create_svg_node_labels(text_function = node => node.id) {
                 node.fx = w/2;
                 node.fy = (h/node.y_div)+node.y_offset;
             }
-            else if(node.name === "W" && !node.sup){
+            else if(node.name === "W" && (!node.sup || node.sup === "X")){
                 node.fx = w/2;
                 node.fy = (h/2)-60;
             }
-            else if(node.name === "X" && !node.sup){
+            else if(node.name === "X" && (!node.sup || node.sup === "X")){
                 node.fx = w/2;
                 node.fy = (h/2)-10;
             }    
@@ -523,5 +602,14 @@ create_svg_node_labels(text_function = node => node.id) {
     svg_set_node_class(clazz, errors){
         this.svg_nodes.classed(clazz, node => errors.includes(node.name));
         this.svg_node_labels.classed(clazz, node => errors.includes(node.name));
+    }
+
+    find_TX(){
+        const fh = new FindHomebags();
+        this.nodes.forEach(node => fh.add_node(node, node.name==="W"));
+        this.links.forEach(link => fh.add_edge(link.source.id, link.target.id));
+        fh.dfs();
+        fh.build_TX(this.X);
+        return {nodes: fh.tx_nodes, edges: fh.tx_edges};
     }
 }

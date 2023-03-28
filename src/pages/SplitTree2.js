@@ -128,8 +128,8 @@ function SplitTree2() {
                      bag <InlineMath math={B}/>, follow this simple approach: Examine
                       the current bag in tree decomposition <InlineMath math="T"/> and identify the
                        distinct colors present. Each of these new bags will be the union of the orange
-                        elements <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span> and one of the other colors <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span>.</p>
-                <br/>
+                        vertices <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span> and one of the other colors <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span>.</p>
+                <h4>Tasks</h4>
                 <div className='task'>
                     <div>
                         <InlineMath math={B+"^1 = "+B+" \\cap ("}/>
@@ -218,8 +218,8 @@ function SplitTree2() {
         <p>We do this by iterating through each bag and generating three new bags, formed by determining the intersection between the original bag and the following sets, respectively: <InlineMath math="(C_1 \cup X)"/>, <InlineMath math="(C_2 \cup X)"/>, <InlineMath math="(C_3 \cup X)"/>
         </p>    
         <hr/>
-        <h2>Tasks</h2>
-        <i>In tree decomposition T, the elements in each bag are assigned distinct colors according to their respective component affiliation.</i>
+        <h2>Exercises</h2>
+        <i>In tree decomposition T, the vertices in each bag are assigned distinct colors according to their respective component affiliation.</i>
 
             { page_ready && page_state === 0 && <Puzzle i={page_state}/>}
             { page_ready && page_state === 1 && <Puzzle i={page_state}/>}
@@ -252,6 +252,12 @@ function SplitTree2() {
             )})} */}
 
             <br/><hr/>
+
+            {(page_state > 3) ?
+            <><Link to="/page1" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag</i></>
+            :
+            <><Link to="/page1" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag</i></>
+            }
             
 
             {/* <div className='button-container'>

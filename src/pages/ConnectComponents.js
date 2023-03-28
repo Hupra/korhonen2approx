@@ -220,11 +220,12 @@ function ConnectComponents() {
         <br/>
         <br/>
         <hr/>
-        <h2>Tasks</h2>
+        <h2>Exercises</h2>
         <p><i>To see the graph from which these components are derived, click the show graph button.</i></p>
         <h4>Description</h4>
         <p>To the right, we have 3 windows, one for each final component that are needed for a split. The first window is now filled with all the initial separated components obtained from removing the separator <InlineMath math="X"/> from <InlineMath math="G"/>. <br/>Since we require at most 3 final components for a split, the task is to drag the lesser component to the other two windows until all three final components are balanced such that none of them intersected with <InlineMath math="W"/> are larger than <InlineMath math="|W|/2"/>.</p>
-        <br/><div className='task'>
+        <h4>Tasks</h4>
+        <div className='task'>
             <span><InlineMath math={"|C_1 \\cap W| \\leq |W|/2"} /></span>
             <span><InlineMath math={container_size[0].toString() + "\\leq" + (W.bag.length/2).toString()}/></span>
             <ion-icon name={container_size[0]<=W.bag.length/2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
