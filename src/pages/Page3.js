@@ -140,7 +140,8 @@ function Page3() {
     <>
     <AnimatedPage>
         <div className='sidebar'><div className='sidebar_bubble'>
-            <h2>Homebag Page 2</h2>
+            <h2>Home Bag Part 2</h2>
+            <hr/>
             <h2>Exercises</h2>
             <h4>Description</h4>
             <p>In these exercises you will need to apply the knowledge of home bags learned on the 
@@ -237,7 +238,7 @@ function Page3() {
 
             {page_state>5 ?
             <div className='task center'>
-            <button onClick={() => tux.render()}><div>Combine <InlineMath math="T"/> and <InlineMath math="T^X"/></div></button>
+            <button onClick={() => {tux.render(); set_page_state(7)}}><div>Combine <InlineMath math="T"/> and <InlineMath math="T^X"/></div></button>
             </div>
             :
             <div className='task locked'>
@@ -245,7 +246,14 @@ function Page3() {
             </div>
             }
 
-            <button onClick={() => set_page_state(page_state+1)}>test</button>
+            <button onClick={() => set_page_state(page_state+1)}>dev cheat</button>
+            <hr/>
+            {page_state>=7 ?
+            <><Link to="/splitting-tree" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting <InlineMath math="T \cup T^X"/></i></>
+            :
+            <><Link to="/splitting-tree" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting <InlineMath math="T \cup T^X"/></i></>
+            }
+
 
         </div></div>
         <div className='content'>
@@ -253,11 +261,11 @@ function Page3() {
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <InlineMath math="T+X"/></div>
             </div>
-            <div className={'svg_container' + (page_state%2===1 ? " interactive" : "")}>
+            <div className={'svg_container' + ((page_state%2===1 && page_state<=5) ? " interactive" : "")}>
                 <svg ref={tree_containerx} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="2."/> Tree - <InlineMath math="T^X + X"/></div>
             </div>
-            <div className={'svg_container' + (page_state>=4 ? " interactice" : "")}>
+            <div className={'svg_container' + (page_state>=6 ? " interactive" : "")}>
                 <svg ref={tree_containerux} className="cy tree" width="100%" height="100%"></svg>
                 <div className='svg_label'><InlineMath math="3."/> Tree Decomposition - <InlineMath math="(T \cup T^X) + X"/></div>
             </div>

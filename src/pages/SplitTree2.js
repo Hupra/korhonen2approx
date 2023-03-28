@@ -130,6 +130,7 @@ function SplitTree2() {
                        distinct colors present. Each of these new bags will be the union of the orange
                         vertices <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span> and one of the other colors <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span>.</p>
                 <h4>Tasks</h4>
+                <p>In the below tasks please enter the vertices that belongs to each bag separated by comma e.g., {"{"}4,8,3,7{"}"}</p>
                 <div className='task'>
                     <div>
                         <InlineMath math={B+"^1 = "+B+" \\cap ("}/>
@@ -138,7 +139,7 @@ function SplitTree2() {
                         <span className='X'><InlineMath math="X"/></span>
                         <InlineMath math={")=\\{"}/>
 
-                        <input value={ic1} onChange={e => handleInputChange(e, set_ic1)} placeholder="4,8,3,7"></input>
+                        <input value={ic1} onChange={e => handleInputChange(e, set_ic1)}></input>
                         <InlineMath math={"\\}"}/>
                     </div>
                     <div>
@@ -175,7 +176,11 @@ function SplitTree2() {
                         <ion-icon name={check_input(ic3, components[2]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                     </div>
                 </div>
-                <button onClick={() => set_page_state(page_state+1)}>Create bags</button>
+                <button className={(
+                    check_input(ic1, components[0]) && 
+                    check_input(ic2, components[1]) && 
+                    check_input(ic3, components[2])) ? "" : "disable"
+                } onClick={() => set_page_state(page_state+1)}>Create bags <ion-icon name="bag-add-outline"></ion-icon></button>
 
             </div>)
     }
@@ -200,9 +205,8 @@ function SplitTree2() {
             tprime.svg_hide_stuff(node_name.concat("X"));
         },[i])
         return<>
-            <h4>Description</h4>
-            <p>The process of identifying a largest bag <InlineMath math="W"/> in the tree decomposition <InlineMath math="T"/> and subsequently splitting it to generate a new tree decomposition <InlineMath math="T'"/> with a reduced width is applied iteratively. This continues, creating <InlineMath math="T'', T'''"/>, and so on, until we either obtain a tree decomposition with a width no greater than <InlineMath math="2k+1"/> or determine that <InlineMath math="tw(G)"/> is larger than <InlineMath math="k"/>. However, there remains an issue with <InlineMath math="T'"/> that requires resolution, which will be elaborated upon in the subsequent pages.</p>
-            <Link to="/splitting-tree" className='button'>Next</Link>
+            <h2>Attention</h2>
+            <p>An improved tree decomposition <InlineMath math="T'"/> has been made, but there can still exists a problem with it, which will be explained in the next section.</p>
         </>
     }
     
@@ -213,7 +217,7 @@ function SplitTree2() {
     <AnimatedPage>
 
     <div className='sidebar'><div className='sidebar_bubble'>
-        <h2>Splitting Tree Decomposition</h2>
+        <h2>Splitting <InlineMath math="T"/></h2>
         <p>After finding a balanced separator and combining components to obtain a split <InlineMath math={"(C_1, C_2, C_3, X)"}/> of <InlineMath math={"W"}/>, we can create a new tree decomposition T' by spltting each bag in T based on the components in our split.</p>
         <p>We do this by iterating through each bag and generating three new bags, formed by determining the intersection between the original bag and the following sets, respectively: <InlineMath math="(C_1 \cup X)"/>, <InlineMath math="(C_2 \cup X)"/>, <InlineMath math="(C_3 \cup X)"/>
         </p>    
@@ -254,9 +258,9 @@ function SplitTree2() {
             <br/><hr/>
 
             {(page_state > 3) ?
-            <><Link to="/page1" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag</i></>
+            <><Link to="/page1" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
             :
-            <><Link to="/page1" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag</i></>
+            <><Link to="/page1" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
             }
             
 

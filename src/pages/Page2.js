@@ -53,7 +53,7 @@ function Page2() {
     <>
     <AnimatedPage>
         <div className='sidebar'><div className='sidebar_bubble'>
-            <h2>Homebag Page 2</h2>
+            <h2>Home Bag Part 1</h2>
             <p>
                 <i>
                 In all the trees to the right, an extra bag, denoted by <InlineMath math="X"/>, is added. This bag is displayed here solely to demonstrate that it serves as the connecting point for each of the three new tree decompositions after a split is executed.
@@ -103,10 +103,10 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
 </>}
 <button className={page_state%3 === 0 ? "disable" : ""} onClick={() => {
     if(page_state%3 !== 0) set_page_state((page_state-1)%3);
-}}>{"<"}</button>
+}}><ion-icon name="arrow-back-outline"></ion-icon></button>
 <button className={page_state%3 === 2 ? "disable" : ""} onClick={() => {
     if(page_state%3 !== 2) set_page_state((page_state+1)%3);
-}}>{">"}</button>
+}}><ion-icon name="arrow-forward-outline"/></button>
 
 {/* 
                 In Figure 7 (b) bags containing the vertices of X do not form connected
@@ -116,7 +116,11 @@ For every x ∈ X, x is added into all bags in the path from the home bag
 hb(x) to the root bag W. We define the set of vertices added to a given bag B
 as BX</p> */}
             <hr/>
-            <Link to="/page3" className='button'>Next</Link>
+            {page_state%3===2 ?
+            <><Link to="/page3" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag Part 2</i></>
+            :
+            <><Link to="/page3" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag Part2</i></>
+            }
         </div></div>
         <div className='content'>
             <div className='svg_container'>

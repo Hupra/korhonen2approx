@@ -402,6 +402,8 @@ export class Tree {
     render(){
         this.svg.selectAll("*").remove();
         this.simulation      = this.create_svg_simulation();
+        // this.svg_groups      = this.create_svg_groups();
+        this.create_svg_groups();
         this.svg_links       = this.create_svg_links();
         this.svg_nodes       = this.create_svg_nodes();
         this.svg_node_labels = this.create_svg_node_labels(this.tree_labels);
@@ -456,6 +458,151 @@ export class Tree {
         .attr('stroke', edge => edge.color ? edge.color : this.link_color)
         .attr('stroke-width', this.link_width);
     }
+
+    // catmullRomSpline(points, tension = 0.5, closed = true) {
+    //     if (points.length < 2) return '';
+    
+    //     const path = d3.path();
+    //     const size = points.length;
+    //     path.moveTo(points[0][0], points[0][1]);
+    
+    //     for (let i = 0; i < size - 1; i++) {
+    //         const p0 = points[(i - 1 + size) % size];
+    //         const p1 = points[i];
+    //         const p2 = points[(i + 1) % size];
+    //         const p3 = points[(i + 2) % size];
+    
+    //         const x1 = (-tension * p0[0] + (2 - tension) * p1[0] + tension * p2[0]) / 2;
+    //         const y1 = (-tension * p0[1] + (2 - tension) * p1[1] + tension * p2[1]) / 2;
+    //         const x2 = (tension * p1[0] + (2 - tension) * p2[0] - tension * p3[0]) / 2;
+    //         const y2 = (tension * p1[1] + (2 - tension) * p2[1] - tension * p3[1]) / 2;
+        
+    //         path.curveTo(x1, y1, x2, y2, p2[0], p2[1]);
+    //     }
+        
+    //     if (closed) {
+    //         const p0 = points[size - 2];
+    //         const p1 = points[size - 1];
+    //         const p2 = points[0];
+    //         const p3 = points[1];
+        
+    //         const x1 = (-tension * p0[0] + (2 - tension) * p1[0] + tension * p2[0]) / 2;
+    //         const y1 = (-tension * p0[1] + (2 - tension) * p1[1] + tension * p2[1]) / 2;
+    //         const x2 = (tension * p1[0] + (2 - tension) * p2[0] - tension * p3[0]) / 2;
+    //         const y2 = (tension * p1[1] + (2 - tension) * p2[1] - tension * p3[1]) / 2;
+
+    //         path.curveTo(x1, y1, x2, y2, p2[0], p2[1]);
+    //         path.closePath();
+    //     }
+    //     return path;
+    // }
+
+    // catmullRomSpline(points, tension = 0.5, closed = true) {
+    //     if (points.length < 2) return '';
+    
+    //     const path = d3.path();
+    //     const lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(tension));
+    
+    //     if (closed) {
+    //         path.moveTo(points[0][0], points[0][1]);
+    //         path.lineTo(points[1][0], points[1][1]);
+    //         path.closePath();
+    //     }
+    
+    //     const pathData = lineGenerator(closed ? points.concat([points[0]]) : points);
+    //     path.path(pathData);
+    //     return path.toString();
+    // }
+
+    // catmullRomSpline(points, tension = 0.5, closed = true) {
+    //     if (points.length < 2) return '';
+    
+    //     const lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(tension));
+    
+    //     if (closed) {
+    //         points = points.concat([points[0]]);
+    //     }
+    
+    //     const pathData = lineGenerator(points);
+    //     return pathData;
+    // }
+    catmullRomSpline(points, tension = 0.5, closed = true) {
+        if (points.length < 2) return '';
+    
+        let lineGenerator;
+        if (closed) {
+            lineGenerator = d3.line().curve(d3.curveCatmullRomClosed.alpha(tension));
+        } else {
+            lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(tension));
+        }
+    
+        const pathData = lineGenerator(points);
+        return pathData;
+    }
+
+
+    create_svg_groups(){
+        this.svg_groups = this.svg
+        .append('g')
+        .attr('class', 'group-shapes')
+        .selectAll('path');
+    }
+
+    update_svg_groups(){
+
+        const grouped_nodes = this.nodes.reduce((acc, node) => {
+            if (!acc[node.group]) {
+              acc[node.group] = [];
+            }
+            acc[node.group].push(node)
+            return acc;
+          }, {});
+        delete grouped_nodes[undefined];
+
+        const data = Object.values(grouped_nodes).map(group => {
+            const points = group.flatMap(node => {
+                const padding = 20;
+                const move = (Math.max(24, node.bag.length*20)/2)+padding;
+                return [
+                    [node.x-move, node.y+12+padding], 
+                    [node.x-move, node.y-12-padding-15], 
+                    [node.x+move, node.y+12+padding],
+                    [node.x+move, node.y-12-padding-15],
+                ]
+            })
+            return {id: group[0].group, polygon: d3.polygonHull(points)}
+        })
+
+        const scaleFactor = 1;
+        // console.log(points);
+        this.svg_groups = this.svg_groups
+        .data(data, data => data.id)
+        .join('path')
+        .attr("d", (d) => {
+            if (d && d.polygon) {
+                // Calculate the centroid of the polygon
+                const centroid = d3.polygonCentroid(d.polygon);
+
+                const scaledPolygon = d.polygon.map((point) => [
+                    centroid[0] + (point[0] - centroid[0]) * scaleFactor,
+                    centroid[1] + (point[1] - centroid[1]) * scaleFactor,
+                ]);
+                
+                return this.catmullRomSpline(scaledPolygon, 0.5, true);
+                // return "M" + scaledPolygon.join("L") + "Z";
+            } else {
+                return null;
+            }
+        })
+        // .attr('d', d => (d.polygon ? 'M' + d.polygon.join('L') + 'Z' : null))
+        .attr('stroke', '#999') // Set the stroke color for group shapes
+        .attr('stroke', 'black') // Set the stroke color for group shapes
+        // .attr('fill', 'rgba(169, 169, 169, 0.1)') // Set the fill color with some transparency
+        .attr("class", (d) => "C" + d.id.toString()) // assign a different color to each letter
+        .attr('stroke-width', 2) // Set the stroke width for group shapes
+        .attr('opacity', 0.25); // Set the stroke width for group shapes
+    }
+
 
     create_svg_nodes(){
         return this.svg
@@ -584,7 +731,7 @@ create_svg_node_labels(text_function = node => node.id) {
             if(this.svg_nodes){
                 this.svg_nodes
                 .attr('x', d => d.x - Math.max(24, d.bag.length*20)/2) // use 'cx' and 'cy' attributes to set the circle center
-                .attr('y', d => d.y-15) // use 'cx' and 'cy' attributes to set the circle center        
+                .attr('y', d => d.y-15) // use 'cx' and 'cy' attributes to set the circle center
             }
             if(this.svg_node_labels){
                 this.svg_node_labels
@@ -596,6 +743,14 @@ create_svg_node_labels(text_function = node => node.id) {
                 .attr("x", d => d.x)
                 .attr("y", d => d.y - 20); // adjust the y-coordinate as needed to center the text vertically        
             }
+            if(this.svg_groups){
+                try {       
+                    this.update_svg_groups();
+                } catch (error) {
+                    
+                }
+            }
+            
         });
         
     }

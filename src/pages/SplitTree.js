@@ -11,6 +11,7 @@ import {Graph, Tree} from "../classes.js"
 import {split, T_2_TD} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
+import { max, setWith } from 'lodash';
 
 
 
@@ -22,6 +23,7 @@ function SplitTree() {
     const tree_container3 = useRef();
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
+    const [width, setWidth] = useState(0);
     const w = tree.nodes.find(node => node.name === "W");
 
     useEffect(() => {
@@ -110,13 +112,6 @@ function SplitTree() {
 
 
             const treex = t.find_TX();
-            const tx = new Tree(treex, d3.select(tree_container3.current));
-            tx.X = X;
-            tx.C = C;
-            const treexn    = treex.nodes.find(node => node.name === "W");
-            treexn.y_div    = 3.1;
-            treexn.y_offset = -1;
-            tx.render();
 
             // union T U TX
             const treeux = {nodes: [], edges: tree.edges}
@@ -125,17 +120,32 @@ function SplitTree() {
                 const nodeux = {"id": node.id, "name": node.name, "bag": node.bag.concat(nodex.bag)}
                 treeux.nodes.push(nodeux);
             });
-            const Tp = T_2_TD(treeux, C, X);
 
+            // swap treeux for treex if desired
+            const tx = new Tree(treeux, d3.select(tree_container3.current));
+            tx.X = X;
+            tx.C = C;
+            const treexn    = treex.nodes.find(node => node.name === "W");
+            treexn.y_div    = 3.1;
+            treexn.y_offset = -1;
+            tx.render();
+
+
+
+            const Tp = T_2_TD(treeux, C, X);
             const t2  = new Tree(Tp, d3.select(tree_container2.current));
             t2.X = X;
             t2.C = C;
             t2.render();
 
+            
+
 
 
 
             // update elements
+            
+            setWidth(Tp.nodes.reduce((acc, node) => Math.max(acc, node.bag.length-1), 0))
             setSeparator(X);
             setComponents(C);
         });
@@ -148,10 +158,23 @@ function SplitTree() {
     <AnimatedPage>
 
     <div className='sidebar'><div className='sidebar_bubble'>
-        <h2>Demo</h2>
-        <p>Putting everything we have seen so far together, we can start to see how the algorithm works.</p>
-        <p>Try selecting different nodes in <InlineMath math={"G"}/>, to create various splits, and see what resulting <InlineMath math={"T'"}/> that spplit will yeild.<br/></p>
-        <br/>
+        <h2>Splitting <InlineMath math="T \cup T^X"/></h2>
+        <p>By applying the updated method to guarantee that <InlineMath math="T'"/> will 
+        satisfy the criteria for being a tree decompositions, we can 
+        now observe a valid <InlineMath math="T'"/> of a 
+        chosen split of the graph <InlineMath math="G"/>.</p>
+        <hr/>
+            <h2>Exercises</h2>
+            <h4>Description</h4>
+            <p>Try selecting different separators in graph <InlineMath math="G"/> and observe the resulting tree decompositions of <InlineMath math="T'"/> being made to the right. 
+                Try to find a split of G that gives a tree decomposition <InlineMath math="T'"/> with width=4. (Width of a tree decomposition is the size of the largest bag minus 1)</p>
+            <h4>Tasks</h4>
+            <div className='task'>
+                <span>Find width of <InlineMath math={"T'=4"}/></span>
+                <span><InlineMath math={width.toString() + "=4"}/></span>
+                <ion-icon name={width===4? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+            </div>
+            <h4>Variables</h4>
         <div className='items'><div>
             <InlineMath math={"X  = \\{"}/>
             <div className={"X"}><InlineMath math={separator.toString()} /></div>
@@ -167,8 +190,8 @@ function SplitTree() {
                     </div></div>
                 </React.Fragment>
             )})}
-        <br/>
-        {components.map((item, idx) => {
+        {/* <br/> */}
+        {/* {components.map((item, idx) => {
             const CW = item.filter(e => w.bag.includes(e));
             const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
             const m = CW.toString();
@@ -181,9 +204,13 @@ function SplitTree() {
                 <InlineMath math={e} />
                 </div></div>
             </React.Fragment>
-        )})}
-        <Link to="/connect-components" className='button'>Next</Link>
-
+        )})} */}
+        <br/><hr/>
+        {(width === 4) ?
+        <><Link to="#" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
+        :
+        <><Link to="#" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
+        }
     </div></div>
     <div className='content'>
         <div className='horizontal-split w1-3'>
@@ -200,7 +227,7 @@ function SplitTree() {
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
             </div>
             <div className='svg_container'>
-                <div className='svg_label'>Tree Decomposition - <InlineMath math="T^X"/></div>
+                <div className='svg_label'>Tree Decomposition - <InlineMath math="T \cup T^X"/></div>
                 <svg ref={tree_container3} className="cy tree" width="100%" height="100%"></svg>
             </div>
         </div>
@@ -208,6 +235,9 @@ function SplitTree() {
 
         <div className='svg_container w2-3'>
             <div className='svg_label'>Tree Decomposition - <InlineMath math="T'"/></div>
+            <div className={'svg_counter  ' + (width===4 ? "valid" : "invalid")}>
+                <InlineMath math={"Width="+width.toString()}/>
+                </div>
             <svg ref={tree_container2} className="cy tree" width="100%" height="100%"></svg>
         </div>
         {/* <svg ref={tree_container} className="cy hidden" width="100%" height="100%"></svg> */}
