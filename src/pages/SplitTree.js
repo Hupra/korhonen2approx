@@ -167,7 +167,7 @@ function SplitTree() {
             <h2>Exercises</h2>
             <h4>Description</h4>
             <p>Try selecting different separators in graph <InlineMath math="G"/> and observe the resulting tree decompositions of <InlineMath math="T'"/> being made to the right. 
-                Try to find a split of G that gives a tree decomposition <InlineMath math="T'"/> with width=4. (Width of a tree decomposition is the size of the largest bag minus 1)</p>
+                Find a split of G that gives a tree decomposition <InlineMath math="T'"/> with width=4. (Width of a tree decomposition is the size of the largest bag minus 1)</p>
             <h4>Tasks</h4>
             <div className='task'>
                 <span>Find width of <InlineMath math={"T'=4"}/></span>
@@ -207,9 +207,9 @@ function SplitTree() {
         )})} */}
         <br/><hr/>
         {(width === 4) ?
-        <><Link to="#" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
+        <><Link to="/min-split" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
         :
-        <><Link to="#" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
+        <><Link to="/min-split" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
         }
     </div></div>
     <div className='content'>

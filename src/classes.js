@@ -755,8 +755,16 @@ create_svg_node_labels(text_function = node => node.id) {
         
     }
     svg_set_node_class(clazz, errors){
-        this.svg_nodes.classed(clazz, node => errors.includes(node.name));
+        this.svg_nodes.classed(clazz, node => errors.some((sa) => {
+            return node.sup && node.name===sa[0] && node.sup===sa[1]
+        }));
         this.svg_node_labels.classed(clazz, node => errors.includes(node.name));
+    }
+    svg_set_node_class_if_contains(clazz, vertex){
+        this.svg_nodes.classed(clazz, node => node.bag.includes(vertex));
+        this.svg_node_labels.classed(clazz, node => node.bag.includes(vertex));
+        this.svg_links.classed(clazz, link => link.source.bag.includes(vertex) && link.target.bag.includes(vertex));
+        // this.svg_links.classed(clazz, link => link.target.bag.includes(vertex));
     }
 
     find_TX(){
