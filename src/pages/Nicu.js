@@ -94,8 +94,16 @@ function Nicu() {
         //     ]
         // }
 
+        td = {
+            nodes: [
+                { "id": 1, "bag": [4,5,6], "name": "W'"}
+            ],
+            edges: [
+            ]
+        }
 
-        const nice_td = DP.make_nice(treed);
+
+        const nice_td = DP.make_nice(td);
         console.log("res", nice_td);
 
 
@@ -131,33 +139,95 @@ function Nicu() {
         let U = DP.init_U(n,w);
         // U[1][2][420] = 4;
 
+        let newcounter = 0;
+        let repcounter = 0;
+
         function rec(i,h,cccx){
+
+            // out of bounds
+            if(h<0) return Infinity
+
             // return value if res has been computed before;
+            if (U[i][h][cccx] !== -1) console.log("rep",++repcounter);
             if (U[i][h][cccx] !== -1) return U[i][h][cccx];
-            console.log("rec",i,h,cccx);
-            
-            let bag = DP.get_bag(nice_td,i);
+                
+            let Bi = DP.get_bag(nice_td,i);
             let children = DP.get_children(nice_td,i);
 
             if (children.length === 0){
-                return "leaf";
+                return 1;
             }
             if (children.length === 2){
-                return "join";
             }
             if (children.length === 1){
-                if(bag.length > DP.get_bag(nice_td,children[0]).length){
-                    return "introduce";
+                let j = children[0];
+                let Bj = DP.get_bag(nice_td, j);
+
+                // current parti
+                let Bi_c1 = DP.get_c1(cccx, Bi.length);
+                let Bi_c2 = DP.get_c2(cccx, Bi.length);
+                let Bi_c3 = DP.get_c3(cccx, Bi.length);
+                let Bi_X  = DP.get_x(cccx,  Bi.length);
+
+                if(Bi.length > Bj.length){
+                    // introduce
+                    /// if there are no edges between C1 ∩ Bi, C2 ∩ Bi , C3 ∩ Bi do below stuff else set to inf
+                    // [h − |{v} ∩ X|] <---- this is how we determine an X is used!
+                    let v = DP.find_bag_diff(Bi,Bj);
+                    
+                    // |{v} ∩ X|
+                    let v_cap_X = Math.max((DP.encode(v)&Bi_X)>0,0);
+                    console.log("-----------------------------");
+                    console.log("i:", i);
+                    DP.print_state(cccx, w, Bi);
+
+                    // next part
+                    let Bj_c1 = DP.remove_and_rshift_i(Bi_c1, v);
+                    let Bj_c2 = DP.remove_and_rshift_i(Bi_c2, v);
+                    let Bj_c3 = DP.remove_and_rshift_i(Bi_c3, v);
+                    let Bj_X  = DP.remove_and_rshift_i(Bi_X,  v);
+                    // visual -> move v up, and push left part 1 to the right
+                    
+                    let cvcvcvxv = DP.combine(Bj_c1, Bj_c2, Bj_c3, Bj_X)
+                    U[i][h][cccx] = rec(j, h-v_cap_X, cvcvcvxv);
+
                 }else{
-                    /// if there are no edges between C1 ∩ Bi, C2 ∩ Bi , C3 ∩ Bi 541 , and otherwise to ⊥.
-                    return "forget";
+                    // Bj > Bi
+                    // forget
+                    let v = DP.find_bag_diff(Bj,Bi); // big,small
+
+                    // next part
+                    let Bj_c1 = DP.add_ith_bit_f(Bi_c1, v);
+                    let Bj_c2 = DP.add_ith_bit_f(Bi_c2, v);
+                    let Bj_c3 = DP.add_ith_bit_f(Bi_c3, v);
+                    let Bj_X  = DP.add_ith_bit_f(Bi_X,  v);
+
+                    let Bj_c1_v = DP.add_ith_bit_t(Bi_c1, v);
+                    let Bj_c2_v = DP.add_ith_bit_t(Bi_c2, v);
+                    let Bj_c3_v = DP.add_ith_bit_t(Bi_c3, v);
+                    let Bj_X_v  = DP.add_ith_bit_t(Bi_X,  v);
+                    
+                    let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X,   Bj.length);
+                    let ccvcx = DP.combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X,   Bj.length);
+                    let cccvx = DP.combine(Bj_c1,   Bj_c2,   Bj_c3_v, Bj_X,   Bj.length);
+                    let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v, Bj.length);
+
+                    U[i][h][cccx] = Math.min(
+                        rec(j,h,cvccx),
+                        rec(j,h,ccvcx),
+                        rec(j,h,cccvx),
+                        rec(j,h,cccxv)
+                    )
+                    return U[i][h][cccx];
                 }
             } 
-            
+            return U[i][h][cccx];
         }
 
         //              i,n,cccx
-        console.log(rec(0,2,0));
+        for (let h = 0; h <= 3; h++) {
+            rec(0,h,0);            
+        }
         console.log(U);
         
 

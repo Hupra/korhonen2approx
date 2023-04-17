@@ -65,36 +65,34 @@ export function add_ith_bit_t(x, i) {
 // x  = 1001, i=2, res=10101
 
 // a>b
-export function find_bag_diff(a,b){
-    for (let i = 0; i < b.length; i++) {
-        if(a[i]!==b[i]) return i;
+export function find_bag_diff(big,small){
+    for (let i = 0; i < small.length; i++) {
+        if(big[i]!==small[i]) return i;
     }
-    return b.length;
+    return small.length;
 }
 
-function Uold(n, h) {
-    const handler = {
-        get(target, property) {
-            // If the property exists in the target object, return the value
-            if (property in target) {
-                return target[property];
-            }
-
-            // If the property doesn't exist, create a new array, store it in the target object, and return it
-            // const newArray = ;
-            target[property] = new Array(h).fill(Infinity);
-            return target[property];
-        }
-    };
-
-    const U = new Array(n);
-
-    for (let i = 0; i < n; i++) {
-        U[i] = new Proxy({}, handler);
-    }
-
-    return U;
+export function idx_2_value(indices, B){
+    return indices.map(idx => B[idx]);
 }
+
+export function print_state(cccx, w, B){
+    let c1 = idx_2_value(decode_set(get_c1(cccx, w)), B);
+    let c2 = idx_2_value(decode_set(get_c2(cccx, w)), B);
+    let c3 = idx_2_value(decode_set(get_c3(cccx, w)), B);
+    let X  = idx_2_value(decode_set(get_x( cccx, w)), B);
+    // console.log("-----------------------------");
+
+    let s1 = "{"+c1.toString()+"}";
+    let s2 = "{"+c2.toString()+"}";
+    let s3 = "{"+c3.toString()+"}";
+    let s4 = "{"+X.toString()+"}";
+    console.log("C1"+" ".repeat(s1.length-1)+"C2"+" ".repeat(s2.length-1)+"C3"+" ".repeat(s3.length-1)+"X");
+    console.log(s1,s2,s3,s4);
+    console.log("-----------------------------");
+
+}
+
 
 export function init_U(n, h) {
     const handler = {
@@ -121,22 +119,27 @@ export function init_U(n, h) {
 // * combine using strings
 // * use bigint
 // * stop computing on such big bags!
-export function get_c1(x, w){
-    let mask = ((1<<w) - 1);
-    return x & mask;
+
+export function get_c1(cccx, w) {
+    let mask = (1 << w) - 1;
+    return cccx & mask;
 }
-export function get_c2(x, w){
-    let mask = ((1<<w) - 1)<<w;
-    return x & mask;
+
+export function get_c2(cccx, w) {
+    let mask = (1 << w) - 1;
+    return (cccx >> w) & mask;
 }
-export function get_c3(x, w){
-    let mask = ((1<<w) - 1)<<w*2;
-    return x & mask;
+
+export function get_c3(cccx, w) {
+    let mask = (1 << w) - 1;
+    return (cccx >> (w * 2)) & mask;
 }
-export function get_x(x, w){
-    let mask = ((1<<w) - 1)<<w*3;
-    return x & mask;
+
+export function get_x(cccx, w) {
+    let mask = (1 << w) - 1;
+    return (cccx >> (w * 3)) & mask;
 }
+
 export function combine(c1,c2,c3,x,w){
     return c1 | (c2<<w) | (c3<<w*2) | (x<<w*3);
 }
@@ -165,7 +168,7 @@ export function make_nice(input) {
         let newNode = {
             id: ++nextNodeId,
             bag: bag,
-            name: ""
+            name: nextNodeId.toString()
         };
         tree.nodes.push(newNode);
 
@@ -203,7 +206,7 @@ export function make_nice(input) {
                 const next = {
                     id: ++nextNodeId,
                     bag: cur.bag.slice(0, -1),
-                    name: ""
+                    name: nextNodeId.toString()
                 };
                 tree.nodes.push(next);
                 tree.edges.push({source: cur.id, target: next.id});
@@ -257,7 +260,7 @@ export function make_nice(input) {
             let nn2 = {
                 id: ++nextNodeId,
                 bag: [...i.bag],
-                name: i.name + "r"
+                name: nextNodeId.toString()
             };
             tree.nodes.push(nn2);
 
