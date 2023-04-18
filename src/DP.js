@@ -76,11 +76,11 @@ export function idx_2_value(indices, B){
     return indices.map(idx => B[idx]);
 }
 
-export function print_state(cccx, w, B){
-    let c1 = idx_2_value(decode_set(get_c1(cccx, w)), B);
-    let c2 = idx_2_value(decode_set(get_c2(cccx, w)), B);
-    let c3 = idx_2_value(decode_set(get_c3(cccx, w)), B);
-    let X  = idx_2_value(decode_set(get_x( cccx, w)), B);
+export function print_state(cccx, B){
+    let c1 = idx_2_value(decode_set(get_c1(cccx, B.length)), B);
+    let c2 = idx_2_value(decode_set(get_c2(cccx, B.length)), B);
+    let c3 = idx_2_value(decode_set(get_c3(cccx, B.length)), B);
+    let X  = idx_2_value(decode_set(get_x( cccx, B.length)), B);
     // console.log("-----------------------------");
 
     let s1 = "{"+c1.toString()+"}";
@@ -89,8 +89,6 @@ export function print_state(cccx, w, B){
     let s4 = "{"+X.toString()+"}";
     console.log("C1"+" ".repeat(s1.length-1)+"C2"+" ".repeat(s2.length-1)+"C3"+" ".repeat(s3.length-1)+"X");
     console.log(s1,s2,s3,s4);
-    console.log("-----------------------------");
-
 }
 
 
@@ -199,10 +197,10 @@ export function make_nice(input) {
         let children = tree.edges.filter(edge => edge.source === node.id).map(edge => edge.target);
 
         // leafify the leaf
-        if (children.length===0 && node.bag.length>1){
+        if (children.length===0 && node.bag.length>0){
 
             let cur = node;
-            for (let i = 1; i < node.bag.length; i++) {
+            for (let i = 1; i < node.bag.length+1; i++) { // +1 to length gives the empty bags that we need for the DP
                 const next = {
                     id: ++nextNodeId,
                     bag: cur.bag.slice(0, -1),

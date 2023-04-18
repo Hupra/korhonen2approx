@@ -94,6 +94,18 @@ function Nicu() {
         //     ]
         // }
 
+        let gg = {
+            nodes: [
+                { "id": 4},
+                { "id": 5},
+                { "id": 6}
+            ],
+            edges: [
+                { "source": 4, "target": 5},
+                { "source": 5, "target": 6}
+            ]
+        }
+
         td = {
             nodes: [
                 { "id": 1, "bag": [4,5,6], "name": "W'"}
@@ -128,7 +140,6 @@ function Nicu() {
             // console.log((xx).toString(2), tmp.toString(2));
         }
 
-
         let n = 0;
         let w = 0;
         for (const node of nice_td.nodes) {
@@ -137,7 +148,15 @@ function Nicu() {
         }
 
         let U = DP.init_U(n,w);
-        // U[1][2][420] = 4;
+
+        // create matrix for graph edge lookup, undirected
+        let gn = gg.nodes.reduce((pre, cur) => Math.max(pre, cur.id), 0)+1;
+        let M = Array.from({ length: gn}, () => Array(gn).fill(0));
+        for (const e of gg.edges) {
+            M[e.source][e.target] = 1;
+            M[e.target][e.source] = 1;
+        }
+        console.log(M);
 
         let newcounter = 0;
         let repcounter = 0;
@@ -145,19 +164,37 @@ function Nicu() {
         function rec(i,h,cccx){
 
             // out of bounds
-            if(h<0) return Infinity
+            if(h<0) return Infinity;
+            if(h>w) return Infinity;
 
             // return value if res has been computed before;
-            if (U[i][h][cccx] !== -1) console.log("rep",++repcounter);
+            if (U[i][h][cccx] !== -1) ++repcounter;
             if (U[i][h][cccx] !== -1) return U[i][h][cccx];
-                
+            
+            ++newcounter;
+
             let Bi = DP.get_bag(nice_td,i);
             let children = DP.get_children(nice_td,i);
 
             if (children.length === 0){
-                return 1;
+                // current though is that this is always 0
+                // I think it is only when and x is added the cost increases
+                // if(h === 0) return Infinity;
+                return 0;
+
+
+                // // console.log("-----------------------------");
+                // // console.log("i:", i, "h:", h);
+                // // DP.print_state(cccx, Bi);
+                // U[i][h][cccx] = DP.get_x(cccx,  Bi.length);
+
+                // // since a leaf is always width 1, the bitstring is 0000
+                // // and therefor we just ned to check if
+                // // cccx is = 8 -> 1000
+                // U[i][h][cccx] = cccx===8 ? 1:0;
             }
             if (children.length === 2){
+                return 2;
             }
             if (children.length === 1){
                 let j = children[0];
@@ -171,26 +208,50 @@ function Nicu() {
 
                 if(Bi.length > Bj.length){
                     // introduce
-                    /// if there are no edges between C1 ∩ Bi, C2 ∩ Bi , C3 ∩ Bi do below stuff else set to inf
-                    // [h − |{v} ∩ X|] <---- this is how we determine an X is used!
+ 
+                    // check if C1∩Bi, C2∩Bi, C3∩Bi are connected
+                    let arr1 = DP.idx_2_value(DP.decode_set(Bi_c1), Bi);
+                    let arr2 = DP.idx_2_value(DP.decode_set(Bi_c2), Bi);
+                    let arr3 = DP.idx_2_value(DP.decode_set(Bi_c3), Bi);
+
+                    for (const u of arr1) {
+                        for (const v of arr2) { // C1 <-> C2
+                            if(M[u][v]){
+                                U[i][h][cccx] = Infinity;
+                                return Infinity;
+                        }}                        
+                        for (const v of arr3) { // C1 <-> C3
+                            if(M[u][v]){
+                                U[i][h][cccx] = Infinity;
+                                return Infinity;
+                    }}};
+                    for (const u of arr2) {
+                        for (const v of arr3) { // C2 <-> C3
+                            if(M[u][v]){
+                                U[i][h][cccx] = Infinity;
+                                return Infinity;
+                    }}};
+                    ////////////////////////////////////////////
+
                     let v = DP.find_bag_diff(Bi,Bj);
                     
-                    // |{v} ∩ X|
+                    // |{v} ∩ X|             [h − |{v} ∩ X|] <---- this is how we determine an X is used!
                     let v_cap_X = Math.max((DP.encode(v)&Bi_X)>0,0);
-                    console.log("-----------------------------");
-                    console.log("i:", i);
-                    DP.print_state(cccx, w, Bi);
-
+                    // console.log("------------------");
+                    // console.log("i:",i,"h:",h);
+                    // console.log(v_cap_X);
+                    // DP.print_state(cccx, Bi);
+                    
                     // next part
                     let Bj_c1 = DP.remove_and_rshift_i(Bi_c1, v);
                     let Bj_c2 = DP.remove_and_rshift_i(Bi_c2, v);
                     let Bj_c3 = DP.remove_and_rshift_i(Bi_c3, v);
                     let Bj_X  = DP.remove_and_rshift_i(Bi_X,  v);
+                
                     // visual -> move v up, and push left part 1 to the right
-                    
-                    let cvcvcvxv = DP.combine(Bj_c1, Bj_c2, Bj_c3, Bj_X)
+                    let cvcvcvxv = DP.combine(Bj_c1, Bj_c2, Bj_c3, Bj_X, Bj.length);
                     U[i][h][cccx] = rec(j, h-v_cap_X, cvcvcvxv);
-
+                    
                 }else{
                     // Bj > Bi
                     // forget
@@ -217,6 +278,8 @@ function Nicu() {
                         rec(j,h,ccvcx),
                         rec(j,h,cccvx),
                         rec(j,h,cccxv)
+                        // rec(j,h+1,cccxv) // I think this is where you increment h, as we added v to X
+                                         // might be a mistake in his DP
                     )
                     return U[i][h][cccx];
                 }
@@ -225,10 +288,25 @@ function Nicu() {
         }
 
         //              i,n,cccx
-        for (let h = 0; h <= 3; h++) {
-            rec(0,h,0);            
+        
+        for (let h = 0; h <= w; h++) {
+            for (const node of nice_td.nodes) {
+                rec(node.id,h,0);            
+            }
         }
+        // rec(0,0,0);
+        // rec(0,1,0);
         console.log(U);
+        console.log("new:", newcounter, "rep:", repcounter);
+        let rbag = 1;
+        let xD = 1;
+        for (const key in U[rbag][xD]) {
+            if(U[rbag][xD][key] !== Infinity){
+                console.log("-------");
+                console.log("res", U[rbag][xD][key]);
+                DP.print_state(key, DP.get_bag(nice_td, rbag));
+            }
+        }   
         
 
 
