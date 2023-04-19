@@ -138,8 +138,16 @@ export function get_x(cccx, w) {
     return (cccx >> (w * 3)) & mask;
 }
 
-export function combine(c1,c2,c3,x,w){
+export function combine(c1,c2,c3,x,w) {
     return c1 | (c2<<w) | (c3<<w*2) | (x<<w*3);
+}
+export function get_bin_size(x) {
+    let count = 0;
+    while(x) {
+        count += x & 1;
+        x >>= 1;
+    }
+    return count;
 }
 
 export function make_nice(input) {
@@ -286,7 +294,15 @@ export function make_nice(input) {
 export function get_bag(t, i){
     return t.nodes.find(n => n.id === i).bag;
 }
+export function get_node(t, i){
+    return t.nodes.find(n => n.id === i);
+}
 export function get_children(t,i){
     return t.edges.filter(edge => edge.source === i).map(edge => edge.target);
+}
+export function get_parent(t,i){
+    let parent = t.edges.find(edge => edge.target === i);
+    if(parent !== undefined) return parent.source;
+    return -1;
 }
 

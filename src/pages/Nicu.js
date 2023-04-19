@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import nicetreed from '../graphs/nicu.json'
 import treed from '../graphs/graph1-tree.json'
+import graph1 from '../graphs/graph1.json'
 // import graph from '../graphs/graph-X.json'
 // import tree from '../graphs/graph-X-tree.json'
 import { BlockMath, InlineMath } from 'react-katex';
@@ -9,6 +10,7 @@ import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import AnimatedPage from './components/AnimatedPage';
 import * as DP from '../DP.js'
+import { nice } from 'd3';
 
   
 
@@ -33,7 +35,6 @@ function Nicu() {
                 { "source": 2, "target": 3}
             ]
         }
-
         td = {
             nodes: [
                 { "id": 1, "bag": [1,2,3,4,5,6,7,8], "name": "W"}
@@ -41,7 +42,6 @@ function Nicu() {
             edges: [
             ]
         }
-
         td = {
             nodes: [
                 { "id": 1, "bag": [1,2,3,4], "name": "1"},
@@ -61,7 +61,24 @@ function Nicu() {
                 { "source": 6, "target": 7},
             ]
         }
-
+        td = {
+            nodes: [
+                { "id": 1, "bag": [1,2,3], "name": "1"},
+                { "id": 2, "bag": [1,2,3], "name": "2"},
+                { "id": 3, "bag": [1,2,3], "name": "3"},
+                { "id": 4, "bag": [1,2,3], "name": "4"},
+                { "id": 5, "bag": [1,2,3], "name": "5"},
+                { "id": 6, "bag": [1,2,3], "name": "6"},
+            ],
+            edges: [
+                { "source": 1, "target": 2},
+                { "source": 1, "target": 3},
+                { "source": 1, "target": 4},
+                { "source": 1, "target": 5},
+                { "source": 1, "target": 6},
+            ]
+        }
+        
         td = {
             nodes: [
                 { "id": 1, "bag": [1,2,3], "name": "1"},
@@ -76,23 +93,6 @@ function Nicu() {
             ]
         }
 
-        // td = {
-        //     nodes: [
-        //         { "id": 1, "bag": [1,2,3], "name": "1"},
-        //         { "id": 2, "bag": [1,2,3], "name": "2"},
-        //         { "id": 3, "bag": [1,2,3], "name": "3"},
-        //         { "id": 4, "bag": [1,2,3], "name": "4"},
-        //         { "id": 5, "bag": [1,2,3], "name": "5"},
-        //         { "id": 6, "bag": [1,2,3], "name": "6"},
-        //     ],
-        //     edges: [
-        //         { "source": 1, "target": 2},
-        //         { "source": 1, "target": 3},
-        //         { "source": 1, "target": 4},
-        //         { "source": 1, "target": 5},
-        //         { "source": 1, "target": 6},
-        //     ]
-        // }
 
         let gg = {
             nodes: [
@@ -114,10 +114,26 @@ function Nicu() {
             ]
         }
 
-
+        // gg = graph1;
+        // const nice_td = DP.make_nice(treed);
         const nice_td = DP.make_nice(td);
+        
+        // get graph in leaves order so we can fill U bottom up
+        let sorted_nodes = [];
+        for (const node of nice_td.nodes) {
+            let counter = 0;
+            let parent = DP.get_node(nice_td, DP.get_parent(nice_td, node.id));
+            while(parent){
+                counter++;
+                parent = DP.get_node(nice_td, DP.get_parent(nice_td, parent.id));
+            }
+            sorted_nodes.push([node.id, counter]);
+        }
+        sorted_nodes.sort((a, b) => b[1] - a[1]);
+        sorted_nodes = sorted_nodes.map(x=>x[0]);
+        
+        // const nice_td = DP.make_nice(td);
         console.log("res", nice_td);
-
 
         // const t = new Tree(td, d3.select(tree_container.current));
         // // t.charge = -1200;
@@ -175,11 +191,17 @@ function Nicu() {
 
             let Bi = DP.get_bag(nice_td,i);
             let children = DP.get_children(nice_td,i);
+            let Bi_X_size = DP.get_bin_size(DP.get_x(cccx));
+            // if(Bi_X_size>h){
+            //     U[i][h][cccx] = Infinity;
+            //     return U[i][h][cccx];
+            // }
 
             if (children.length === 0){
                 // current though is that this is always 0
                 // I think it is only when and x is added the cost increases
                 // if(h === 0) return Infinity;
+                if(h>0) return Infinity;
                 return 0;
 
 
@@ -194,7 +216,27 @@ function Nicu() {
                 // U[i][h][cccx] = cccx===8 ? 1:0;
             }
             if (children.length === 2){
-                return 2;
+                let j = children[0];
+                let k = children[1];
+
+                let Bi_X  = DP.get_x(cccx,  Bi.length);
+                let Bi_X_size = DP.get_bin_size(Bi_X);
+                let zum = h + Bi_X_size;
+
+                let best = Infinity;
+
+                for (let h1 = Bi_X_size; h1 < h; h1++) {
+                    let h2 = zum-h1;
+                    best = Math.min(best, rec(j,h1,cccx)+rec(k,h2,cccx))
+                }
+
+                U[i][h][cccx] = best;
+
+                // if(h===5){
+                //     DP.print_state(cccx,Bi);
+                //     console.log(i,h,Bi_X,Bi_X_size);
+                //     console.log("-----------------")
+                // }
             }
             if (children.length === 1){
                 let j = children[0];
@@ -277,9 +319,7 @@ function Nicu() {
                         rec(j,h,cvccx),
                         rec(j,h,ccvcx),
                         rec(j,h,cccvx),
-                        rec(j,h,cccxv)
-                        // rec(j,h+1,cccxv) // I think this is where you increment h, as we added v to X
-                                         // might be a mistake in his DP
+                        rec(j,h,cccxv)+(h-1)
                     )
                     return U[i][h][cccx];
                 }
@@ -287,26 +327,39 @@ function Nicu() {
             return U[i][h][cccx];
         }
 
+        function combi(c1,c2,c3,X,next,stop,f,i,h){
+            if(next<stop){
+                let mask = DP.encode(next);
+                combi(c1|mask,c2,c3,X,next+1,stop,f,i,h);
+                combi(c1,c2|mask,c3,X,next+1,stop,f,i,h);
+                combi(c1,c2,c3|mask,X,next+1,stop,f,i,h);
+                combi(c1,c2,c3,X|mask,next+1,stop,f,i,h);
+            }else{
+                f(i,h,DP.combine(c1,c2,c3,X,stop));
+                // console.log(c1.toString(2),c2.toString(2),c3.toString(2),X.toString(2))
+            }
+        }
+        // combi(0,0,0,0,0,3,0,0);
         //              i,n,cccx
-        
-        for (let h = 0; h <= w; h++) {
-            for (const node of nice_td.nodes) {
-                rec(node.id,h,0);            
+        for (const i of sorted_nodes){
+            for (let h = 0; h <= w; h++) {
+                let bag = DP.get_bag(nice_td,i);
+                combi(0,0,0,0,0,bag.length,rec,i,h);
             }
         }
         // rec(0,0,0);
         // rec(0,1,0);
         console.log(U);
         console.log("new:", newcounter, "rep:", repcounter);
-        let rbag = 1;
-        let xD = 1;
-        for (const key in U[rbag][xD]) {
-            if(U[rbag][xD][key] !== Infinity){
-                console.log("-------");
-                console.log("res", U[rbag][xD][key]);
-                DP.print_state(key, DP.get_bag(nice_td, rbag));
-            }
-        }   
+        // let rbag = 1;
+        // let xD = 1;
+        // for (const key in U[rbag][xD]) {
+        //     if(U[rbag][xD][key] !== Infinity){
+        //         console.log("-------");
+        //         console.log("res", U[rbag][xD][key]);
+        //         DP.print_state(key, DP.get_bag(nice_td, rbag));
+        //     }
+        // }   
         
 
 
