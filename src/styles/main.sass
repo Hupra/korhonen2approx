@@ -25,13 +25,23 @@ body
     align-content: center !important
     border: 4px solid $cx !important
 
-
+button.error
+    background-color: white !important
+    color: black !important
+    text-shadow: 1px 1px 0 white, -1px 1px 0 white, 1px -1px 0 white, -1px -1px 0 white
+button.error ion-icon
+    color: black !important
 rect.error
     fill: white !important
     stroke: black !important
 text.error
+    
     tspan:nth-of-type(even)
         stroke: black
+        stroke-width: 4px
+        paint-order: stroke
+    tspan
+        stroke: black !important
         stroke-width: 4px
         paint-order: stroke
 
@@ -149,7 +159,7 @@ text.homebag
         font-size: 13px
         position: relative
         
-        width: 25%
+        width: 27%
         height: 100%
         // padding: 20px 0px 20px 10px
         // border-right: $border-settings
@@ -161,8 +171,9 @@ text.homebag
         .sidebar_bubble
             height: 100%
             width: 100%
-            padding: 20px
+            padding: 6px
             background-color: rgba(240,255,255,.9)
+            background-color: white
             border: $border-settings
             border-radius: 7px
             box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
@@ -393,6 +404,7 @@ span.color-reverse
     background-color: #101010
     padding: 3px
     border-radius: 8px
+    display: inline-block
 span
     &.C1
         color: $c1
@@ -472,28 +484,37 @@ circle.node_in_w
     color: white
     background-color: #101010
     border-radius: 5px
-    padding: 8px 10px 6px
+    padding: 8px 10px 8px
     margin-bottom: 5px
     display: flex
     justify-content: space-between
     align-items: center
     font-size: 12px
+    padding-left: 40px
+    min-height: 34px
+    position: relative
 
     ion-icon
         position: relative
         font-size: 1.7em
-        margin-left: 10px
         &[name="star"] 
             color: #FFDF00
         &[name="checkmark-circle"], &[name="checkmark-circle-outline"]
             color: Chartreuse
         &[name="alert-circle"], &[name="alert-circle-outline"]
             color: white
+        
+        position: absolute
+        left: 10px
+        top: 50%
+        transform: translateY(-50%)
     &.locked
+        padding-left: 0
         justify-content: center
         ion-icon
             font-size: 1.4em
-            margin: 0
+            left: auto
+            transform: translate(-50%, -50%)
 
 h1,h2,h3,h4,h5,h6
     margin-bottom: 10px
@@ -621,7 +642,7 @@ button, .button
 .intro-img
     width: 100%
     height: 100%
-    background-color: orange
+    // background-color: orange
     border: $border-settings
     border-width: 2px
     border-radius: 7px
@@ -659,3 +680,73 @@ button, .button
             background: $c6
         &.X
             background: $cx
+
+
+// scrollbar
+.scrollbar-track-y
+    border-radius: 4px
+
+.scrollcontainer>:first-child
+    margin-top: 10px !important
+
+// materializ overwrite
+// .collapsible.popout
+//     margin-left: -20px
+
+//     li
+//         margin: 0 20px
+
+.collapsible
+    // margin-left: -10px
+    // margin-right: -10px
+
+    .collapsible-body
+        padding: 30px 20px
+        // background-color: #101010
+        // color: white
+
+    .collapsible-header
+        background-color: #101010
+        color: white
+        border-color: grey
+        h1,h2,h3,h4,h5,h6
+            margin-bottom: 0
+            margin-top: 0
+        &:focus
+            background-color: #101010
+
+h1, .h1
+  font-size: 2rem
+h2, .h2
+  font-size: 1.75rem
+h3, .h3
+  font-size: 1.5rem
+h4, .h4
+  font-size: 1.25rem
+h5, .h5
+  font-size: 1rem
+h6, .h6
+  font-size: 0.75rem
+
+#toast-container
+    transform: translate(-50%, -50%)
+    position: absolute
+    left: 0
+    top: 0
+    right: auto
+
+.tab-content
+    margin-top: 10px
+    margin-bottom: 10px
+    padding: 10px
+    border-left: 5px solid grey
+
+.indicator
+    background-color: $cx !important
+    height: 3px !important
+.tab    
+    a
+        color: black !important
+
+.tabs .tab a:focus, .tabs .tab a:focus.active, .tabs .tab a.active
+    background-color: lighten(orange, 40%) !important

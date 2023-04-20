@@ -11,7 +11,15 @@ import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import {split, cup, cap, list_is_same, T_2_TD} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
+import SB from './components/SB';
+import M from 'materialize-css';
 
+function correcto(event, text) {
+    M.toast({ html: text + ' <img src="https://media.gq.com/photos/5583c6e009f0bee5644245a0/1:1/w_450,h_450,c_limit/style-blogs-the-gq-eye-BIDEN-campaign-poster%5B1%5D.png" alt="Joe Biden Campaign Poster">', displayLength: 2000});
+    const tc = document.getElementById('toast-container');
+    tc.style.left = `${event.clientX}px`;
+    tc.style.top = `${event.clientY-70}px`;
+}
 
 function Page3() {
     const tree_container = useRef();
@@ -64,16 +72,19 @@ function Page3() {
                 t.svg_set_node_class("homebag", ["B"]);
                 page_state_loc+=1;
                 set_page_state(page_state_loc);
+                correcto(e, 'Correcto!');
             }
             if(page_state_loc === 2 && node.name==="G"){
                 t.svg_set_node_class("homebag", ["B","G"]);
                 page_state_loc+=1;
                 set_page_state(page_state_loc);
+                correcto(e, 'Correcto!');
             }
             if(page_state_loc === 4 && node.name==="H"){
                 t.svg_set_node_class("homebag", ["B","G","H"]);
                 page_state_loc+=1;
                 set_page_state(page_state_loc);
+                correcto(e, 'Correcto!');
             }
         });
 
@@ -92,6 +103,7 @@ function Page3() {
                     tx.nodes.find(node => node.name ==="A").bag.includes(11)){
                         page_state_loc+=1;
                         set_page_state(page_state_loc);
+                        correcto(e, 'Correcto!');
                     }
                 }
                 else if(page_state_loc === 3){
@@ -109,6 +121,7 @@ function Page3() {
                     tx.nodes.find(node => node.name ==="F").bag.includes(13)){
                         page_state_loc+=1;
                         set_page_state(page_state_loc);
+                        correcto(e, 'Correcto!');
                     }
                 }
                 else if(page_state_loc === 5){
@@ -124,6 +137,7 @@ function Page3() {
                     tx.nodes.find(node => node.name ==="W").bag.includes(15)){
                         page_state_loc+=1;
                         set_page_state(page_state_loc);
+                        correcto(e, 'Correcto!');
                     }
                 }
             });
@@ -139,7 +153,7 @@ function Page3() {
     return(
     <>
     <AnimatedPage>
-        <div className='sidebar'><div className='sidebar_bubble'>
+        <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
             <h2>Home Bag Part 2</h2>
             <hr/>
             <h2>Exercises</h2>
@@ -255,7 +269,7 @@ function Page3() {
             }
 
 
-        </div></div>
+        </SB></div></div>
         <div className='content'>
             <div className={'svg_container' + ((page_state%2===0 && page_state<=4) ? " interactive" : "")}>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>

@@ -11,9 +11,11 @@ import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import {split, cup, cap, list_is_same, T_2_TD} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
-
+import M from 'materialize-css/dist/js/materialize.min.js';
+import SB from './components/SB';
 
 function Page2() {
+    const collapsibleRef = useRef(null);
     const tree_container = useRef();
     const tree_containerx = useRef();
     const tree_containerux = useRef();
@@ -48,11 +50,17 @@ function Page2() {
         t.svg_set_node_class("homebag", ["F", "B"]);
 
     }, []);
+
+
+    useEffect(() => {
+        M.Collapsible.init(collapsibleRef.current);
+      }, []);
+
     
     return(
     <>
     <AnimatedPage>
-        <div className='sidebar'><div className='sidebar_bubble'>
+        <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
             <h2>Home Bag Part 1</h2>
             <p>
                 <i>
@@ -63,9 +71,12 @@ function Page2() {
 think about <InlineMath math="T"/> as a rooted subtree is to better describe what it means that a
 bag is above or below another bag.</p> */}
 
-<hr/>
-{ page_state === 0 && <>
-<h3>Figure 1. - <InlineMath math="T"/></h3>
+
+<ul class="collapsible" ref={collapsibleRef}>
+    <li className="active">
+
+        <div className="collapsible-header" onClick={() => set_page_state(0)}><h5>Figure 1. - <InlineMath math="T"/></h5></div>
+        <div className="collapsible-body">
 <p>The home bag of vertex <InlineMath math="x"/> is the bag containing <InlineMath math="x"/> that is closest to the root
 bag <InlineMath math="W"/>. We define the function <InlineMath math="hb(x)"/> to be the function
 that maps a vertex to its home bag in <InlineMath math="T"/>.
@@ -75,10 +86,11 @@ The following are the home bags for the vertices of <InlineMath math="X"/> in <I
     <li><InlineMath math="hb(11) = B"/></li>
 </ul>
 <p>They are highlighted with green in <InlineMath math="T"/>.</p>
-</>}
-
-{ page_state === 1 && <>
-<h3>Figure 2. - <InlineMath math="T^X"/></h3>
+        </div>
+    </li>
+    <li>
+        <div className="collapsible-header" onClick={() => set_page_state(1)}><h5>Figure 2. - <InlineMath math="T^X"/></h5></div>
+        <div className="collapsible-body">
 <p>Since we know that <InlineMath math="W"/> will be connected to <InlineMath math="X"/> when we create <InlineMath math="T'"/>, we can already see that the vertices of <InlineMath math="X"/> will not
     form a connected subtree in <InlineMath math="T'"/>, we know this as they already don't form a subtree in <InlineMath math="T"/> if we include the addition of <InlineMath math="X"/>.  This is fixed by for every <InlineMath math="x ∈ X"/>, <InlineMath math="x"/> is added into all bags in the path from the home 
     bag <InlineMath math="hb(x)"/> to the root bag <InlineMath math="W"/>. We define the set of vertices added to a given 
@@ -87,10 +99,11 @@ The following are the home bags for the vertices of <InlineMath math="X"/> in <I
 <p>To better illustrate what vertices needs to be added to <InlineMath math="T"/>, we create a 
 tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/> must be added to each bag.
 </p>
-</>}
-
-{ page_state === 2 && <>
-<h3>Figure 3. - <InlineMath math="T \cup T^X"/></h3>
+        </div>
+    </li>
+    <li>
+        <div className="collapsible-header" onClick={() => set_page_state(2)}><h5>Figure 3. - <InlineMath math="T \cup T^X"/></h5></div>
+        <div className="collapsible-body">
 <p>Now, if we take the union of each bag 
     in <InlineMath math="T"/> and <InlineMath math="T^X"/>, we 
     obtain the tree <InlineMath math="T \cup T^X"/>, as 
@@ -100,13 +113,10 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
 
     <p>By using this tree decomposition as a substitute for <InlineMath math="T"/> when we create <InlineMath math="T'"/>, we can 
         effectively resolve the issue of lacking continuity in <InlineMath math="T'"/>.</p>
-</>}
-<button className={page_state%3 === 0 ? "disable" : ""} onClick={() => {
-    if(page_state%3 !== 0) set_page_state((page_state-1)%3);
-}}><ion-icon name="arrow-back-outline"></ion-icon></button>
-<button className={page_state%3 === 2 ? "disable" : ""} onClick={() => {
-    if(page_state%3 !== 2) set_page_state((page_state+1)%3);
-}}><ion-icon name="arrow-forward-outline"/></button>
+
+        </div>
+    </li>
+</ul>
 
 {/* 
                 In Figure 7 (b) bags containing the vertices of X do not form connected
@@ -115,13 +125,12 @@ a valid tree decomposition, in the following way:
 For every x ∈ X, x is added into all bags in the path from the home bag
 hb(x) to the root bag W. We define the set of vertices added to a given bag B
 as BX</p> */}
-            <hr/>
             {page_state%3===2 ?
             <><Link to="/page3" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag Part 2</i></>
             :
             <><Link to="/page3" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag Part2</i></>
             }
-        </div></div>
+        </SB></div></div>
         <div className='content'>
             <div className='svg_container'>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>

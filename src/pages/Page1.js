@@ -9,13 +9,14 @@ import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import {split, cup, cap, list_is_same, T_2_TD} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
-
+import SB from './components/SB';
 
 function Page1() {
     const tree_container = useRef();
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const [td, setTd] = useState(null);
+    const [selected, setSelected] = useState(0);
 
     useEffect(() => {
         let X = [3, 9, 10];
@@ -35,12 +36,17 @@ function Page1() {
         // t.svg_set_node_class_if_contains("error", 9);
 // "y_div": 3, "y_offset": -120
     }, []);
+
+    const button_handler = (i) => {
+        td.svg_set_node_class_if_contains("error", i);
+        setSelected(i);
+    }
     
     return(
     <>
     <AnimatedPage>
     {/* " : "alert-circle-outline" */}
-        <div className='sidebar'><div className='sidebar_bubble'>
+        <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
             <h2>Continuity Issue</h2>
             <h1>Working on this at the moment</h1>
             <p>When building the new tree decomposition T’ it must still follow the 3 rules for a tree decomposition. But if the separator X contains vertices that are outside of W, T’ can break rule 3 that says:</p>
@@ -48,23 +54,23 @@ function Page1() {
             </p>
             <p>Below you can click the different buttons to highlight the bags containing that vertex, to see if they are connected.</p>
             <div className='button-box-5'>
-                <button onClick={() => td.svg_set_node_class_if_contains("error", 1)}>1 <ion-icon name="checkmark-outline" /></button>
-                <button onClick={() => td.svg_set_node_class_if_contains("error", 2)}>2 <ion-icon name="checkmark-outline" /></button>
-                <button onClick={() => td.svg_set_node_class_if_contains("error", 3)}>3 <ion-icon name="checkmark-outline" /></button>
-                <button onClick={() => td.svg_set_node_class_if_contains("error", 4)}>4 <ion-icon name="checkmark-outline" /></button>
-                <button onClick={() => td.svg_set_node_class_if_contains("error", 5)}>5 <ion-icon name="checkmark-outline" /></button>
+                <button onClick={() => button_handler(1)} className={selected===1 ? "error" : ""}>1 <ion-icon name="checkmark-outline" /></button>
+                <button onClick={() => button_handler(2)} className={selected===2 ? "error" : ""}>2 <ion-icon name="checkmark-outline" /></button>
+                <button onClick={() => button_handler(3)} className={selected===3 ? "error" : ""}>3 <ion-icon name="checkmark-outline" /></button>
+                <button onClick={() => button_handler(4)} className={selected===4 ? "error" : ""}>4 <ion-icon name="checkmark-outline" /></button>
+                <button onClick={() => button_handler(5)} className={selected===5 ? "error" : ""}>5 <ion-icon name="checkmark-outline" /></button>
             </div>
             <div className='button-box-5'>
-                <button onClick={() => td.svg_set_node_class_if_contains("error", 6)}>6 <ion-icon name="checkmark-outline" /></button>
-                <button onClick={() => td.svg_set_node_class_if_contains("error", 7)}>7 <ion-icon name="checkmark-outline" /></button>
-                <button onClick={() => td.svg_set_node_class_if_contains("error", 8)}>8 <ion-icon name="checkmark-outline" /></button>
-                <button className="disable" onClick={() => td.svg_set_node_class_if_contains("error", 9)}>9 <ion-icon name="close-outline" /></button>
-                <button className="disable" onClick={() => td.svg_set_node_class_if_contains("error", 10)}>10 <ion-icon name="close-outline" /></button>
+                <button onClick={() => button_handler(6)} className={selected===6 ? "error" : ""}>6 <ion-icon name="checkmark-outline" /></button>
+                <button onClick={() => button_handler(7)} className={selected===7 ? "error" : ""}>7 <ion-icon name="checkmark-outline" /></button>
+                <button onClick={() => button_handler(8)} className={selected===8 ? "error" : ""}>8 <ion-icon name="checkmark-outline" /></button>
+                <button onClick={() => button_handler(9)} className={selected===9 ? "error disable" : "disable"}>9 <ion-icon name="close-outline" /></button>
+                <button onClick={() => button_handler(10)} className={selected===10 ? "error disable" : "disable"}>10 <ion-icon name="close-outline" /></button>
             </div>
             <hr/>
         <Link to="/page2" className='button'>Continue <ion-icon name="arrow-forward-outline"></ion-icon></Link>
         <br/><i>Next: Home Bag Part 1</i>
-        </div></div>
+        </SB></div></div>
         <div className='content'>
             <div className='svg_container'>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>

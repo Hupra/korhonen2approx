@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
-
+import SB from './components/SB';
 
 function MinSplit() {
     const graph_container = useRef();
@@ -26,7 +26,7 @@ function MinSplit() {
     <>
     <AnimatedPage>
 
-    <div className='sidebar'><div className='sidebar_bubble'>
+    <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Minimum Split</h2>
         <p>As seen on the previous page, not all splits produce tree decompositions of equal quality.</p>
         <p>The algorithm evaluates the quality of a split by 
@@ -38,7 +38,7 @@ function MinSplit() {
         <br/><hr/>
         <Link to="#" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
         <br/><i>Next: Done?</i>
-    </div></div>
+    </SB></div></div>
     <div className='content'>
         <div className='svg_container'>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>

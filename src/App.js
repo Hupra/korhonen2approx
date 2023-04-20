@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Flow from './pages/Flow';
+import 'materialize-css/dist/css/materialize.min.css';
 import './styles/main.sass';
 import TreeDecomposition from './pages/TreeDecomposition';
 import Separators from './pages/Separators';

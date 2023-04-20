@@ -9,7 +9,7 @@ import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
 import {split, cup, cap, list_is_same, T_2_TD} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
-
+import SB from './components/SB';
 
 
 
@@ -216,7 +216,7 @@ function SplitTree2() {
     <>
     <AnimatedPage>
 
-    <div className='sidebar'><div className='sidebar_bubble'>
+    <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Splitting <InlineMath math="T"/></h2>
         <p>After finding a balanced separator and combining components to obtain a split <InlineMath math={"(C_1, C_2, C_3, X)"}/> of <InlineMath math={"W"}/>, we can create a new tree decomposition T' by spltting each bag in T based on the components in our split.</p>
         <p>We do this by iterating through each bag and generating three new bags, formed by determining the intersection between the original bag and the following sets, respectively: <InlineMath math="(C_1 \cup X)"/>, <InlineMath math="(C_2 \cup X)"/>, <InlineMath math="(C_3 \cup X)"/>
@@ -270,7 +270,7 @@ function SplitTree2() {
                 <button onClick={() => {show.push("B");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>B</button>
                 <button onClick={() => {show.push("X");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>X</button>
             </div> */}
-    </div></div>
+    </SB></div></div>
     <div className='content'>
         <div className='horizontal-split w1-3'>
             <div className='svg_container'>

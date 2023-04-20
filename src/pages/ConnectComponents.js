@@ -10,7 +10,7 @@ import {Graph, Tree} from "../classes.js"
 import {split} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
-
+import SB from './components/SB';
 
 function ConnectComponents() {
     const graph_container = useRef();
@@ -213,7 +213,7 @@ function ConnectComponents() {
     <>
     <AnimatedPage>
 
-    <div className='sidebar'><div className='sidebar_bubble'>
+    <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Connected Components</h2>
         Given a balanced split where the cardinality of every component's intersection with <InlineMath math="W"/> is <InlineMath math="\leq"/> <InlineMath math="|W|/2"/>. It is always possible to reduce the number of components to at most 3, by combining some of them.
         This can be done, by for instance always combining the two smallets components.
@@ -254,7 +254,7 @@ function ConnectComponents() {
         }
 
         </div>  
-    </div></div>
+    </SB></div></div>
     <div className='content'>
         <div className='cc'>
             <div className={'svg_popup'  + (show_G?"":" to_the_depths")}>

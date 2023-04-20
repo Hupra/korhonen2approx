@@ -9,7 +9,7 @@ import {Graph, Tree} from "../classes.js"
 import {split} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
-
+import SB from './components/SB';
 
 function Separators() {
     const graph_container = useRef();
@@ -90,11 +90,16 @@ function Separators() {
 
     }, []);
 
+    
+            
+    
+
   return (
     <>
     <AnimatedPage>
-    <div className='sidebar'><div className='sidebar_bubble'>
+    <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Separators</h2>
+        
         <p>A separator is a set of vertices <InlineMath math="X"/> in <InlineMath math="G"/> that when removed, splits <InlineMath math="G"/> into multiple separated components. 
         We denote these components as <InlineMath math="C_1,...,C_h"/> where <InlineMath math="h"/> represents the number of components.
         </p><hr></hr>
@@ -168,7 +173,7 @@ function Separators() {
         <><Link to="/balanced-separators" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Balanced Separators</i></>
         }
 
-    </div></div>
+    </SB></div></div>
     <div className='content'>
         
         <div className='svg_container interactive active'>

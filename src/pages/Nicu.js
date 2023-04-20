@@ -11,7 +11,7 @@ import {Graph, Tree} from "../classes.js"
 import AnimatedPage from './components/AnimatedPage';
 import * as DP from '../DP.js'
 import { nice } from 'd3';
-
+import SB from './components/SB';
   
 
 function Nicu() {
@@ -370,9 +370,9 @@ function Nicu() {
     <>
     <AnimatedPage>
 
-    {/* <div className='sidebar'><div className='sidebar_bubble'>
+    <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Nicu</h2>
-    </div></div> */}
+    </SB></div></div>
     <div className='content'>
         <div className='svg_container'>
             <div className='svg_label'>Nice Tree Decomposition - <InlineMath math="T"/></div>

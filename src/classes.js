@@ -151,7 +151,7 @@ export class Graph {
         this.links = graph.edges.map(link => {return {...link}});
         this.svg   = svg;
 
-        this.link_width  = 2;
+        this.link_width  = 5;
         this.link_color  = "#ccc";
         this.node_radius = 16;
         this.node_color  = "honeydew";
@@ -764,6 +764,12 @@ create_svg_node_labels(text_function = node => node.id) {
         this.svg_nodes.classed(clazz, node => node.bag.includes(vertex));
         this.svg_node_labels.classed(clazz, node => node.bag.includes(vertex));
         this.svg_links.classed(clazz, link => link.source.bag.includes(vertex) && link.target.bag.includes(vertex));
+        // this.svg_links.classed(clazz, link => link.target.bag.includes(vertex));
+    }
+    svg_set_node_class_if_contains_pair(clazz, u, v){
+        this.svg_nodes.classed(clazz, node => node.bag.includes(u) && node.bag.includes(v));
+        this.svg_node_labels.classed(clazz, node => node.bag.includes(u) && node.bag.includes(v));
+        this.svg_links.classed(clazz, link => link.source.bag.includes(u) && link.target.bag.includes(u) && link.source.bag.includes(v) && link.target.bag.includes(v));
         // this.svg_links.classed(clazz, link => link.target.bag.includes(vertex));
     }
 

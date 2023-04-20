@@ -12,7 +12,7 @@ import {split, T_2_TD} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
 import { max, setWith } from 'lodash';
-
+import SB from './components/SB';
 
 
 function SplitTree() {
@@ -157,7 +157,7 @@ function SplitTree() {
     <>
     <AnimatedPage>
 
-    <div className='sidebar'><div className='sidebar_bubble'>
+    <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Splitting <InlineMath math="T \cup T^X"/></h2>
         <p>By applying the updated method to guarantee that <InlineMath math="T'"/> will 
         satisfy the criteria for being a tree decompositions, we can 
@@ -211,7 +211,7 @@ function SplitTree() {
         :
         <><Link to="/min-split" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
         }
-    </div></div>
+    </SB></div></div>
     <div className='content'>
         <div className='horizontal-split w1-3'>
             <div className='svg_container interactive active'>

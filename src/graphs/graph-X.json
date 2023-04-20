@@ -25,7 +25,11 @@
         { "id": 23},
         { "id": 24},
         { "id": 25},
-        { "id": 26}
+        { "id": 26},
+        { "id": 27},
+        { "id": 28},
+        { "id": 29},
+        { "id": 30}
     ],
     "edges": [
         { "source": 1, "target": 2 },
@@ -56,6 +60,15 @@
         { "source": 1, "target": 23 },
         { "source": 23, "target": 24 },
         { "source": 24, "target": 25 },
-        { "source": 1, "target": 26 }
+        { "source": 25, "target": 26 },
+        { "source": 25, "target": 26 },
+        { "source": 26, "target": 27 },
+        { "source": 27, "target": 28 },
+        { "source": 28, "target": 29 },
+        { "source": 29, "target": 30 },
+        { "source": 30, "target": 23 },
+        { "source": 24, "target": 30 },
+        { "source": 25, "target": 29 },
+        { "source": 26, "target": 28 }
     ]
 }

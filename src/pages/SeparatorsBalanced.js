@@ -12,7 +12,7 @@ import {Graph, Tree} from "../classes.js"
 import {split} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
-
+import SB from './components/SB';
 
 
 function SeparatorsBalanced() {
@@ -113,7 +113,7 @@ function SeparatorsBalanced() {
   return (
     <>
     <AnimatedPage>
-    <div className='sidebar'><div className='sidebar_bubble'>
+    <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Balanced Separators</h2>
         <p>A <InlineMath math="{balanced}"/> separator <InlineMath math="X"/> of <InlineMath math="W"/> is 
         a separator, that when removed from <InlineMath math="G"/> splits the vertices 
@@ -199,7 +199,7 @@ function SeparatorsBalanced() {
         <><Link to="/connect-components" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Connected Components</i></>
         }
 
-    </div></div>
+    </SB></div></div>
     <div className='content'>
     <div className='svg_container interactive active'>
             <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
