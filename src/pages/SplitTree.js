@@ -8,7 +8,7 @@ import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
-import {split, T_2_TD} from "../functions.js"
+import {split, T_2_TD, correcto} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
 import { max, setWith } from 'lodash';
@@ -21,6 +21,7 @@ function SplitTree() {
     const tree_container = useRef();
     const tree_container2 = useRef();
     const tree_container3 = useRef();
+    const [isFocus, setIsFocus] = useState(true);
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const [width, setWidth] = useState(0);
@@ -67,7 +68,8 @@ function SplitTree() {
         setComponents(C);
 
         // Add an event listener to the nodes to handle the click event
-        g.svg_nodes.on("click", function() {
+        g.svg_nodes.on("click", function(event, d) {
+            setIsFocus(false);
 
             const node = d3.select(this);
             const node_id = parseInt(node.attr("idx"));
@@ -144,10 +146,12 @@ function SplitTree() {
 
 
             // update elements
-            
-            setWidth(Tp.nodes.reduce((acc, node) => Math.max(acc, node.bag.length-1), 0))
+            let wit = Tp.nodes.reduce((acc, node) => Math.max(acc, node.bag.length-1), 0)
+            setWidth(wit)
             setSeparator(X);
             setComponents(C);
+            if(wit===4) correcto(event.clientX, event.clientY, "Perfect!")
+
         });
 
 
@@ -214,7 +218,7 @@ function SplitTree() {
     </SB></div></div>
     <div className='content'>
         <div className='horizontal-split w1-3'>
-            <div className='svg_container interactive active'>
+            <div className={isFocus?'svg_container interactive active focus-svg':'svg_container interactive active'}>
                 <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
                 <div className='svg_label'>Graph - <InlineMath math="G"/></div>
             </div>

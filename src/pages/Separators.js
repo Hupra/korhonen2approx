@@ -6,14 +6,17 @@ import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
-import {split} from "../functions.js"
+import {split, correcto} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
 import SB from './components/SB';
+import M from 'materialize-css';
+
 
 function Separators() {
     const graph_container = useRef();
     const graph_container2 = useRef();
+    const [isFocus, setIsFocus] = useState(true);
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const w = tree.nodes.find(node => node.name === "W");
@@ -44,7 +47,8 @@ function Separators() {
         setComponents(C);
 
         // Add an event listener to the nodes to handle the click event
-        g.svg_nodes.on("click", function() {
+        g.svg_nodes.on("click", function(event, d) {
+            setIsFocus(false);
 
             const node = d3.select(this);
             const node_id = parseInt(node.attr("idx"));
@@ -85,11 +89,17 @@ function Separators() {
 
             setSeparator(X);
             setComponents(C);
+            if(C.length>=4) correcto(event.clientX, event.clientY, "Perfect!")
         });
 
 
     }, []);
 
+    useEffect(() => {
+        const tabs = document.querySelector('#sep-tabs');
+        M.Tabs.init(tabs);
+    }, []);
+    
     
             
     
@@ -104,10 +114,22 @@ function Separators() {
         We denote these components as <InlineMath math="C_1,...,C_h"/> where <InlineMath math="h"/> represents the number of components.
         </p><hr></hr>
         <h2>Exercises</h2>
+
+        <ul id="sep-tabs" className="tabs">
+            <li className="tab col s3">
+                <a className="active" href="#sep-swipe1">1</a>
+            </li>
+            <li className="tab col s3">
+                <a href="#sep-swipe2">2</a>
+            </li>
+        </ul>
+
+
+        <div id="sep-swipe1" className="col s12 tab-content">
         <h4>Description</h4>
         
         <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
-
+        
         <h4>Tasks</h4>
         <div className='task'>
             <span>Split into 2 components.</span>
@@ -165,6 +187,11 @@ function Separators() {
                 </div></div>
             </React.Fragment>
         )})}
+        </div>
+        <div id="sep-swipe2" className="col s12 tab-content">
+        Test 2
+        </div>
+
         <br/>
         <hr/>
         {components.length>=4 ?
@@ -175,8 +202,7 @@ function Separators() {
 
     </SB></div></div>
     <div className='content'>
-        
-        <div className='svg_container interactive active'>
+        <div className={isFocus ? "svg_container interactive active focus-svg":'svg_container interactive active'}>
             <svg id="nolo" ref={graph_container} className="cy" width="100%" height="100%"></svg>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
         </div>

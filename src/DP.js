@@ -96,7 +96,7 @@ export function init_U(n, h) {
     const handler = {
         get(target, property) {
             if (!(property in target)) {
-                target[property] = -1;
+                target[property] = 42069;
             }
             return target[property];
         }

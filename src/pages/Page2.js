@@ -47,6 +47,9 @@ function Page2() {
         t.render();
         tx.render();
         tux.render();
+        t.svg_set_node_and_edge_if_name("xclude", ["X"]);
+        tx.svg_set_node_and_edge_if_name("xclude", ["X"]);
+        tux.svg_set_node_and_edge_if_name("xclude", ["X"]);
         t.svg_set_node_class("homebag", ["F", "B"]);
 
     }, []);

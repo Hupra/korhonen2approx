@@ -15,6 +15,7 @@ $sebbe: 'https://www.onlygfx.com/wp-content/uploads/2019/02/7-noise-texture-over
 
 body
     font-family: 'Roboto Slab', serif
+    
 
 .hidden
     display: none !important
@@ -77,6 +78,18 @@ text.homebag
 .w1-2
     width: 50% !important
 
+rect.xclude
+    ry: 0
+    rx: 0
+    fill: #252525
+    stroke-dasharray: 2,2
+    stroke-width: 2
+    stroke: rgb(117, 117, 117)
+line.xclude
+    stroke-width: 2
+    stroke-dasharray: 2,2
+    stroke: rgb(117, 117, 117)
+
 #root
     background-color: #151515
     width: 100%
@@ -84,6 +97,7 @@ text.homebag
     display: flex
     justify-content: center
     align-items: center
+    overflow: hidden
 
 .container
     width: 100%
@@ -139,7 +153,77 @@ text.homebag
             // background-color: $cx
             border-color: $cx
             color: $cx
-            
+
+.location-full
+    
+    // pointer-events: none
+    position: absolute
+    background: #151515
+    width: 200px
+    display: flex
+    padding: $gap
+    gap: $gap
+    // padding: $gap 20px 20px $gap
+    flex-direction: column
+    z-index: 5
+    // background-color: #151515
+    // border-right: 2px solid black
+    border-bottom-right-radius: 5px
+    // border-top-right-radius: 5px
+    transform: translateX(-140px)
+    opacity: 0
+    transition-property: transform, opacity
+    transition-duration: 0.2s, 0.2s
+    transition-timing-function: ease-in-out, ease-in-out
+    transition-delay: 0s, 0.2s
+    a
+        width: 100%
+        // position: absolute
+        border: $border-settings
+        display: flex
+        justify-content: center
+        align-items: center
+        height: 42px
+        border-radius: 7px
+        background: #252525
+        color: white
+        text-decoration: none
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
+        font-wight: 600
+        position: relative
+        
+        // left: -200px
+
+        ion-icon
+            font-size: 20px
+
+        &.active
+            // background-color: $cx
+            border-color: $cx
+            color: $cx
+
+
+.location-full.active
+    transform: translateX(0px)
+    opacity: 1
+    transition-property: transform, opacity
+    transition-duration: 0.2s, 0s
+    transition-timing-function: ease-in-out, ease-in-out
+    transition-delay: 0s, 0s
+
+.location, .location-full
+    a
+        cursor: pointer
+
+.main
+    
+    transition-property: transform
+    transition-duration: 0.2s
+    transition-timing-function: ease-in-out
+    transition-delay: 0s
+.main.active
+    transform: translateX(140px)
+
 .animated-page
     position: absolute
 .main
@@ -430,9 +514,9 @@ circle.X
     stroke: #303030
     // stroke: #202020 !important
 circle
-    stroke-width: 2px !important
+    stroke-width: 2px
 circle.node_in_w
-    stroke-width: 2px !important
+    stroke-width: 2px
     filter: drop-shadow(0px 0px 2px rgba(0,0,0, 1))
     stroke: red
 .opacity
@@ -602,7 +686,11 @@ button, .button
         text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000
         color: white
         border-radius: 50%
-
+    &.combine-btn
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%,-50%)
 .button-box-5
     display: flex
     .button, button
@@ -738,15 +826,106 @@ h6, .h6
 .tab-content
     margin-top: 10px
     margin-bottom: 10px
-    padding: 10px
+    padding: 5px 10px
     border-left: 5px solid grey
 
 .indicator
     background-color: $cx !important
     height: 3px !important
-.tab    
+
+.tab, .tabs
+    height: 30px !important
+    line-height: 30px !important
+    text-transform: none !important
     a
         color: black !important
-
+.tab-content
+    &>:first-child
+        margin-top: 0
+    
 .tabs .tab a:focus, .tabs .tab a:focus.active, .tabs .tab a.active
     background-color: lighten(orange, 40%) !important
+
+button:active
+    background-color: orange !important
+
+
+@keyframes continue
+    0%
+        border-width: 4px
+        transform: scale(1)
+    80%
+        border-width: 1px
+        transform: scale(1.2,1.8)
+    100%
+        opacity: 0
+
+.focus
+    &:before
+        z-index: 9999999999
+        border: 1px solid
+        border-color: inherit
+        border-radius: inherit
+        content: ''
+        display: inline-block
+        position: absolute
+        top: -1px
+        left: -1px
+        bottom: -1px
+        right: -1px
+        
+        -webkit-animation: continue 2s cubic-bezier(0.2, 1, 0.3, 1) both infinite
+        animation: continue 2s cubic-bezier(0.2, 1, 0.3, 1) both infinite
+
+@keyframes circleSVG
+    // 0%
+    //     stroke-width: inherit
+    // 20%
+    //     // stroke-width: 3
+    //     r: 24
+    //     // stroke-dasharray: 4,2
+    //     // fill: orange
+
+    // 100%
+    //     stroke-width: inherit
+
+    0%
+        opacity: 0
+
+    20%
+        opacity: 1
+
+    
+    80%
+        opacity: 0
+        r: 28
+    100%
+        opacity: 0
+
+    
+
+@keyframes rectSVG
+    0%
+        stroke-opacity: 1
+    20%
+        // stroke-opacity: 0
+        stroke: rgb(150,150,150)
+        // stroke-opacity: 0
+        // fill: #202020
+    100%
+        stroke-opacity: 1
+
+.nodes-bg
+    circle
+        fill: transparent
+        stroke: #151515
+        stroke: #606060
+        stroke-width: 2px
+        di
+.focus-svg
+    .nodes-bg
+        circle:not(.hidden)
+            cursor: auto
+            animation: circleSVG 2s cubic-bezier(0.2, 1, 0.3, 1) both infinite
+    rect:not(.xclude)
+        animation: rectSVG 3s cubic-bezier(0.2, 1, 0.5, 1) both infinite

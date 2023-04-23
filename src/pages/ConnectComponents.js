@@ -7,7 +7,7 @@ import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import forceBoundary from 'd3-force-boundary';
 import {Graph, Tree} from "../classes.js"
-import {split} from "../functions.js"
+import {split, correcto} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
 import SB from './components/SB';
@@ -18,6 +18,7 @@ function ConnectComponents() {
     const graph_container_c1 = useRef();
     const graph_container_c2 = useRef();
     const graph_container_c3 = useRef();
+    const [isFocus, setIsFocus] = useState(true);
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const [page_ready, set_page_ready] = useState(false);
@@ -82,6 +83,7 @@ function ConnectComponents() {
                 gcx[i].svg_show_only(gca[i]);
                 gcx[i].svg_nodes.call(d3.drag()
                 .on('start', (e,d) => {
+                    setIsFocus(false);
                     gcx[i].simulation.force("boundary", null);
                     gcx[i].simulation.force('charge', null);
                     gcx[i].simulation.force('center', null);
@@ -170,39 +172,44 @@ function ConnectComponents() {
 
                     // for (let i = 0; i < gcx.length; i++) gcx[i].simulation.restart();
                     set_container_size(new_container_size);
+                    console.log(e)
+                    if( new_container_size[0]<=W.bag.length/2 && 
+                        new_container_size[1]<=W.bag.length/2 && 
+                        new_container_size[2]<=W.bag.length/2) correcto(e.sourceEvent.clientX, e.sourceEvent.clientY, "You did it!")
                 }));
             }
         }
         copy_g2_state();
 
+        // 
         // Add an event listener to the nodes to handle the click event
-        g.svg_nodes.on("click", function() {
+        // g.svg_nodes.on("click", function(event,d) {
 
-            const node = d3.select(this);
-            const node_id = parseInt(node.attr("idx").toString());
+        //     const node = d3.select(this);
+        //     const node_id = parseInt(node.attr("idx").toString());
 
-            if(!node.classed("X")){
-                // remove node from graph and save removed nodes+links in arrays here
-                const removed  = g2.remove_node(node_id);
-                removed_nodes.push(...removed.nodes);
-                removed_links.push(...removed.links);
-            }else{
-                console.log("test", removed_nodes, node_id);
-                // add nodes+links back into graph
-                // 1. find node in the array saving removed nodes
-                // 2. find links in the array saving removed links,
-                //    and make sure the node it's connected to is in the graph.
-                const nodes = split(removed_nodes, node => node.id === node_id);
-                const links = split(removed_links, link => {
-                    return (link.source.id===node_id && !removed_nodes.some(node => node.id === link.target.id))
-                    ||     (link.target.id===node_id && !removed_nodes.some(node => node.id === link.source.id))
-                });
-                removed_nodes = nodes.keep; //maybe use ref
-                removed_links = links.keep;
-                g2.add_links(links.remove);
-                g2.add_nodes(nodes.remove);
-            }
-        });
+        //     if(!node.classed("X")){
+        //         // remove node from graph and save removed nodes+links in arrays here
+        //         const removed  = g2.remove_node(node_id);
+        //         removed_nodes.push(...removed.nodes);
+        //         removed_links.push(...removed.links);
+        //     }else{
+        //         console.log("test", removed_nodes, node_id);
+        //         // add nodes+links back into graph
+        //         // 1. find node in the array saving removed nodes
+        //         // 2. find links in the array saving removed links,
+        //         //    and make sure the node it's connected to is in the graph.
+        //         const nodes = split(removed_nodes, node => node.id === node_id);
+        //         const links = split(removed_links, link => {
+        //             return (link.source.id===node_id && !removed_nodes.some(node => node.id === link.target.id))
+        //             ||     (link.target.id===node_id && !removed_nodes.some(node => node.id === link.source.id))
+        //         });
+        //         removed_nodes = nodes.keep; //maybe use ref
+        //         removed_links = links.keep;
+        //         g2.add_links(links.remove);
+        //         g2.add_nodes(nodes.remove);
+        //     }
+        // });
 
         set_page_ready(true);
 
@@ -255,7 +262,7 @@ function ConnectComponents() {
 
         </div>  
     </SB></div></div>
-    <div className='content'>
+    <div className={isFocus ? "content focus-svg":'content'}>
         <div className='cc'>
             <div className={'svg_popup'  + (show_G?"":" to_the_depths")}>
                 <div className='svg_container'>

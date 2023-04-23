@@ -21,13 +21,15 @@ import { AnimatePresence } from 'framer-motion';
 
 
 function App() {
+  const [fullNav, setFullNav] = useState(false);
   useEffect(() => {
   }, []);
   const location = useLocation();
 
   return (
       <div className='container'>
-        <div className='location'>
+        <div className={!fullNav ? ' location active' : 'location'}>
+        <a href='' onClick={() => setFullNav(!fullNav)}><ion-icon name="reorder-four-outline"></ion-icon></a>
           {/* <NavLink activeClassName='active' to="/flow">Flow</NavLink> */}
           <NavLink exact activeClassName='active' to="/"><ion-icon name="home-outline"></ion-icon></NavLink>
           <NavLink activeClassName='active' to="/treedecomposition"><ion-icon name="leaf-outline"></ion-icon></NavLink>
@@ -41,18 +43,24 @@ function App() {
           <NavLink activeClassName='active' to="/splitting-tree">S2</NavLink>
           <NavLink activeClassName='active' to="/min-split">MS</NavLink>
           <NavLink activeClassName='active' to="/nicu">N</NavLink>
+    </div>
 
-          {/* <NavLink exact activeClassName='active' to="/"><ion-icon name="home-outline"></ion-icon></NavLink>
-          <NavLink activeClassName='active' to="/treedecomposition">Tree Decomposition</NavLink>
-          <NavLink activeClassName='active' to="/separators">Separators</NavLink>
-          <NavLink activeClassName='active' to="/balanced-separators">Balanced Separators</NavLink>
-          <NavLink activeClassName='active' to="/connect-components">Connect Components</NavLink>
-          <NavLink activeClassName='active' to="/splitting-tree2">Split Tree Story</NavLink>
-          <NavLink activeClassName='active' to="/page1">Page1</NavLink>
-          <NavLink activeClassName='active' to="/page2">Page2</NavLink>
-          <NavLink activeClassName='active' to="/page3">Page3</NavLink>
-          <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink> */}
-        </div>
+    <div className={fullNav ? ' location-full active' : 'location-full'}>
+          {/* <NavLink activeClassName='active' to="/flow">Flow</NavLink> */}
+          <a onClick={() => setFullNav(!fullNav)}><ion-icon name="close-outline"></ion-icon></a>
+          <NavLink onClick={() => setFullNav(false)} exact activeClassName='active' to="/">Home</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/treedecomposition">Tree Decomposition</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/separators">Separators</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/balanced-separators">Balanced Separatos</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/connect-components">Connected Components</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/splitting-tree2">Splitting T</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page1">Continuity Issue</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page2">Home Bag Part 1</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page3">Home Bag Part 2</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/splitting-tree">Splitting T∪TX</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/min-split">Minimum Split</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/nicu">Nicu</NavLink>
+    </div>
         {/* <div className='header'>
           <NavLink exact activeClassName='active' to="/">Home</NavLink>
           <NavLink activeClassName='active' to="/flow">Flow</NavLink>
@@ -63,9 +71,11 @@ function App() {
           <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink>
           <NavLink activeClassName='active' to="/connect-components">Connect Components</NavLink>
         </div> */}
-        <div className='main'>
+        
+        <div className={fullNav ? ' main active' : 'main'}>
           {/* <AnimatePresence mode='wait'> */}
           <AnimatePresence>
+            
             <Routes location={location} key={location.pathname}>
               <Route path="/"                     element={<Home />} />
               <Route path="flow/*"                element={<Flow />} />

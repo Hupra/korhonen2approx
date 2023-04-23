@@ -9,7 +9,7 @@ import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
 import {Graph, Tree} from "../classes.js"
-import {split} from "../functions.js"
+import {split, correcto} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
 import SB from './components/SB';
@@ -19,6 +19,7 @@ function SeparatorsBalanced() {
     const graph_container = useRef();
     const graph_container2 = useRef();
     const tree_container = useRef();
+    const [isFocus, setIsFocus] = useState(true);
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const W = tree.nodes.find(node => node.name === "W");
@@ -60,7 +61,8 @@ function SeparatorsBalanced() {
         
 
         // Add an event listener to the nodes to handle the click event
-        g.svg_nodes.on("click", function() {
+        g.svg_nodes.on("click", function(event, d) {
+            setIsFocus(false);
 
             const node = d3.select(this);
             const node_id = parseInt(node.attr("idx"));
@@ -105,6 +107,7 @@ function SeparatorsBalanced() {
 
             setSeparator(X);
             setComponents(C);
+            if(C.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)<=4) correcto(event.clientX, event.clientY, "Perfect!")
         });
 
 
@@ -131,7 +134,7 @@ function SeparatorsBalanced() {
         </div>
         <div className='task'>
             <span><InlineMath math="\forall i: |W \cap C_i| \leq |W|/2"/>.</span>
-            <ion-icon name={components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)
+            <ion-icon name={components.length>=2 && components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)
             <=4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
 
@@ -193,7 +196,7 @@ function SeparatorsBalanced() {
             </React.Fragment>
         )})}
         <br></br><hr></hr>
-        {components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)<=4 ?
+        {components && components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)<=4 ?
         <><Link to="/connect-components" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Connected Components</i></>
         :
         <><Link to="/connect-components" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Connected Components</i></>
@@ -201,7 +204,7 @@ function SeparatorsBalanced() {
 
     </SB></div></div>
     <div className='content'>
-    <div className='svg_container interactive active'>
+        <div className={isFocus ? "svg_container interactive active focus-svg":'svg_container interactive active'}>
             <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
         </div>

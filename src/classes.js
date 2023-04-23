@@ -199,6 +199,8 @@ export class Graph {
     }
 
     create_svg_nodes(){
+        this.create_svg_nodes_bg() // bg nodes
+
         return this.svg
         .append('g')
         .attr('class', 'nodes')
@@ -227,6 +229,16 @@ export class Graph {
                 d.fy = null;
             }
         ));
+    }
+    create_svg_nodes_bg(){
+        this.node_bg = this.svg
+        .append('g')
+        .attr('class', 'nodes-bg')
+        .selectAll('circle')
+        .data(this.nodes)
+        .enter().append('circle')
+        .attr('r', this.node_radius)
+        .attr('idx', node => node.id);
     }
     create_svg_node_labels(text_function = node => node.id){
         return this.svg
@@ -338,6 +350,11 @@ export class Graph {
                 .attr("x", d => d.x - 0)
                 .attr("y", d => d.y -11); // adjust the y-coordinate as needed to center the text vertically        
             }
+            if(this.node_bg){
+                this.node_bg
+                .attr('cx', d => d.x) // use 'cx' and 'cy' attributes to set the circle center
+                .attr('cy', d => d.y) // use 'cx' and 'cy' attributes to set the circle center    
+            }
             
         });
     }
@@ -363,6 +380,7 @@ export class Graph {
 
     svg_show_only(show){
         this.svg_nodes.classed("hidden", d => !show.includes(d.id));
+        this.node_bg.classed("hidden", d => !show.includes(d.id));
         this.svg_node_W_label.classed("hidden", d => !show.includes(d.id));
         this.svg_node_labels.classed("hidden", d => !show.includes(d.id));
         this.svg_links.classed("hidden", d => !show.includes(d.source.id) || !show.includes(d.target.id)); //show sebbe when this is hidden
@@ -389,7 +407,7 @@ export class Tree {
         this.link_color = "#757575";
         
         //   this.link_color = "black";
-        this.link_width = 2;
+        this.link_width = 4;
         
         this.charge = -4_000;
 
@@ -459,73 +477,6 @@ export class Tree {
         .attr('stroke-width', this.link_width);
     }
 
-    // catmullRomSpline(points, tension = 0.5, closed = true) {
-    //     if (points.length < 2) return '';
-    
-    //     const path = d3.path();
-    //     const size = points.length;
-    //     path.moveTo(points[0][0], points[0][1]);
-    
-    //     for (let i = 0; i < size - 1; i++) {
-    //         const p0 = points[(i - 1 + size) % size];
-    //         const p1 = points[i];
-    //         const p2 = points[(i + 1) % size];
-    //         const p3 = points[(i + 2) % size];
-    
-    //         const x1 = (-tension * p0[0] + (2 - tension) * p1[0] + tension * p2[0]) / 2;
-    //         const y1 = (-tension * p0[1] + (2 - tension) * p1[1] + tension * p2[1]) / 2;
-    //         const x2 = (tension * p1[0] + (2 - tension) * p2[0] - tension * p3[0]) / 2;
-    //         const y2 = (tension * p1[1] + (2 - tension) * p2[1] - tension * p3[1]) / 2;
-        
-    //         path.curveTo(x1, y1, x2, y2, p2[0], p2[1]);
-    //     }
-        
-    //     if (closed) {
-    //         const p0 = points[size - 2];
-    //         const p1 = points[size - 1];
-    //         const p2 = points[0];
-    //         const p3 = points[1];
-        
-    //         const x1 = (-tension * p0[0] + (2 - tension) * p1[0] + tension * p2[0]) / 2;
-    //         const y1 = (-tension * p0[1] + (2 - tension) * p1[1] + tension * p2[1]) / 2;
-    //         const x2 = (tension * p1[0] + (2 - tension) * p2[0] - tension * p3[0]) / 2;
-    //         const y2 = (tension * p1[1] + (2 - tension) * p2[1] - tension * p3[1]) / 2;
-
-    //         path.curveTo(x1, y1, x2, y2, p2[0], p2[1]);
-    //         path.closePath();
-    //     }
-    //     return path;
-    // }
-
-    // catmullRomSpline(points, tension = 0.5, closed = true) {
-    //     if (points.length < 2) return '';
-    
-    //     const path = d3.path();
-    //     const lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(tension));
-    
-    //     if (closed) {
-    //         path.moveTo(points[0][0], points[0][1]);
-    //         path.lineTo(points[1][0], points[1][1]);
-    //         path.closePath();
-    //     }
-    
-    //     const pathData = lineGenerator(closed ? points.concat([points[0]]) : points);
-    //     path.path(pathData);
-    //     return path.toString();
-    // }
-
-    // catmullRomSpline(points, tension = 0.5, closed = true) {
-    //     if (points.length < 2) return '';
-    
-    //     const lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(tension));
-    
-    //     if (closed) {
-    //         points = points.concat([points[0]]);
-    //     }
-    
-    //     const pathData = lineGenerator(points);
-    //     return pathData;
-    // }
     catmullRomSpline(points, tension = 0.5, closed = true) {
         if (points.length < 2) return '';
     
@@ -759,6 +710,12 @@ create_svg_node_labels(text_function = node => node.id) {
             return node.sup && node.name===sa[0] && node.sup===sa[1]
         }));
         this.svg_node_labels.classed(clazz, node => errors.includes(node.name));
+    }
+    svg_set_node_and_edge_if_name(clazz, names){
+        let indices = this.nodes.filter(node => names.includes(node.name)).map(node => node.id);
+        this.svg_nodes.classed(clazz, node => indices.includes(node.id));
+        this.svg_node_labels.classed(clazz, node => indices.includes(node.id));
+        this.svg_links.classed(clazz, link => indices.includes(link.source.id) || indices.includes(link.target.id));
     }
     svg_set_node_class_if_contains(clazz, vertex){
         this.svg_nodes.classed(clazz, node => node.bag.includes(vertex));

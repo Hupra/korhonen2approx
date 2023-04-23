@@ -95,13 +95,13 @@ function TreeDecomposition() {
         <h3>Learn more</h3>
         <div>For more information about tree decomposition check out <a href='https://frederikjorgensen.github.io/graph-width/'>https://frederikjorgensen.github.io/graph-width/</a></div>
         <br/><hr/>
-        <Link to="/separators" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
+        <Link to="/separators" className='button focus'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
         <br/><i>Next: Separators</i>
     </SB>
     </div>
     </div>
     <div className='content'>
-        <div className='svg_container interactive'>
+        <div className='svg_container interactive focus-svg'>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
             <svg ref={graph_container} className="cy" width="100%" height="100%"></svg>
         </div>
