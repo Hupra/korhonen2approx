@@ -1,0 +1,9 @@
+{
+    "nodes": [
+        { "id": 1, "bag": [1,2,3,4,5,6,7,8,9,12,13,16], "color": "#fba0e3", "name": "W"},
+        { "id": 2, "bag": [6,7,10,11,13,14,15,16], "color": "lightblue", "name": "A"}
+    ],
+    "edges": [
+        { "source": 1, "target": 2}
+    ]
+}
