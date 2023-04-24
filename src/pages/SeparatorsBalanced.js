@@ -35,7 +35,7 @@ function SeparatorsBalanced() {
         let graph2 = {nodes: nodes1.map(node => {return {...node, "id" : node.id + "'"}}), edges: edges2};
 
         const g  = new Graph(graph1, d3.select(graph_container.current));
-        const g2 = new Graph(graph1, d3.select(graph_container2.current));
+        const g2 = new Graph(graphs, d3.select(graph_container2.current));
         const t  = new Tree(tree, d3.select(tree_container.current));
         g.W = W.bag;
         g2.W = W.bag;

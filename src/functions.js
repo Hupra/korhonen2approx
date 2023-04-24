@@ -94,7 +94,6 @@ export function T_2_TD(tree, C, X){
     }
     for (let j = 0; j < tree.edges.length; j++) {
       const tree_edge = {...tree.edges[j]};
-      console.log(tree_edge);
       tree_edge.source = tree_edge.source + (i*tree.nodes.length);
       tree_edge.target = tree_edge.target + (i*tree.nodes.length);
       Tp.edges.push(tree_edge);

@@ -405,6 +405,7 @@ export class Tree {
         this.nodes = graph.nodes.map(node => {return {...node}});
         this.links = graph.edges.map(link => {return {...link}});
         this.svg = svg;
+        this.blobs = [];
 
         this.link_color = "#ccc";
         this.link_color = "white";
@@ -425,6 +426,7 @@ export class Tree {
         this.svg.selectAll("*").remove();
         this.simulation      = this.create_svg_simulation();
         // this.svg_groups      = this.create_svg_groups();
+        this.create_blobs();
         this.create_svg_groups();
         this.svg_links       = this.create_svg_links();
         this.svg_nodes       = this.create_svg_nodes();
@@ -554,8 +556,100 @@ export class Tree {
         .attr('stroke', 'black') // Set the stroke color for group shapes
         // .attr('fill', 'rgba(169, 169, 169, 0.1)') // Set the fill color with some transparency
         .attr("class", (d) => "C" + d.id.toString()) // assign a different color to each letter
-        .attr('stroke-width', 2) // Set the stroke width for group shapes
-        .attr('opacity', 0.25); // Set the stroke width for group shapes
+        .attr('stroke-width', 2); // Set the stroke width for group shapes
+    }
+
+    create_blobs(){
+
+        this.svg_blobs = this.svg
+        .append('g')
+        .attr('class', 'blobs')
+        .selectAll('path');
+
+        this.svg_blobs_title = this.svg
+        .append('g')
+        .attr('class', 'blobs-title')
+        .selectAll('text');
+    }
+
+    update_blobs(){
+        let counter = 1;
+
+        let data = this.blobs.map(blob => {
+
+            let nodes = blob["bags"].flatMap(bagname => this.nodes.filter(node => node.name === bagname));
+            
+            let points = nodes.flatMap(node => {
+                const padding = 20;
+                const move = (Math.max(24, node.bag.length*20)/2)+padding;
+                return [
+                    [node.x-move, node.y+12+padding], 
+                    [node.x-move, node.y-12-padding-15], 
+                    [node.x+move, node.y+12+padding],
+                    [node.x+move, node.y-12-padding-15],
+                ];
+            });
+
+            return { "id": counter++, "class": blob["class"], "polygon": d3.polygonHull(points), "text": blob["text"]?blob["text"]:""}
+        });
+
+        let scaleFactor = 1;
+        
+        this.svg_blobs = this.svg_blobs
+        .data(data, data => data.id)
+        .join('path')
+        .attr("d", (d) => {
+            if (d && d.polygon) {
+                // Calculate the centroid of the polygon
+                const centroid = d3.polygonCentroid(d.polygon);
+
+                const scaledPolygon = d.polygon.map((point) => [
+                    centroid[0] + (point[0] - centroid[0]) * scaleFactor,
+                    centroid[1] + (point[1] - centroid[1]) * scaleFactor,
+                ]);
+                
+                return this.catmullRomSpline(scaledPolygon, 0.5, true);
+                // return "M" + scaledPolygon.join("L") + "Z";
+            } else {
+                return null;
+            }
+        })
+        // .attr('d', d => (d.polygon ? 'M' + d.polygon.join('L') + 'Z' : null))
+        .attr('stroke', 'black') // Set the stroke color for group shapes
+        // .attr('fill', 'rgba(169, 169, 169, 0.1)') // Set the fill color with some transparency
+        .attr("class", (d) => d.class) // assign a different color to each letter
+        .attr('stroke-width', 4) // Set the stroke width for group shapes
+        .attr('opacity', 1); // Set the stroke width for group shapes
+
+
+        this.svg_blobs_title = this.svg_blobs_title
+        .data(data, data => data.id)
+        .join('text')
+        .text((d) => d.text)
+        .attr('x', (d) => {
+            if (d && d.polygon) {
+                const topPoint = d.polygon.reduce((minPoint, point) => point[1] < minPoint[1] ? point : minPoint);
+                return topPoint[0]-(d.text.length)*5;
+            } else {
+                return null;
+            }
+        })
+        .attr('y', (d) => {
+            if (d && d.polygon) {
+                const topPoint = d.polygon.reduce((minPoint, point) => point[1] < minPoint[1] ? point : minPoint);
+                return topPoint[1] - 25;
+            } else {
+                return null;
+            }
+        })
+        .attr('font-family', 'sans-serif') // Set the font-family for text
+        .attr('font-size', '12px') // Set the font-size for text
+        .attr("class", (d) => d.class) // assign a different color to each letter
+        .attr('stroke-width', 4) // Set the stroke width for group shapes
+        .attr('opacity', 1) // Set the stroke width for group shapes
+        .attr('fill', 'white');
+
+
     }
 
 
@@ -652,8 +746,12 @@ create_svg_node_labels(text_function = node => node.id) {
         const h = this.svg.node().getBoundingClientRect().height;
 
         this.nodes.forEach(node => {
-            if(node.y_div && node.y_offset){
-                node.fx = w/2;
+            if(node.stuck){
+                node.fx = node.x;
+                node.fy = node.y;
+            }
+            else if(node.y_div && node.y_offset){
+                // node.fx = w/2;
                 node.fy = (h/node.y_div)+node.y_offset;
             }
             else if(node.name === "W" && (!node.sup || node.sup === "X")){
@@ -664,6 +762,7 @@ create_svg_node_labels(text_function = node => node.id) {
                 node.fx = w/2;
                 node.fy = (h/2)-10;
             }    
+            // DANIEL
         })
         
         return d3.forceSimulation(this.nodes)
@@ -701,6 +800,13 @@ create_svg_node_labels(text_function = node => node.id) {
             if(this.svg_groups){
                 try {       
                     this.update_svg_groups();
+                } catch (error) {
+                    
+                }
+            }
+            if(this.svg_blobs){
+                try {       
+                    this.update_blobs();
                 } catch (error) {
                     
                 }
