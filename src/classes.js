@@ -307,7 +307,11 @@ export class Graph {
         });
     }
 
+    
+      
+
     create_svg_simulation(){
+
         const w = this.svg.node().getBoundingClientRect().width;
         const h = this.svg.node().getBoundingClientRect().height;
 
@@ -315,7 +319,7 @@ export class Graph {
         .force("boundary", forceBoundary(20+(this.w_left*w),60+(this.h_top*h),w-20-(this.w_right*w),h-35-(this.h_bot*h)))
         .force('link',   d3.forceLink(this.links).id(d => d.id).distance(this.node_radius*2.5))
         .force('charge', d3.forceManyBody().strength(this.charge))
-        .force('center', d3.forceCenter((w/2)+(this.w_left*w/2)-(this.w_right*w/2), (h/2)+(this.h_top*h/2)-(this.h_bot*h/2)));
+        .force('center', d3.forceCenter((w/2)+(this.w_left*w/2)-(this.w_right*w/2), (h/2)+(this.h_top*h/2)-(this.h_bot*h/2)))
         // .force("x", d3.forceX().strength(0.07).x(d => Math.max(this.node_radius, Math.min(h - this.node_radius, d.x))))
         // .force("y", d3.forceY().strength(0.07).y(d => Math.max(this.node_radius, Math.min(w - this.node_radius, d.y))));
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import graph from '../graphs/intro-treedecomposition-graph.json'
-import graph from '../graphs/graph1.json'
+import graph1 from '../graphs/graph1.json'
+import graph2 from '../graphs/graphBS2.json'
 import tree from '../graphs/intro-treedecomposition-tree.json'
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -19,9 +20,11 @@ function Separators() {
     const [isFocus, setIsFocus] = useState(true);
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
-    const w = tree.nodes.find(node => node.name === "W");
     
-    useEffect(() => {
+    function init_exercise(graph) {
+        setSeparator([]);
+        setComponents([]);
+
         let removed_nodes = [];
         let removed_links = [];
         const g  = new Graph(graph,  d3.select(graph_container.current));
@@ -89,13 +92,12 @@ function Separators() {
 
             setSeparator(X);
             setComponents(C);
-            if(C.length>=4) correcto(event.clientX, event.clientY, "Perfect!")
+            if(C.length>=4) correcto(event.clientX, event.clientY, "Perfect!");
         });
-
-
-    }, []);
+    }
 
     useEffect(() => {
+        init_exercise(graph1);
         const tabs = document.querySelector('#sep-tabs');
         M.Tabs.init(tabs);
     }, []);
@@ -117,10 +119,10 @@ function Separators() {
 
         <ul id="sep-tabs" className="tabs">
             <li className="tab col s3">
-                <a className="active" href="#sep-swipe1">1</a>
+                <a className="active" href="#sep-swipe1" onClick={() => init_exercise(graph1)}>1</a>
             </li>
             <li className="tab col s3">
-                <a href="#sep-swipe2">2</a>
+                <a href="#sep-swipe2" onClick={() => init_exercise(graph2)}>2</a>
             </li>
         </ul>
 
@@ -189,7 +191,68 @@ function Separators() {
         )})}
         </div>
         <div id="sep-swipe2" className="col s12 tab-content">
-        Test 2
+        <h4>Description</h4>
+        
+        <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
+        
+        <h4>Tasks</h4>
+        <div className='task'>
+            <span>Split into 2 components.</span>
+            <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+        </div>
+
+
+        
+        {components.length>=2 ?
+            <div className='task'>
+                <span>Split into 3 components.</span>
+                <ion-icon name={components.length>=3? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+            </div>
+            :
+            <div className='task locked'>
+                <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
+            </div>
+        }
+        
+        {components.length>=3 ?
+        <div className='task'>
+            <span>Split into 4 components.</span>
+            <ion-icon name={components.length>=4? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+        </div>
+        :
+        <div className='task locked'>
+            <div><ion-icon name="lock-closed-outline" checkmark-circle></ion-icon></div>
+        </div>
+        }
+        <h4>Variables</h4>
+        <div className='items'><div>
+            <InlineMath math={"X  = \\{"}/>
+            <div className={"X"}><InlineMath math={separator.toString()} /></div>
+            <InlineMath math={"\\}"}/>
+        </div></div>
+        {/* <br/> */}
+        {/* {components.map((item, idx) => {
+            const line = "C_"+(idx+1).toString()+" = \\{" + item.toString() + "\\}";
+            return (
+            <React.Fragment key={idx}>
+                <div className='items'>
+                    <InlineMath math={line} />
+                </div>
+            </React.Fragment>
+        )})} */}
+        {/* <br/> */}
+        {components.map((item, idx) => {
+            const e = "\\}";
+            return (
+            <React.Fragment key={idx}>
+                <div className='items'><div>
+                <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
+                <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                <InlineMath math={e} />
+                </div></div>
+            </React.Fragment>
+        )})}
+
         </div>
 
         <br/>
