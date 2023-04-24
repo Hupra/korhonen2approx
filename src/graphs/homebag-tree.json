@@ -1,0 +1,33 @@
+{
+    "nodes": [
+        { "id": 0, "bag": [11,12,15], "name": "X", "y_div": 3, "y_offset": -120 },
+        { "id": 1, "bag": [1,2,3,4,5,6,7], "name": "W", "y_div": 3, "y_offset": -40 },
+        {"id:": 2, "bag": [1,2,3,8], "name": "A" },
+        {"id:": 3, "bag": [1,2,9,10], "name": "B" },
+        {"id:": 4, "bag": [1,11], "name": "D" },
+        {"id:": 5, "bag": [9,10,11], "name": "E" },
+        {"id:": 6, "bag": [3,12,13], "name": "F" },
+        {"id:": 7, "bag": [12,13,14], "name": "G" },
+        {"id:": 8, "bag": [4,15], "name": "H" },
+        {"id:": 9, "bag": [4,16], "name": "I" },
+        {"id:": 10, "bag": [16,17], "name": "J" },
+        {"id:": 11, "bag": [15,18], "name": "K" },
+        {"id:": 12, "bag": [18,19], "name": "L" },
+        {"id:": 13, "bag": [18,20], "name": "M" }
+    ],
+    "edges": [
+        { "source": 0, "target": 1},
+        { "source": 1, "target": 2},
+        { "source": 2, "target": 3},
+        { "source": 3, "target": 4},
+        { "source": 3, "target": 5},
+        { "source": 2, "target": 6},
+        { "source": 6, "target": 7},
+        { "source": 1, "target": 8},
+        { "source": 8, "target": 9},
+        { "source": 9, "target": 10},
+        { "source": 8, "target": 11},
+        { "source": 11, "target": 12},
+        { "source": 11, "target": 13}
+    ]
+}

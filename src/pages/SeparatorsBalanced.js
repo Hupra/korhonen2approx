@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import graph from '../graphs/graph1.json'
-import tree from '../graphs/graph1-tree.json'
+import graph from '../graphs/graphBS2.json'
+import tree from '../graphs/graphBS2-tree.json'
 
 // import graph from '../graphs/graph-X.json'
 // import tree from '../graphs/graph-X-tree.json'
@@ -35,6 +35,8 @@ function SeparatorsBalanced() {
 
         const g  = new Graph(graph1, d3.select(graph_container.current));
         const g2 = new Graph(graph1, d3.select(graph_container2.current));
+        g.charge = -419;
+        g2.charge = -100;
         const t  = new Tree(tree, d3.select(tree_container.current));
         g.W = W.bag;
         g2.W = W.bag;
