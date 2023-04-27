@@ -51,52 +51,44 @@ function TreeDecomposition() {
     <div className='sidebar'>
         <div className='sidebar_bubble'>
     <SB style={{ height: '100vh', width: '100vw' }}>
-        <h2>Tree Decomposition</h2>
+        <h2>Preface</h2>
+        <p><i>We briefly explain tree decomposition and treewidth, 
+            as these concepts are essential for the algorithm.</i></p>
 
-        <ul id="tabs" className="tabs">
-            <li className="tab col s3">
-                <a className="active" href="#test-swipe-1">Formel</a>
-            </li>
-            <li className="tab col s3">
-                <a href="#test-swipe-2">Informel</a>
-            </li>
-        </ul>
-        <div id="test-swipe-1" className="col s12 tab-content">
+        <h3>Tree Decomposition</h3>
+
+        <div>
+            For a graph <InlineMath math={'G=(V,E)'}/> a tree decomposition <InlineMath math={'T'}/> is a tree of <InlineMath math={'n'}/> nodes and <InlineMath math={'n'}/> bags, with each node pointing to exactly one bag. Additionally the following must be satisfied:
             <div>
-                For a graph <InlineMath math={'G=(V,E)'}/> a tree decomposition <InlineMath math={'T'}/> is a tree of <InlineMath math={'n'}/> nodes and <InlineMath math={'n'}/> bags, with each node pointing to exactly one bag. Additionally the following must be satisfied:
-                <div>
-                <ol>
-                    <li>
-                    For the bags <InlineMath math="B_1,...,B_n"/>, it must hold that <InlineMath math="B_i\subseteq V"/> and <InlineMath math="\bigcup\limits_{i=1}^{n} B_{i} = V"/>.
-                    </li>
-                    <li>
-                    For every edge <InlineMath math="(u,v)"/> in <InlineMath math="E"/> there must exist a bag such that <InlineMath math="\{u,v\} \subseteq B_i"/>.
-                    </li>
-                    <li>
-                    For every vertex <InlineMath math="v"/> contained in both bags <InlineMath math="B_i"/> and <InlineMath math="B_j"/>, the path in <InlineMath math="T"/> going from <InlineMath math="B_i"/> to <InlineMath math="B_j"/> must be of only bags containing <InlineMath math="v"/>.
-                    </li>
-                </ol>
-                </div>
+            <ol>
+                <li>
+                For the bags <InlineMath math="B_1,...,B_n"/>, it must hold that <InlineMath math="B_i\subseteq V"/> and <InlineMath math="\bigcup\limits_{i=1}^{n} B_{i} = V"/>.
+                </li>
+                <li>
+                For every edge <InlineMath math="(u,v)"/> in <InlineMath math="E"/> there must exist a bag such that <InlineMath math="\{u,v\} \subseteq B_i"/>.
+                </li>
+                <li>
+                For every vertex <InlineMath math="v"/> contained in both bags <InlineMath math="B_i"/> and <InlineMath math="B_j"/>, the path in <InlineMath math="T"/> going from <InlineMath math="B_i"/> to <InlineMath math="B_j"/> must be of only bags containing <InlineMath math="v"/>.
+                </li>
+            </ol>
             </div>
         </div>
-        <div id="test-swipe-2" className="col s12 tab-content">
-        Test 2
-        </div>
+ 
 
 
         
-        An example of a such graph with a corresponsing tree decomposition can be seen on the right side.
+        An example of a such graph with a corresponding tree decomposition can be seen on the right side.
         <h3>Tree width</h3>
         <p>The width of a tree decomposition is defined as <InlineMath math="|largest"/> <InlineMath math="bag| − 1"/>, and the treewidth of a graph <InlineMath math="tw(G)"/> is the minimum width among all its valid tree decompositions.</p>
-        <p>In our example on the right, <InlineMath math="tw(G)=2"/> as the largest bag contains <InlineMath math="3"/> vertices.</p>
+        <p>In our example on the right, <InlineMath math="tw(G)=2"/> as the largest bag contains <InlineMath math="3"/> vertices, and <InlineMath math="T"/> is one of the possible tree decompositions with the lowest width.</p>
 
 
 
         <h3>Learn more</h3>
         <div>For more information about tree decomposition check out <a href='https://frederikjorgensen.github.io/graph-width/'>https://frederikjorgensen.github.io/graph-width/</a></div>
         <br/><hr/>
-        <Link to="/separators" className='button focus'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
-        <br/><i>Next: Separators</i>
+        <Link to="/introduction" className='button focus'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
+        <br/><i>Next: Introduction</i>
     </SB>
     </div>
     </div>

@@ -21,6 +21,8 @@ function Separators() {
     const [isFocus, setIsFocus] = useState(true);
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
+    const [page_state, set_page_state] = useState(0);
+    const [tabs, set_tabs] = useState(null);
     
     function init_exercise(graph) {
         setSeparator([]);
@@ -42,6 +44,15 @@ function Separators() {
         g.C = C;
         g2.X = X;
         g2.C = C;
+
+        
+        let blobs = []
+        for (let i = 0; i < C.length; i++) {
+            blobs.push({ "bags": C[i], "class": "outline-C" + (i+1).toString(), "text": "C" + (i+1).toString(), "offset": 50 });
+        }
+        g2.blobs = blobs;
+
+   
         
         g.render();
         g.svg_set_component_color();
@@ -83,7 +94,13 @@ function Separators() {
 
             X = removed_nodes.map(node => node.id).sort((a, b) => a - b);
             C = g2.find_components();
-            console.log(C);
+            
+            let blobs = []
+            for (let i = 0; i < C.length; i++) {
+                blobs.push({ "bags": C[i], "class": "outline-C" + (i+1).toString(), "text": "C" + (i+1).toString(), "offset": 30 });
+            }
+            g2.blobs = blobs;
+
             g.X = X;
             g.C = C;
             g2.X = X;
@@ -98,10 +115,28 @@ function Separators() {
     }
 
     useEffect(() => {
-        init_exercise(graph1);
-        const tabs = document.querySelector('#sep-tabs');
-        M.Tabs.init(tabs);
-    }, []);
+        switch (page_state) {
+            case 1:
+                tabs.select("sep-swipe1")
+                init_exercise(graph1);
+                break;
+            case 2:
+                tabs.select("sep-swipe2")
+                init_exercise(graph2);
+                break;
+            case 3:
+                tabs.select("sep-swipe3");
+                init_exercise(graph3);
+                break;
+            default:
+                set_tabs(M.Tabs.init(document.querySelector('#sep-tabs')));
+                set_page_state(1);
+                break;
+          }
+    }, [page_state, tabs]);
+
+
+    
     
     
             
@@ -113,20 +148,20 @@ function Separators() {
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Separators</h2>
         
-        <p>A separator is a set of vertices <InlineMath math="X"/> in <InlineMath math="G"/> that when removed, splits <InlineMath math="G"/> into multiple separated components. 
-        We denote these components as <InlineMath math="C_1,...,C_h"/> where <InlineMath math="h"/> represents the number of components.
+        <p>A separator is a set of vertices <InlineMath math="X \subseteq V(G)"/>, where removing <InlineMath math="X"/> from 
+        <InlineMath math="G"/> results in the connected components <InlineMath math="C_1,...,C_h"/> in the graph <InlineMath math="G[V \setminus X]"/>
         </p><hr></hr>
         <h2>Exercises</h2>
 
         <ul id="sep-tabs" className="tabs">
             <li className="tab col s3">
-                <a className="active" href="#sep-swipe1" onClick={() => init_exercise(graph1)}>1</a>
+                <a className="active" href="#sep-swipe1" onClick={() => set_page_state(1)}>1</a>
             </li>
             <li className="tab col s3">
-                <a href="#sep-swipe2" onClick={() => init_exercise(graph2)}>2</a>
+                <a href="#sep-swipe2" onClick={() => set_page_state(2)}>2</a>
             </li>
             <li className="tab col s3">
-                <a href="#sep-swipe3" onClick={() => init_exercise(graph3)}>3</a>
+                <a href="#sep-swipe3" onClick={() => set_page_state(3)}>3</a>
             </li>
         </ul>
 
@@ -134,11 +169,12 @@ function Separators() {
         <div id="sep-swipe1" className="col s12 tab-content">
         <h4>Description</h4>
         
-        <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
+        <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
+
         
         <h4>Tasks</h4>
         <div className='task'>
-            <span>Split into 2 components.</span>
+            <span>Split into at least 2 components.</span>
             <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
 
@@ -146,7 +182,7 @@ function Separators() {
         
         {components.length>=2 ?
             <div className='task'>
-                <span>Split into 3 components.</span>
+                <span>Split into at least 3 components.</span>
                 <ion-icon name={components.length>=3? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
             </div>
             :
@@ -157,7 +193,7 @@ function Separators() {
         
         {components.length>=3 ?
         <div className='task'>
-            <span>Split into 4 components.</span>
+            <span>Split into at least 4 components.</span>
             <ion-icon name={components.length>=4? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
         :
@@ -193,15 +229,22 @@ function Separators() {
                 </div></div>
             </React.Fragment>
         )})}
+        <br/>
+        {components.length>=4 ?
+        <><button className='button focus' onClick={() => {set_page_state(2)}}>Continue<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Next: Exercise 2</i></>
+        :
+        <><button className='button disable'  onClick={() => {set_page_state(2)}}>Skip<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Next: Exercise 2</i></>
+        }
         </div>
         <div id="sep-swipe2" className="col s12 tab-content">
         <h4>Description</h4>
         
-        <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
+        <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
+
         
         <h4>Tasks</h4>
         <div className='task'>
-            <span>Split into 2 components.</span>
+            <span>Split into at least 2 components.</span>
             <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
 
@@ -209,7 +252,7 @@ function Separators() {
         
         {components.length>=2 ?
             <div className='task'>
-                <span>Split into 3 components.</span>
+                <span>Split into at least 3 components.</span>
                 <ion-icon name={components.length>=3? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
             </div>
             :
@@ -220,7 +263,7 @@ function Separators() {
         
         {components.length>=3 ?
         <div className='task'>
-            <span>Split into 4 components.</span>
+            <span>Split into at least 4 components.</span>
             <ion-icon name={components.length>=4? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
         :
@@ -256,6 +299,13 @@ function Separators() {
                 </div></div>
             </React.Fragment>
         )})}
+
+        <br/>
+        {components.length>=4 ?
+        <><button className='button focus' onClick={() => {set_page_state(3)}}>Continue<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Next: Exercise 3</i></>
+        :
+        <><button className='button disable'  onClick={() => {set_page_state(3)}}>Skip<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Next: Exercise 3</i></>
+        }
 
         </div>
 
@@ -266,11 +316,11 @@ function Separators() {
         <div id="sep-swipe3" className="col s12 tab-content">
         <h4>Description</h4>
         
-        <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
+        <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
         
         <h4>Tasks</h4>
         <div className='task'>
-            <span>Split into 2 components.</span>
+            <span>Split into at least 2 components.</span>
             <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
 
@@ -278,7 +328,7 @@ function Separators() {
         
         {components.length>=2 ?
             <div className='task'>
-                <span>Split into 3 components.</span>
+                <span>Split into at least 3 components.</span>
                 <ion-icon name={components.length>=3? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
             </div>
             :
@@ -289,7 +339,7 @@ function Separators() {
         
         {components.length>=3 ?
         <div className='task'>
-            <span>Split into 4 components.</span>
+            <span>Split into at least 4 components.</span>
             <ion-icon name={components.length>=4? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
         :
@@ -328,13 +378,14 @@ function Separators() {
 
         </div>
 
-        <br/>
+        {page_state === 3 ? <>
+            <br/>
         <hr/>
         {components.length>=4 ?
         <><Link to="/balanced-separators" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Balanced Separators</i></>
         :
         <><Link to="/balanced-separators" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Balanced Separators</i></>
-        }
+        }</> : ""}
 
     </SB></div></div>
     <div className='content'>

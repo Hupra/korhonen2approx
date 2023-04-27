@@ -119,18 +119,19 @@ function SeparatorsBalanced() {
     <AnimatedPage>
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Balanced Separators</h2>
-        <p>A <InlineMath math="{balanced}"/> separator <InlineMath math="X"/> of <InlineMath math="W"/> is 
-        a separator, that when removed from <InlineMath math="G"/> splits the vertices 
-        of <InlineMath math="G"/> in such a way that the intersection of <InlineMath math="W"/> with each separated component does not exceed <InlineMath math="|W|/2"/>.
+        <p>A <InlineMath math="{balanced}"/> separator <InlineMath math="X"/> of the bag <InlineMath math="W"/> in <InlineMath math="T"/> is 
+        a separator that, when removed from <InlineMath math="G"/>, splits the vertices of <InlineMath math="G"/> into 
+        components so that no more than half of the vertices of <InlineMath math="W"/> are placed in a single component.
         <br/>More precisely <InlineMath math="\forall i: |W \cap C_i| \leq |W|/2"/>.</p>
         <hr/><h2>Exercises</h2>
-        <p><i>In graph G, vertices are assigned distinct colors according to their respective component affiliation. Vertices in G are marked with a W if they are also in the bag W in T.</i></p>
-
+        <p><i>In <span className='ref'><InlineMath math="G"/></span> , vertices are assigned distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are in the bag <InlineMath math="W"/> in <span className='ref'><InlineMath math="T"/></span>.</i></p>
+        {/* <p>A bag <InlineMath math="W"/> is consider <i>spittable</i> if <InlineMath math="|(C_i \cap W) \cup X| < |W|"/> for all</p> */}
         <h4>Description</h4>
-        <p>Click on the vertices within graph <InlineMath math="G"/> to toggle their inclusion in the separator <InlineMath math="X"/></p>
+        <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their 
+        inclusion in the balanced separator <InlineMath math="X"/> of <InlineMath math="W"/>.</p>
         <h4>Tasks</h4>
         <div className='task'>
-            <span>Split into 2 components.</span>
+            <span>Split into at least 2 components.</span>
             <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
         <div className='task'>
@@ -198,9 +199,9 @@ function SeparatorsBalanced() {
         )})}
         <br></br><hr></hr>
         {components && components.reduce((acc, x)=> Math.max(acc, x.filter(y => W.bag.includes(y)).length), 0)<=4 ?
-        <><Link to="/connect-components" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Connected Components</i></>
+        <><Link to="/connect-components" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Combining Components</i></>
         :
-        <><Link to="/connect-components" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Connected Components</i></>
+        <><Link to="/connect-components" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Combining Components</i></>
         }
 
     </SB></div></div>

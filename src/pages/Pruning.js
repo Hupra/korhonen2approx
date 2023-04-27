@@ -239,7 +239,6 @@ function Pruning() {
             { "bags": ["D", "E", "F", "G"], "class": "stroke-C2" },
             { "bags": ["H", "J", "I"], "class": "stroke-C3" },
             { "bags": ["W", "A", "B"], "class": "stroke-white" },
-
         ];
 
 
@@ -376,10 +375,11 @@ function Pruning() {
         <br/><i>Next: Done?</i>
     </SB></div></div>
     <div className='content'>
-        <div className='svg_container'>
+    <div className='svg_container'>
             <div className='svg_label'>Tree Decomposition - <InlineMath math="T"/></div>
             <svg ref={tree_container} className="cy" width="100%" height="100%"></svg>
         </div>
+        
     </div>
     </AnimatedPage>
 

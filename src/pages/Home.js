@@ -11,17 +11,24 @@ function Home() {
     <>
     <AnimatedPage>
 
-    <div className='sidebar'>
+    {/* <div className='sidebar'>
       <div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
       <h2>Treewidth 2 approximation</h2>
       <p>Welcome to the interactive learning experience for Korhonen's 2-approximation algorithm for treewidth!</p>
-      <p>This algorithm takes a graph <InlineMath math="G"/>, integer <InlineMath math="k"/>, and a tree decomposition <InlineMath math="T"/> of <InlineMath math="G"/> with width at most <InlineMath math="4k+3"/>, then iteratively attempts to construct a new tree decomposition with a smaller width. The process continues until either a tree decomposition with width <InlineMath math="\leq 2k + 1"/> is found or it returns that <InlineMath math="tw(G) > k"/>.</p>
-      <p>In this guide, we will walk you through each step of the algorithm, providing clear explanations and engaging tasks to help you gain a deeper understanding of how it works. We hope you have a fun leaning experience! 😊</p>
+      <p>In this guide, we will walk you through each step of the algorithm, providing clear explanations 
+        and engaging tasks to help you gain a deeper understanding of how it works. We 
+        hope you have a fun learning experience! 😊</p>
       <hr/>
       <Link to="/treedecomposition" className='button'>Start<ion-icon name="arrow-forward-outline"></ion-icon></Link>
-      </SB></div></div>
-    <div className='content'>
-    <div className='intro-img'/>
+      </SB></div></div> */}
+    <div className='content frontpage'>
+    <div className='intro-img'>
+      <div className='intro-content'>
+      <h1>Treewidth 2 Approximation</h1>
+      <h3>Welcome to an interactive learning experience for<br/> Korhonen's 2-approximation algorithm for treewidth!</h3>
+      <Link to="/treedecomposition" className='button focus'>Start<ion-icon name="arrow-forward-outline"></ion-icon></Link>
+      </div>
+    </div>
     {/* <Sandbox/> */}
     </div>
     </AnimatedPage>

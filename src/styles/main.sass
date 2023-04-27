@@ -490,7 +490,6 @@ path
         fill: $cx
         opacity: 0.25
 
-path
     &.stroke-C1
         stroke: $c1
         fill: rgba(25,25,25,0.75)
@@ -519,6 +518,49 @@ path
         stroke: #101010
         fill: rgba(25,25,25,0.75)
 
+    &.outline-C1
+        stroke: $c1
+        stroke-width: 2
+        fill: transparent
+    &.outline-C2
+        stroke: $c2
+        stroke-width: 2
+        fill: transparent
+    &.outline-C3
+        stroke: $c3
+        stroke-width: 2
+        fill: transparent
+    &.outline-C4
+        stroke: $c4
+        stroke-width: 2
+        fill: transparent
+    &.outline-C5
+        stroke: $c5
+        stroke-width: 4
+        fill: transparent
+    &.outline-C6
+        stroke: $c6
+        stroke-width: 4
+        fill: transparent
+    &.outline-X
+        stroke: $cx
+        stroke-width: 4
+        fill: transparent
+    &.outline-black
+        stroke: black
+        stroke-width: 5
+        fill: #101010
+    &.outline-white
+        stroke: #101010
+        stroke-width: 4
+        fill: transparent
+    &.cut
+        stroke: $cx
+        stroke-width: 3
+        fill: transparent
+    &.dotted
+        stroke-dasharray: 2, 2
+
 line
     &.C1
         stroke: $c1
@@ -541,6 +583,20 @@ span.color-reverse
     padding: 3px
     border-radius: 8px
     display: inline-block
+
+span.ref
+    display: inline-block
+    font-style: normal
+
+    color: white
+    background-color: #101010
+    border-radius: 5px
+    padding: 0px 4px
+    // font-size: 14px
+    border: $border-settings
+    font-weight: 300
+    cursor: pointer
+    
 span
     &.C1
         color: $c1
@@ -773,7 +829,9 @@ button, .button
         &:focus
             outline: none
 
-
+.content.frontpage
+    width: 100%
+    padding-left: 0
 .wall
     display: flex
     justify-content: center
@@ -792,6 +850,25 @@ button, .button
     background-position: center
     background-repeat: no-repeat
 
+    display: flex
+    justify-content: center
+    align-items: center
+    color: white
+    flex-direction: column
+
+    .intro-content
+        display: flex
+        justify-content: center
+        align-items: center
+        color: white
+        flex-direction: column
+        background-color: rgba(0,0,0,0.9)
+        border: $border-settings
+        border-radius: 6px
+        padding: 40px
+        text-align: center
+        h1
+            margin: 0
 .colorbox
     display: flex
     background-color: black

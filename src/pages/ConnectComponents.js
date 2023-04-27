@@ -22,12 +22,13 @@ function ConnectComponents() {
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const [page_ready, set_page_ready] = useState(false);
-    const [show_G, set_show_G] = useState(false);
+    const [show_G, set_show_G] = useState(true);
     const W = tree.nodes.find(node => node.name === "W");
     const [container_size, set_container_size] = useState([W.bag.length-1,0,0]);
     
     
     useEffect(() => {
+    
         let removed_nodes = [];
         let removed_links = [];
         const g  = new Graph(graph,  d3.select(graph_container.current));
@@ -47,9 +48,9 @@ function ConnectComponents() {
             removed_links.push(...removed.links);
         }
         let C = g2.find_components();
+        g.W = W.bag;
         g.render();
         g.X = X;
-        g.W = W.bag;
         g.C = C;
         g.svg_set_component_color();
 
@@ -59,6 +60,7 @@ function ConnectComponents() {
             const gc1 = new Graph({"nodes": copy_nodes, "edges": copy_edges}, d3.select(graph_container_c1.current));
             const gc2 = new Graph({"nodes": copy_nodes, "edges": copy_edges}, d3.select(graph_container_c2.current));
             const gc3 = new Graph({"nodes": copy_nodes, "edges": copy_edges}, d3.select(graph_container_c3.current));
+
             gc1.parent = graph_container_c1.current.parentNode;
             gc2.parent = graph_container_c2.current.parentNode;
             gc3.parent = graph_container_c3.current.parentNode;
@@ -73,10 +75,12 @@ function ConnectComponents() {
 
             // color popup graph
             g.C = gca;
+            g.W = W.bag;
+
             g.svg_set_component_color();
 
             for (let i = 0; i < gcx.length; i++) {
-                gcx[i].charge = -75;
+                gcx[i].charge = -250;
                 gcx[i].W = W.bag;
                 gcx[i].node_class = "C"+(i+1).toString();
                 gcx[i].render();    
@@ -221,35 +225,48 @@ function ConnectComponents() {
     <AnimatedPage>
 
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
-        <h2>Connected Components</h2>
-        Given a balanced split where the cardinality of every component's intersection with <InlineMath math="W"/> is <InlineMath math="\leq"/> <InlineMath math="|W|/2"/>. It is always possible to reduce the number of components to at most 3, by combining some of them.
-        This can be done, by for instance always combining the two smallets components.
-        <br/>
-        <br/>
+        <h2>Combining Components</h2>
+        <p>A balanced separator that results in, at most,
+             three components is considered a balanced split.</p>
+
+        <p>Given a balanced separator, each component contains no 
+            more than half of the vertices of <InlineMath math="W"/>. And 
+            as such, it is always possible to reduce the number of components 
+            to at most three by combining some of them; this can be done by, for 
+            instance, always combining the two smallest components until just three remain, 
+            ultimately given us a balanced split.</p>
         <hr/>
         <h2>Exercises</h2>
-        <p><i>To see the graph from which these components are derived, click the show graph button.</i></p>
+        <p>In <span className='ref'><InlineMath math="G"/></span>, we see a graph that has been separated into multiple components. <i>To begin the exercise click the button below to hide the graph.</i></p>
+        <button onClick={() => set_show_G(!show_G)}>{show_G ? "Hide Graph" : "Show Graph"}</button>
+        
         <h4>Description</h4>
-        <p>To the right, we have 3 windows, one for each final component that are needed for a split. The first window is now filled with all the initial separated components obtained from removing the separator <InlineMath math="X"/> from <InlineMath math="G"/>. <br/>Since we require at most 3 final components for a split, the task is to drag the lesser component to the other two windows until all three final components are balanced such that none of them intersected with <InlineMath math="W"/> are larger than <InlineMath math="|W|/2"/>.</p>
+        <p>To the right, we have 3 windows, one for each final component 
+            that are needed for a split. The first window is now filled 
+            with all the initial separated components obtained from removing the 
+            separator <InlineMath math="X"/> from <InlineMath math="G"/>. <br/>Since we 
+            require at most 3 final components for a balanced split, the task is to drag 
+            the lesser component to the other two windows until all the vertices from <InlineMath math="W"/> 
+            are balanced such that no combined component cintains more than half of <InlineMath math="W"/>.</p>
         <h4>Tasks</h4>
         <div className='task'>
-            <span><InlineMath math={"|C_1 \\cap W| \\leq |W|/2"} /></span>
+            <span><InlineMath math={"|"}/><span className='C1'><InlineMath math={"C_1"}/></span><InlineMath math={"\\cap W| \\leq |W|/2"} /></span>
             <span><InlineMath math={container_size[0].toString() + "\\leq" + (W.bag.length/2).toString()}/></span>
             <ion-icon name={container_size[0]<=W.bag.length/2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
         <div className='task'>
-            <span><InlineMath math={"|C_2 \\cap W| \\leq |W|/2"} /></span>
+            <span><InlineMath math={"|"}/><span className='C2'><InlineMath math={"C_2"}/></span><InlineMath math={"\\cap W| \\leq |W|/2"} /></span>
             <span><InlineMath math={container_size[1].toString() + "\\leq" + (W.bag.length/2).toString()}/></span>
             <ion-icon name={container_size[1]<=W.bag.length/2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
         <div className='task'>
-            <span><InlineMath math={"|C_3 \\cap W| \\leq |W|/2"} /></span>
+            <span><InlineMath math={"|"}/><span className='C3'><InlineMath math={"C_3"}/></span><InlineMath math={"\\cap W| \\leq |W|/2"} /></span>
             <span><InlineMath math={container_size[2].toString() + "\\leq" + (W.bag.length/2).toString()}/></span>
             <ion-icon name={container_size[2]<=W.bag.length/2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
+        <p>Click the show graph button to see how the components are affected.</p>
         <br/>
         <div>
-        <button onClick={() => set_show_G(!show_G)}>{show_G ? "Hide Graph" : "Show Graph"}</button>
         <hr/>
         {(
             container_size[0]<=W.bag.length/2 && 
@@ -262,7 +279,7 @@ function ConnectComponents() {
 
         </div>  
     </SB></div></div>
-    <div className={isFocus ? "content focus-svg":'content'}>
+    <div className={"content"}>
         <div className='cc'>
             <div className={'svg_popup'  + (show_G?"":" to_the_depths")}>
                 <div className='svg_container'>
@@ -274,21 +291,21 @@ function ConnectComponents() {
                 <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
                 <svg id="yolo" ref={graph_container2} className="cy graph"></svg>
             </div>
-            <div className={'svg_container full top interactive' + (show_G ? " blur" : "")}>
+            <div className={'svg_container full top interactive' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>
                 <div className='svg_label'>Component - <InlineMath math="C_1"/></div>
                 <div className={'svg_counter ' + ((container_size[0]<=W.bag.length/2) ? "valid" : "invalid")}>
                     <InlineMath math={container_size[0].toString() + "\\leq" + (W.bag.length/2).toString()}/>
                 </div>
                 <svg ref={graph_container_c1} className="cy graph"></svg>                
             </div>
-            <div className={'svg_container full mid interactive' + (show_G ? " blur" : "")}>
+            <div className={'svg_container full mid interactive' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>
                 <div className='svg_label'>Component - <InlineMath math="C_2"/></div>
                 <div className={'svg_counter ' + ((container_size[1]<=W.bag.length/2) ? "valid" : "invalid")}>
                     <InlineMath math={container_size[1].toString() + "\\leq" + (W.bag.length/2).toString()}/>
                 </div>
                 <svg ref={graph_container_c2} className="cy graph"></svg>                
             </div>
-            <div className={'svg_container full bot interactive' + (show_G ? " blur" : "")}>
+            <div className={'svg_container full bot interactive' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>
                 <div className='svg_label'>Component - <InlineMath math="C_3"/></div>
                 <div className={'svg_counter ' + ((container_size[2]<=W.bag.length/2) ? "valid" : "invalid")}>
                     <InlineMath math={container_size[2].toString() + "\\leq" + (W.bag.length/2).toString()}/>

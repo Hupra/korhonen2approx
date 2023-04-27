@@ -18,22 +18,26 @@ import Color from './pages/Color';
 import Nicu from './pages/Nicu';
 import { AnimatePresence } from 'framer-motion';
 import Pruning from './pages/Pruning';
-
+import Introduction from './pages/Introduction';
+import ScalePage from './pages/components/ScalePage';
 
 
 function App() {
+  ScalePage(1080);
+  
+
   const [fullNav, setFullNav] = useState(false);
-  useEffect(() => {
-  }, []);
   const location = useLocation();
 
   return (
       <div className='container'>
+        
         <div className={!fullNav ? ' location active' : 'location'}>
         <a href='' onClick={() => setFullNav(!fullNav)}><ion-icon name="reorder-four-outline"></ion-icon></a>
           {/* <NavLink activeClassName='active' to="/flow">Flow</NavLink> */}
           <NavLink exact activeClassName='active' to="/"><ion-icon name="home-outline"></ion-icon></NavLink>
           <NavLink activeClassName='active' to="/treedecomposition"><ion-icon name="leaf-outline"></ion-icon></NavLink>
+          <NavLink activeClassName='active' to="/introduction">I</NavLink>
           <NavLink activeClassName='active' to="/separators">S</NavLink>
           <NavLink activeClassName='active' to="/balanced-separators">BS</NavLink>
           <NavLink activeClassName='active' to="/connect-components">CC</NavLink>
@@ -52,6 +56,7 @@ function App() {
           <a onClick={() => setFullNav(!fullNav)}><ion-icon name="close-outline"></ion-icon></a>
           <NavLink onClick={() => setFullNav(false)} exact activeClassName='active' to="/">Home</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/treedecomposition">Tree Decomposition</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/introduction">Introducton</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/separators">Separators</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/balanced-separators">Balanced Separatos</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/connect-components">Connected Components</NavLink>
@@ -83,6 +88,7 @@ function App() {
               <Route path="/"                     element={<Home />} /> 
               <Route path="flow/*"                element={<Flow />} /> 
               <Route path="treedecomposition/*"   element={<TreeDecomposition />} /> 
+              <Route path="introduction/*"        element={<Introduction />} /> 
               <Route path="separators/*"          element={<Separators />} /> 
               <Route path="balanced-separators/*" element={<SeparatorsBalanced />} /> 
               <Route path="splitting-tree2/*"     element={<SplitTree2 />} /> 

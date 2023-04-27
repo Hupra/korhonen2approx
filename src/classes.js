@@ -65,7 +65,6 @@ export class FindHomebags {
             this.adj[node].forEach(edge => {
                 stack.push([edge.b, distance+1]);});
         }
-        console.log(this.hb);
     }
     build_TX(X){
         for (const x of X) {
@@ -173,6 +172,7 @@ export class Graph {
     render(){
         this.svg.selectAll("*").remove();
         this.simulation      = this.create_svg_simulation();
+        this.create_blobs();
         this.svg_links       = this.create_svg_links();
         this.svg_nodes       = this.create_svg_nodes();
         this.svg_node_labels = this.create_svg_node_labels();
@@ -307,6 +307,111 @@ export class Graph {
         });
     }
 
+    catmullRomSpline(points, tension = 0.5, closed = true) {
+        if (points.length < 2) return '';
+    
+        let lineGenerator;
+        if (closed) {
+            lineGenerator = d3.line().curve(d3.curveCatmullRomClosed.alpha(tension));
+        } else {
+            lineGenerator = d3.line().curve(d3.curveCatmullRom.alpha(tension));
+        }
+    
+        const pathData = lineGenerator(points);
+        return pathData;
+    }
+
+    create_blobs(){
+
+        this.svg_blobs = this.svg
+        .append('g')
+        .attr('class', 'blobs')
+        .selectAll('path');
+
+        this.svg_blobs_title = this.svg
+        .append('g')
+        .attr('class', 'blobs-title')
+        .selectAll('text');
+    }
+
+    update_blobs(){
+        let counter = 1;
+
+        let data = this.blobs.map(blob => {
+
+            let nodes = blob["bags"].flatMap(id => this.nodes.filter(node => node.id === id));
+            
+            let points = nodes.flatMap(node => {
+                const padding = blob["offset"]?blob["offset"]: 20;
+                const padding_diag = padding*Math.sqrt(0.5);
+                return [
+                    [node.x+padding, node.y],
+                    [node.x-padding, node.y],
+                    [node.x, node.y+padding],
+                    [node.x, node.y-padding],
+                    [node.x+padding_diag, node.y+padding_diag],
+                    [node.x-padding_diag, node.y-padding_diag],
+                    [node.x+padding_diag, node.y-padding_diag],
+                    [node.x-padding_diag, node.y+padding_diag],
+                ];
+            });
+
+            return { "id": counter++, "class": blob["class"]? blob["class"]:"", "text": blob["text"]?blob["text"]:"", offset: blob["offset"]?blob["offset"]: 20, "polygon": d3.polygonHull(points)}
+        });
+        let scaleFactor = 1;
+        
+        this.svg_blobs = this.svg_blobs
+        .data(data, data => data.id)
+        .join('path')
+        .attr("d", (d) => {
+            if (d && d.polygon) {
+
+                // Calculate the centroid of the polygon
+                const centroid = d3.polygonCentroid(d.polygon);
+
+                const scaledPolygon = d.polygon.map((point) => [
+                    centroid[0] + (point[0] - centroid[0]) * scaleFactor,
+                    centroid[1] + (point[1] - centroid[1]) * scaleFactor,
+                ]);
+                
+                return this.catmullRomSpline(scaledPolygon, 0.5, true);
+            } else {
+                return null;
+            }
+        })
+        // .attr('d', d => (d.polygon ? 'M' + d.polygon.join('L') + 'Z' : null))
+        // .attr('fill', 'rgba(169, 169, 169, 0.1)') // Set the fill color with some transparency
+        .attr("class", (d) => d.class) // assign a different color to each letter
+
+
+        this.svg_blobs_title = this.svg_blobs_title
+        .data(data, data => data.id)
+        .join('text')
+        .text((d) => d.text)
+        .attr('x', (d) => {
+            if (d && d.polygon) {
+                const topPoint = d.polygon.reduce((minPoint, point) => point[1] < minPoint[1] ? point : minPoint);
+                return topPoint[0]-(d.text.length)*5;
+            } else {
+                return null;
+            }
+        })
+        .attr('y', (d) => {
+            if (d && d.polygon) {
+                const topPoint = d.polygon.reduce((minPoint, point) => point[1] < minPoint[1] ? point : minPoint);
+                return topPoint[1] - 15;
+            } else {
+                return null;
+            }
+        })
+        // .attr('font-family', 'sans-serif') // Set the font-family for text
+        .attr('font-size', '14px') // Set the font-size for text
+        .attr("class", (d) => d.class) // assign a different color to each letter
+        .attr('stroke-width', 4) // Set the stroke width for group shapes
+        .attr('opacity', 1) // Set the stroke width for group shapes
+        .attr('fill', 'white');
+    }
+
     
       
 
@@ -320,10 +425,15 @@ export class Graph {
         .force('link',   d3.forceLink(this.links).id(d => d.id).distance(this.node_radius*2.5))
         .force('charge', d3.forceManyBody().strength(this.charge))
         .force('center', d3.forceCenter((w/2)+(this.w_left*w/2)-(this.w_right*w/2), (h/2)+(this.h_top*h/2)-(this.h_bot*h/2)))
+        .force('collide', d3.forceCollide().radius(function(d) {
+            return d.radius + 50; // where X is the minimum distance you want between nodes
+        }))
         // .force("x", d3.forceX().strength(0.07).x(d => Math.max(this.node_radius, Math.min(h - this.node_radius, d.x))))
         // .force("y", d3.forceY().strength(0.07).y(d => Math.max(this.node_radius, Math.min(w - this.node_radius, d.y))));
 
     }
+
+    
 
     create_svg_simulation_tick(){
 
@@ -358,6 +468,13 @@ export class Graph {
                 this.node_bg
                 .attr('cx', d => d.x) // use 'cx' and 'cy' attributes to set the circle center
                 .attr('cy', d => d.y) // use 'cx' and 'cy' attributes to set the circle center    
+            }
+            if(this.svg_blobs){
+                try {       
+                    this.update_blobs();
+                } catch (error) {
+                    
+                }
             }
             
         });
@@ -531,7 +648,6 @@ export class Tree {
         })
 
         const scaleFactor = 1;
-        // console.log(points);
         this.svg_groups = this.svg_groups
         .data(data, data => data.id)
         .join('path')
