@@ -132,6 +132,7 @@ export class FindComponents{
         }
         if(combine){
             while(this.components.length>3){
+                this.components.sort((a, b) => b.length - a.length);
                 let li = this.components.length-1;
                 let comb = [...this.components[li - 1], ...this.components[li]];
                 this.components.splice(li - 1, 2, comb);
