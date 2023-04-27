@@ -42,6 +42,20 @@ function Introduction() {
 
     }, []);
 
+    const code = [
+      '\\text{\\textbf{while} true \\textbf{do}}',
+      '\\quad W \\gets \\text{ biggest bag of } T',
+      '\\quad \\text{\\textbf{if} } |W| \\leq 2k + 2 \\text{ \\textbf{then}}',
+      '\\quad \\quad \\text{\\textbf{return} } T',
+      '\\quad \\text{\\textbf{else if}} \\text{ minimum split of } W \\text{ exist}' ,
+      '\\quad \\quad T^1, T^2, T^3 \\gets split(T)',
+      '\\quad \\quad T \\gets merge(T^1, T^2, T^3)',
+      '\\quad \\text{\\textbf{else}}' ,
+      '\\quad \\quad \\text{\\textbf{return} } tw(G) > k',
+
+
+    ];
+
   return (
     <>
     <AnimatedPage>
@@ -53,22 +67,30 @@ function Introduction() {
       The process continues until a tree decomposition with width <InlineMath math="\leq 2k + 1"/> is found
        or it returns that <InlineMath math="tw(G) > k"/>.</p>
       <hr/>
-      <h4>Overly Simplified Description</h4>
+      <h4>Simplified Description</h4>
+      <p>The following is very simplified pseudocode for the algorithm.</p>
+      <code>
+      {code.map((line, index) => (
+      <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
+        <div style={{ marginRight: 8 }}>{index + 1}:</div>
+        <div>
+          <InlineMath math={line} />
+        </div>
+      </div>
+      ))}
+      </code><br/>
       <p>
-          <InlineMath math="W <-"/>  biggest bag of T
-      </p>
-      <p>
-        It then finds a split of this bag W.
-      </p>
-      <p>
-        It then splits T into 3 new tree decompositions
-      </p>
-      <p>
-        It then merges these 3 new TDs into a single new improved TD
-      </p>
-      <p>
-        steps are repeated.
-      </p>
+        The primary objective of the algorithm is to iteratively 
+        attempt to minimize the size of one of the largest bags 
+        in <InlineMath math="T"/>. To accomplish this, the algorithm identifies a 
+        separator in the graph that effectively separates the 
+        vertices of the largest bag into two or more distinct groups. 
+        Subsequently, a new tree decomposition is created for each vertex set 
+        and combined to form a new and improved tree decomposition.
+        </p>
+        <hr/>
+        <p>The subsequent pages provide a clearer and more comprehensive 
+          explanation of each concept, beginning with an introduction to separators.</p>
       <Link to="/separators" className='button'>Start<ion-icon name="arrow-forward-outline"></ion-icon></Link>
       <br/><i>Next: Separators</i>
 
