@@ -511,7 +511,7 @@ export class Graph {
     }
 
     find_components(combine = false, f = id => parseInt(id)){
-        const fc = new FindComponents(50); // hard coded WATCH OUT, fix add max N to the graph
+        const fc = new FindComponents(100); // hard coded WATCH OUT, fix add max N to the graph
         this.links.forEach(link => fc.add_edge(f(link.source.id), f(link.target.id)));
         this.nodes.forEach(node => fc.v[f(node.id)] = false);
         return fc.run(combine);
