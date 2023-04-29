@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import graph from '../graphs/intro-treedecomposition-graph.json'
-import graph from '../graphs/graph-X.json'
-import tree from '../graphs/graph-X-tree.json'
+// import graph from '../graphs/graph-X.json'
+// import tree from '../graphs/graph-X-tree.json'
+import graph from '../graphs/graph-CC.json'
+import tree from '../graphs/graph-CC-tree.json'
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
@@ -80,7 +82,8 @@ function ConnectComponents() {
             g.svg_set_component_color();
 
             for (let i = 0; i < gcx.length; i++) {
-                gcx[i].charge = -250;
+                gcx[i].charge = -100;
+                gcx[i].node_radius = 16;
                 gcx[i].W = W.bag;
                 gcx[i].node_class = "C"+(i+1).toString();
                 gcx[i].render();    
