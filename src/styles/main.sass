@@ -292,6 +292,13 @@ line.xclude
             gap: $gap
             flex-direction: column
             position: relative
+
+        .vertical-split
+            height: 100%
+            width: 100%
+            display: flex
+            gap: $gap
+            position: relative
         
         .cc
             width: 100%
@@ -835,7 +842,7 @@ button, .button
 .wall
     display: flex
     justify-content: center
-    align-content: center
+    align-items: center
     color: white
 .intro-img
     width: 100%
@@ -952,7 +959,7 @@ h6, .h6
     top: 0
     right: auto
 
-.tab-content
+.exercise
     margin-top: 10px
     margin-bottom: 10px
     padding: 5px 10px
@@ -1059,3 +1066,38 @@ button:active
             animation: circleSVG 2s cubic-bezier(0.2, 1, 0.3, 1) both infinite
     rect:not(.xclude)
         animation: rectSVG 3s cubic-bezier(0.2, 1, 0.5, 1) both infinite
+
+
+.mytabs
+    display: flex
+    gap: 7px
+    height: auto
+    cursor: pointer
+    position: relative
+
+    div.tab
+        background-color: #303030
+        color: white
+        border: $border-settings
+        display: flex
+        justify-content: center
+        align-items: center
+        width: 30px
+        height: 30px
+        border-radius: 5px
+        &.active
+            color: $cx
+
+    #tab-selector
+        position: absolute
+        margin-left: 4px
+        width: 22px
+        height: 2px
+        background-color: orange
+        bottom: 0
+        transition: all 0.2s ease-in-out
+        left: 0px
+        border-radius: 5px
+        bottom: 2px
+
+        

@@ -13,7 +13,6 @@ import ConnectComponents from './pages/ConnectComponents';
 import Page1 from './pages/Page1';
 import Page2 from './pages/Page2';
 import Page3 from './pages/Page3';
-import MinSplit from './pages/MinSplit';
 import Color from './pages/Color';
 import Nicu from './pages/Nicu';
 import { AnimatePresence } from 'framer-motion';
@@ -45,7 +44,6 @@ function App() {
           <NavLink activeClassName='active' to="/page1">CI</NavLink>
           <NavLink activeClassName='active' to="/page2">H1</NavLink>
           <NavLink activeClassName='active' to="/page3">H2</NavLink>
-          <NavLink activeClassName='active' to="/splitting-tree">S2</NavLink>
           <NavLink activeClassName='active' to="/min-split">MS</NavLink>
           <NavLink activeClassName='active' to="/pruning">P</NavLink>
           <NavLink activeClassName='active' to="/nicu">N</NavLink>
@@ -64,7 +62,6 @@ function App() {
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page1">Continuity Issue</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page2">Home Bag Part 1</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page3">Home Bag Part 2</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/splitting-tree">Splitting T∪TX</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/min-split">Minimum Split</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/pruning">Pruning</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/nicu">Nicu</NavLink>
@@ -92,12 +89,11 @@ function App() {
               <Route path="separators/*"          element={<Separators />} /> 
               <Route path="balanced-separators/*" element={<SeparatorsBalanced />} /> 
               <Route path="splitting-tree2/*"     element={<SplitTree2 />} /> 
-              <Route path="splitting-tree/*"      element={<SplitTree />} /> 
               <Route path="connect-components/*"  element={<ConnectComponents />} />
               <Route path="page1/*"               element={<Page1 />} /> 
               <Route path="page2/*"               element={<Page2 />} /> 
               <Route path="page3/*"               element={<Page3 />} /> 
-              <Route path="min-split/*"           element={<MinSplit />} /> 
+              <Route path="min-split/*"           element={<SplitTree />} /> 
               <Route path="color/*"               element={<Color />} /> 
               <Route path="pruning/*"             element={<Pruning />} /> 
               <Route path="nicu/*"                element={<Nicu />} /> 

@@ -10,12 +10,12 @@ import AnimatedPage from './components/AnimatedPage';
 import { Link } from 'react-router-dom';
 import SB from './components/SB';
 import { T_2_TD, split } from '../functions';
-import M from 'materialize-css';
 
 
 function Pruning() {
     const [page_state, set_page_state] = useState(1);
     const tree_container = useRef();
+    const tab = useRef();
 
     function state1(tree) {
         // "y_div": 5, "y_offset": -10
@@ -325,11 +325,36 @@ function Pruning() {
         t.render();
     }
 
+
     useEffect(() => {
-        state1(tree);
-        const tabs = document.querySelector('#prune-tabs');
-        M.Tabs.init(tabs);
-    }, []);
+        switch (page_state) {
+            case 1:
+                state1(tree);
+                break;
+            case 2:
+                state2(tree);
+                break;
+            case 3:
+                state3(tree);
+                break;
+            case 4:
+                state4(tree);
+                break;
+            case 5:
+                state5(tree);
+                break;
+            case 6:
+                state6(tree);
+                break;
+            case 7:
+                state7(tree);
+                break;
+            default:
+                state1(tree);
+                break;
+          }
+        setTimeout(() => {tab.current.style.left = (37*page_state-37).toString() + "px"}, 2);
+    }, [page_state]);
 
   return (
     <>
@@ -337,39 +362,18 @@ function Pruning() {
 
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Pruning</h2>
-        <ul id="prune-tabs" className="tabs">
-            <li className="tab col s3">
-                <a className="active" href="#prune-swipe1" onClick={() => state1(tree)}>1</a>
-            </li>
-            <li className="tab col s3">
-                <a href="#prune-swipe2" onClick={() => state2(tree)}>2</a>
-            </li>
-            <li className="tab col s3">
-                <a href="#prune-swipe3" onClick={() => state3(tree)}>3</a>
-            </li>
-            <li className="tab col s3">
-                <a href="#prune-swipe2" onClick={() => state4(tree)}>4</a>
-            </li>
-            <li className="tab col s3">
-                <a href="#prune-swipe3" onClick={() => state5(tree)}>5</a>
-            </li>
-            <li className="tab col s3">
-                <a href="#prune-swipe2" onClick={() => state6(tree)}>6</a>
-            </li>
-            <li className="tab col s3">
-                <a href="#prune-swipe3" onClick={() => state7(tree)}>7</a>
-            </li>
+        <ul className="mytabs">
+            <div className={page_state===1?"tab active":"tab"} onClick={() => set_page_state(1)}>1</div>
+            <div className={page_state===2?"tab active":"tab"} onClick={() => set_page_state(2)}>2</div>
+            <div className={page_state===3?"tab active":"tab"} onClick={() => set_page_state(3)}>3</div>
+            <div className={page_state===4?"tab active":"tab"} onClick={() => set_page_state(4)}>4</div>
+            <div className={page_state===5?"tab active":"tab"} onClick={() => set_page_state(5)}>5</div>
+            <div className={page_state===6?"tab active":"tab"} onClick={() => set_page_state(6)}>6</div>
+            <div className={page_state===7?"tab active":"tab"} onClick={() => set_page_state(7)}>7</div>
+            <div id="tab-selector" ref={tab}/>
         </ul>
-
-
-        <div id="prune-swipe1" className="col s12 tab-content"></div>
-        <div id="prune-swipe2" className="col s12 tab-content"></div>
-        <div id="prune-swipe3" className="col s12 tab-content"></div>
-        <div id="prune-swipe4" className="col s12 tab-content"></div>
-        <div id="prune-swipe5" className="col s12 tab-content"></div>
-        <div id="prune-swipe6" className="col s12 tab-content"></div>
-        <div id="prune-swipe7" className="col s12 tab-content"></div>
-        <p>A split found this way is considered to be a minimum split.</p>
+        <button onClick={() => set_page_state(Math.max(1, page_state-1))}>Prev</button>
+        <button onClick={() => set_page_state(Math.min(7, page_state+1))}>Next</button>
         <br/><hr/>
         <Link to="#" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
         <br/><i>Next: Done?</i>

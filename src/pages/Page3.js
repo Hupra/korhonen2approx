@@ -267,9 +267,9 @@ function Page3() {
             <button onClick={() => set_page_state(page_state+1)}>dev cheat</button>
             <hr/>
             {page_state>=7 ?
-            <><Link to="/splitting-tree" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting <InlineMath math="T \cup T^X"/></i></>
+            <><Link to="/min-split" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
             :
-            <><Link to="/splitting-tree" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting <InlineMath math="T \cup T^X"/></i></>
+            <><Link to="/min-split" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
             }
 
 

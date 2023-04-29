@@ -22,7 +22,8 @@ function Separators() {
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const [page_state, set_page_state] = useState(0);
-    const [tabs, set_tabs] = useState(null);
+    const tab = useRef();
+
     
     function init_exercise(graph) {
         setSeparator([]);
@@ -117,23 +118,21 @@ function Separators() {
     useEffect(() => {
         switch (page_state) {
             case 1:
-                tabs.select("sep-swipe1")
                 init_exercise(graph1);
                 break;
             case 2:
-                tabs.select("sep-swipe2")
                 init_exercise(graph2);
                 break;
             case 3:
-                tabs.select("sep-swipe3");
                 init_exercise(graph3);
                 break;
             default:
-                set_tabs(M.Tabs.init(document.querySelector('#sep-tabs')));
                 set_page_state(1);
                 break;
           }
-    }, [page_state, tabs]);
+
+          setTimeout(() => {tab.current.style.left = (37*page_state-37).toString() + "px"}, 2);
+    }, [page_state]);
 
 
     
@@ -153,20 +152,15 @@ function Separators() {
         </p><hr></hr>
         <h2>Exercises</h2>
 
-        <ul id="sep-tabs" className="tabs">
-            <li className="tab col s3">
-                <a className="active" href="#sep-swipe1" onClick={() => set_page_state(1)}>1</a>
-            </li>
-            <li className="tab col s3">
-                <a href="#sep-swipe2" onClick={() => set_page_state(2)}>2</a>
-            </li>
-            <li className="tab col s3">
-                <a href="#sep-swipe3" onClick={() => set_page_state(3)}>3</a>
-            </li>
+        <ul className="mytabs">
+            <div className={page_state===1?"tab active":"tab"} onClick={() => set_page_state(1)}>1</div>
+            <div className={page_state===2?"tab active":"tab"} onClick={() => set_page_state(2)}>2</div>
+            <div className={page_state===3?"tab active":"tab"} onClick={() => set_page_state(3)}>3</div>
+            <div id="tab-selector" ref={tab}/>
         </ul>
 
 
-        <div id="sep-swipe1" className="col s12 tab-content">
+        {page_state===1 && <div className='exercise'>
         <h4>Description</h4>
         
         <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
@@ -207,17 +201,7 @@ function Separators() {
             <div className={"X"}><InlineMath math={separator.toString()} /></div>
             <InlineMath math={"\\}"}/>
         </div></div>
-        {/* <br/> */}
-        {/* {components.map((item, idx) => {
-            const line = "C_"+(idx+1).toString()+" = \\{" + item.toString() + "\\}";
-            return (
-            <React.Fragment key={idx}>
-                <div className='items'>
-                    <InlineMath math={line} />
-                </div>
-            </React.Fragment>
-        )})} */}
-        {/* <br/> */}
+
         {components.map((item, idx) => {
             const e = "\\}";
             return (
@@ -235,20 +219,26 @@ function Separators() {
         :
         <><button className='button disable'  onClick={() => {set_page_state(2)}}>Skip<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Next: Exercise 2</i></>
         }
-        </div>
-        <div id="sep-swipe2" className="col s12 tab-content">
+
+        
+        </div>}
+
+
+
+
+
+
+
+        {page_state===2 && <div className='exercise'>
         <h4>Description</h4>
         
         <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
-
         
         <h4>Tasks</h4>
         <div className='task'>
             <span>Split into at least 2 components.</span>
             <ion-icon name={components.length>=2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
-
-
         
         {components.length>=2 ?
             <div className='task'>
@@ -277,17 +267,7 @@ function Separators() {
             <div className={"X"}><InlineMath math={separator.toString()} /></div>
             <InlineMath math={"\\}"}/>
         </div></div>
-        {/* <br/> */}
-        {/* {components.map((item, idx) => {
-            const line = "C_"+(idx+1).toString()+" = \\{" + item.toString() + "\\}";
-            return (
-            <React.Fragment key={idx}>
-                <div className='items'>
-                    <InlineMath math={line} />
-                </div>
-            </React.Fragment>
-        )})} */}
-        {/* <br/> */}
+
         {components.map((item, idx) => {
             const e = "\\}";
             return (
@@ -307,13 +287,13 @@ function Separators() {
         <><button className='button disable'  onClick={() => {set_page_state(3)}}>Skip<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Next: Exercise 3</i></>
         }
 
-        </div>
+        </div>}
 
 
 
 
 
-        <div id="sep-swipe3" className="col s12 tab-content">
+        {page_state===3 && <div className='exercise'>
         <h4>Description</h4>
         
         <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
@@ -353,17 +333,7 @@ function Separators() {
             <div className={"X"}><InlineMath math={separator.toString()} /></div>
             <InlineMath math={"\\}"}/>
         </div></div>
-        {/* <br/> */}
-        {/* {components.map((item, idx) => {
-            const line = "C_"+(idx+1).toString()+" = \\{" + item.toString() + "\\}";
-            return (
-            <React.Fragment key={idx}>
-                <div className='items'>
-                    <InlineMath math={line} />
-                </div>
-            </React.Fragment>
-        )})} */}
-        {/* <br/> */}
+ 
         {components.map((item, idx) => {
             const e = "\\}";
             return (
@@ -376,7 +346,12 @@ function Separators() {
             </React.Fragment>
         )})}
 
-        </div>
+        </div>}
+
+
+
+
+
 
         {page_state === 3 ? <>
             <br/>

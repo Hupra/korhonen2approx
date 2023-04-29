@@ -178,6 +178,7 @@ export class Graph {
         this.svg_nodes       = this.create_svg_nodes();
         this.svg_node_labels = this.create_svg_node_labels();
         this.svg_node_W_label= this.create_svg_node_label_in_W();
+        if(this.dX) this.svg_node_dX = this.create_svg_dx();
         this.create_svg_simulation_tick();
     }
 
@@ -266,6 +267,22 @@ export class Graph {
         .text("W")
         .classed("node_w", true)
         .attr("text-anchor", "middle")
+        .attr('fill', "white")
+        .attr("stroke", "black") // add white stroke color
+        .attr("stroke-width", "3px") // set stroke width to 1px
+        .style("paint-order", "stroke")
+    }
+
+    create_svg_dx(){
+        return this.svg
+        .append("g")
+        .attr("class", "node-dX")
+        .selectAll("text")
+        .data(this.nodes.filter(node => node.dx !== undefined))
+        .enter().append("text")
+        .text(node => node.dx.toString() )
+        .attr("text-anchor", "middle")
+        .attr("font-size", "18px")
         .attr('fill', "white")
         .attr("stroke", "black") // add white stroke color
         .attr("stroke-width", "3px") // set stroke width to 1px
@@ -464,6 +481,11 @@ export class Graph {
                 this.svg_node_W_label
                 .attr("x", d => d.x - 0)
                 .attr("y", d => d.y -11); // adjust the y-coordinate as needed to center the text vertically        
+            }
+            if(this.svg_node_dX){
+                this.svg_node_dX
+                .attr("x", d => d.x + 20)
+                .attr("y", d => d.y + 20); // adjust the y-coordinate as needed to center the text vertically        
             }
             if(this.node_bg){
                 this.node_bg
@@ -875,10 +897,10 @@ create_svg_node_labels(text_function = node => node.id) {
                 node.fx = w/2;
                 node.fy = (h/2)-60;
             }
-            else if(node.name === "X" && (!node.sup || node.sup === "X")){
-                node.fx = w/2;
-                node.fy = (h/2)-10;
-            }    
+            // else if(node.name === "X" && (!node.sup || node.sup === "X")){
+            //     node.fx = w/2;
+            //     node.fy = (h/2)-10;
+            // }    
             // DANIEL
         })
         
