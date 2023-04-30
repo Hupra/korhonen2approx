@@ -63,6 +63,14 @@ function SeparatorsBalanced() {
         g.C = C;
         g2.X = X;
         g2.C = C;
+
+
+        let blobs = []
+        for (let i = 0; i < C.length; i++) {
+            blobs.push({ "bags": C[i], "class": "outline-C" + (i+1).toString(), "text": "C" + (i+1).toString(), "offset": 50 });
+        }
+        g2.blobs = blobs;
+
         g.render();
         t.render();
         g.svg_set_component_color();
@@ -103,7 +111,7 @@ function SeparatorsBalanced() {
             //toggle highlight
             // node.classed("highlight", !node.classed("highlight"));
             g2.render();
-
+            
 
             X = removed_nodes.map(node => node.id).sort((a, b) => a - b);
             C = g2.find_components();
@@ -116,6 +124,12 @@ function SeparatorsBalanced() {
             t.render();
             g.svg_set_component_color();
             g2.svg_set_component_color();
+
+            let blobs = []
+            for (let i = 0; i < C.length; i++) {
+                blobs.push({ "bags": C[i], "class": "outline-C" + (i+1).toString(), "text": "C" + (i+1).toString(), "offset": 50 });
+            }
+            g2.blobs = blobs;
 
             setSeparator(X);
             setComponents(C);
@@ -178,7 +192,7 @@ function SeparatorsBalanced() {
         <div className='task'>
             <span><InlineMath math="\forall i: |W \cap C_i| \leq |W|/2"/>.</span>
             <ion-icon name={components.length>=2 && components.reduce((acc, x)=> Math.max(acc, x.filter(y => state_W.includes(y)).length), 0)
-            <=4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+            <=state_W.length/2 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
 
     <h4>Variables</h4>
@@ -242,7 +256,7 @@ function SeparatorsBalanced() {
         <div className='task'>
             <span><InlineMath math="\forall i: |W \cap C_i| \leq |W|/2"/>.</span>
             <ion-icon name={components.length>=2 && components.reduce((acc, x)=> Math.max(acc, x.filter(y => state_W.includes(y)).length), 0)
-            <=4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+            <=state_W.length/2 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
 
         <h4>Variables</h4>
@@ -302,7 +316,7 @@ function SeparatorsBalanced() {
     <div className='task'>
         <span><InlineMath math="\forall i: |W \cap C_i| \leq |W|/2"/>.</span>
         <ion-icon name={components.length>=2 && components.reduce((acc, x)=> Math.max(acc, x.filter(y => state_W.includes(y)).length), 0)
-        <=4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+        <=state_W.length/2 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
     </div>
 
     <h4>Variables</h4>

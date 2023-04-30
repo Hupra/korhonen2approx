@@ -77,10 +77,11 @@ export function idx_2_value(indices, B){
 }
 
 export function print_state(cccx, B){
-    let c1 = idx_2_value(decode_set(get_c1(cccx, B.length)), B);
-    let c2 = idx_2_value(decode_set(get_c2(cccx, B.length)), B);
-    let c3 = idx_2_value(decode_set(get_c3(cccx, B.length)), B);
-    let X  = idx_2_value(decode_set(get_x( cccx, B.length)), B);
+    let dec = extract(cccx);
+    let c1 = idx_2_value(decode_set(dec[0]), B);
+    let c2 = idx_2_value(decode_set(dec[1]), B);
+    let c3 = idx_2_value(decode_set(dec[2]), B);
+    let X  = idx_2_value(decode_set(dec[3]), B);
     // console.log("-----------------------------");
 
     let s1 = "{"+c1.toString()+"}";
@@ -118,29 +119,50 @@ export function init_U(n, h) {
 // * use bigint
 // * stop computing on such big bags!
 
+// export function get_c1(cccx, w) {
+//     let mask = (1 << w) - 1;
+//     return cccx & mask;
+// }
+// export function get_c2(cccx, w) {
+//     let mask = (1 << w) - 1;
+//     return (cccx >> w) & mask;
+// }
+// export function get_c3(cccx, w) {
+//     let mask = (1 << w) - 1;
+//     return (cccx >> (w * 2)) & mask;
+// }
+// export function get_x(cccx, w) {
+//     let mask = (1 << w) - 1;
+//     return (cccx >> (w * 3)) & mask;
+// }
+// export function combine(c1,c2,c3,x,w) {
+//     return c1 | (c2<<w) | (c3<<w*2) | (x<<w*3);
+// }
+
 export function get_c1(cccx, w) {
     let mask = (1 << w) - 1;
     return cccx & mask;
 }
-
 export function get_c2(cccx, w) {
     let mask = (1 << w) - 1;
     return (cccx >> w) & mask;
 }
-
 export function get_c3(cccx, w) {
     let mask = (1 << w) - 1;
     return (cccx >> (w * 2)) & mask;
 }
-
 export function get_x(cccx, w) {
     let mask = (1 << w) - 1;
     return (cccx >> (w * 3)) & mask;
 }
-
-export function combine(c1,c2,c3,x,w) {
-    return c1 | (c2<<w) | (c3<<w*2) | (x<<w*3);
+export function combine(c1,c2,c3,x) {
+    return c1.toString() + "," + c2.toString() + "," + c3.toString() + "," + x.toString();
 }
+export function extract(cccx) {
+    return cccx.split(",").map(c => parseInt(c));
+}
+
+
 export function get_bin_size(x) {
     let count = 0;
     while(x) {
@@ -148,6 +170,11 @@ export function get_bin_size(x) {
         x >>= 1;
     }
     return count;
+}
+
+export function valid_split(cccx, w, h) {
+    let [c1,c2,c3,X] = extract(cccx);
+    return (get_bin_size(c1)+h < w) && (get_bin_size(c2)+h < w) && (get_bin_size(get_c3(c3))+h < w)
 }
 
 export function make_nice(input) {
@@ -288,6 +315,25 @@ export function make_nice(input) {
   
     processNode(rootNode);
     return tree;
+}
+
+export function nice_color(tree) {
+    for (const node of tree.nodes) {
+        let children = tree.edges.filter(edge => edge.source === node.id).map(edge => edge.target);
+        switch (children.length) {
+            case 1:
+                let child = tree.nodes.find(node => node.id === children[0]);
+                if(node.bag.length>child.bag.length) node.color = "skyblue"; // intro
+                else node.color = "chartreuse"; // forget
+                break;
+            case 2: // join 
+                node.color = "orange";
+                break;
+            default: // leaf
+                node.color = "#D56EFF";
+                break;
+        }
+    }
 }
 
 

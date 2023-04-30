@@ -7,9 +7,7 @@ $c5: blue
 $c6: purple
 $cx: orange
 $gap: 5px
-$sebbe: 'https://www.onlygfx.com/wp-content/uploads/2019/02/7-noise-texture-overlays-1-768x589.png'
-// $sebbe: 'https://www.onlygfx.com/wp-content/uploads/2019/02/7-noise-texture-overlays-4-768x538.png' 
-
+//"#fba0e3"
 *
     box-sizing: border-box
 
@@ -342,8 +340,12 @@ line.xclude
             // transition: filter 0.2s ease-in-out
             transition: 0.2s ease-in-out
 
-
-
+.small-svg
+    border: $border-settings
+    border-radius: 7px
+    left: 10%
+    top: 10%
+    background-color: #252525
 
 .svg_container
     width: 100%
@@ -394,17 +396,7 @@ line.xclude
         position: relative
         background-color: transparent
         overflow: hidden
-        &::before
-            content: ""
-            position: absolute
-            top: 0
-            left: 0
-            width: 100%
-            height: 100%
-            background-size: cover
-            // background-image: url($sebbe)
-            animation: sebbe 30s infinite
-            // z-index: 0
+
         .cy
             position: relative
             z-index: 0
@@ -430,14 +422,6 @@ line.xclude
         left: -200%
     &.full
         border-right: 2px dotted #050505
-
-@keyframes sebbe
-    0%
-        transform: scale(1)
-    50%
-        transform: scale(1.5)
-    100%
-        transform: scale(1)
             
 .splitline
     margin: 5px

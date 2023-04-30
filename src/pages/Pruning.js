@@ -35,7 +35,6 @@ function Pruning() {
         t.render();
         t.svg_set_node_and_edge_if_name("xclude", ["D", "E", "F", "G", "Z", "H", "I", "J", "L", "K", "M"]);
     }
-
     function state2(tree) {
         tree = JSON.parse(JSON.stringify(tree));
         let C = [[1,2,3,11,20,21,22],[4,5,6,17,12,13,15,16,19,23],[7,8,9,14,18]]
@@ -53,7 +52,6 @@ function Pruning() {
         t.render();
         t.svg_set_node_and_edge_if_name("xclude", ["D", "E", "F", "G", "Z", "H", "I", "J", "L", "K", "M"]);
     }
-
     function state3(tree) {
         // sterialize
         tree = JSON.parse(JSON.stringify(tree));
@@ -76,7 +74,6 @@ function Pruning() {
         t.render();
         t.svg_set_node_and_edge_if_name("xclude", ["D", "E", "F", "G", "Z", "H", "I", "J", "L", "K", "M"]);
     }
-
     function state4(tree) {
         tree = JSON.parse(JSON.stringify(tree));
         
@@ -375,8 +372,11 @@ function Pruning() {
         <button onClick={() => set_page_state(Math.max(1, page_state-1))}>Prev</button>
         <button onClick={() => set_page_state(Math.min(7, page_state+1))}>Next</button>
         <br/><hr/>
+        <p><i>With this pruning operation we have now seen every concept of the algorithm, 
+            next we will explore how one goes about actually finding a minimum split. To do this we first must learn 
+            about nice tree decompositions.</i></p>
         <Link to="#" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
-        <br/><i>Next: Done?</i>
+        <br/><i>Next: Nice Tree Decomposition?</i>
     </SB></div></div>
     <div className='content'>
     <div className='svg_container'>

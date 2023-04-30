@@ -1,8 +1,8 @@
 {
     "nodes": [
-        { "id": 1, "bag": [1,2,3,4,5,6,7,8], "color": "#fba0e3", "name": "W"},
-        { "id": 2, "bag": [1,2,5,6,9], "color": "lightblue", "name": "A"},
-        { "id": 3, "bag": [3,4,7,8,10], "color": "lightgreen", "name": "B"}
+        { "id": 1, "bag": [1,2,3,4,5,6,7,8], "name": "W"},
+        { "id": 2, "bag": [1,2,5,6,9], "name": "A"},
+        { "id": 3, "bag": [3,4,7,8,10], "name": "B"}
     ],
     "edges": [
         { "source": 1, "target": 2},

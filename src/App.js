@@ -5,6 +5,7 @@ import Flow from './pages/Flow';
 import 'materialize-css/dist/css/materialize.min.css';
 import './styles/main.sass';
 import TreeDecomposition from './pages/TreeDecomposition';
+import NiceTreeDecomposition from './pages/NiceTreeDecomposition';
 import Separators from './pages/Separators';
 import SeparatorsBalanced from './pages/SeparatorsBalanced';
 import SplitTree from './pages/SplitTree';
@@ -46,6 +47,7 @@ function App() {
           <NavLink activeClassName='active' to="/page3">H2</NavLink>
           <NavLink activeClassName='active' to="/min-split">MS</NavLink>
           <NavLink activeClassName='active' to="/pruning">P</NavLink>
+          <NavLink activeClassName='active' to="/nice-treedecomposition">NT</NavLink>
           <NavLink activeClassName='active' to="/nicu">N</NavLink>
     </div>
 
@@ -64,39 +66,31 @@ function App() {
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page3">Home Bag Part 2</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/min-split">Minimum Split</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/pruning">Pruning</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/nice-treedecomposition">Nice Tree Decomposition</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/nicu">Nicu</NavLink>
     </div>
-        {/* <div className='header'>
-          <NavLink exact activeClassName='active' to="/">Home</NavLink>
-          <NavLink activeClassName='active' to="/flow">Flow</NavLink>
-          <NavLink activeClassName='active' to="/treedecomposition">Tree Decomposition</NavLink>
-          <NavLink activeClassName='active' to="/separators">Separators</NavLink>
-          <NavLink activeClassName='active' to="/balanced-separators">Balanced Separators</NavLink>
-          <NavLink activeClassName='active' to="/splitting-tree2">Split Tree Story</NavLink>
-          <NavLink activeClassName='active' to="/splitting-tree">Split Tree Decomposition</NavLink>
-          <NavLink activeClassName='active' to="/connect-components">Connect Components</NavLink>
-        </div> */}
         
         <div className={fullNav ? ' main active' : 'main'}>
           {/* <AnimatePresence mode='wait'> */}
           <AnimatePresence>
             
             <Routes location={location} key={location.pathname}>
-              <Route path="/"                     element={<Home />} /> 
-              <Route path="flow/*"                element={<Flow />} /> 
-              <Route path="treedecomposition/*"   element={<TreeDecomposition />} /> 
-              <Route path="introduction/*"        element={<Introduction />} /> 
-              <Route path="separators/*"          element={<Separators />} /> 
-              <Route path="balanced-separators/*" element={<SeparatorsBalanced />} /> 
-              <Route path="splitting-tree2/*"     element={<SplitTree2 />} /> 
-              <Route path="connect-components/*"  element={<ConnectComponents />} />
-              <Route path="page1/*"               element={<Page1 />} /> 
-              <Route path="page2/*"               element={<Page2 />} /> 
-              <Route path="page3/*"               element={<Page3 />} /> 
-              <Route path="min-split/*"           element={<SplitTree />} /> 
-              <Route path="color/*"               element={<Color />} /> 
-              <Route path="pruning/*"             element={<Pruning />} /> 
-              <Route path="nicu/*"                element={<Nicu />} /> 
+              <Route path="/"                         element={<Home />} /> 
+              <Route path="flow/*"                    element={<Flow />} /> 
+              <Route path="treedecomposition/*"       element={<TreeDecomposition />} /> 
+              <Route path="introduction/*"            element={<Introduction />} /> 
+              <Route path="separators/*"              element={<Separators />} /> 
+              <Route path="balanced-separators/*"     element={<SeparatorsBalanced />} /> 
+              <Route path="splitting-tree2/*"         element={<SplitTree2 />} /> 
+              <Route path="connect-components/*"      element={<ConnectComponents />} />
+              <Route path="page1/*"                   element={<Page1 />} /> 
+              <Route path="page2/*"                   element={<Page2 />} /> 
+              <Route path="page3/*"                   element={<Page3 />} /> 
+              <Route path="min-split/*"               element={<SplitTree />} /> 
+              <Route path="color/*"                   element={<Color />} /> 
+              <Route path="pruning/*"                 element={<Pruning />} />
+              <Route path="nice-treedecomposition/*"  element={<NiceTreeDecomposition />} />
+              <Route path="nicu/*"                    element={<Nicu />} /> 
             </Routes>
          </AnimatePresence>
         </div>

@@ -559,7 +559,7 @@ export class Tree {
         this.C = [];
         this.X = [];
 
-        this.node_color  = "whitesmoke";
+        this.node_color  = "#454545";
     }
 
     render(){
@@ -748,17 +748,14 @@ export class Tree {
                 ]);
                 
                 return this.catmullRomSpline(scaledPolygon, 0.5, true);
-                // return "M" + scaledPolygon.join("L") + "Z";
             } else {
                 return null;
             }
         })
-        // .attr('d', d => (d.polygon ? 'M' + d.polygon.join('L') + 'Z' : null))
-        .attr('stroke', 'black') // Set the stroke color for group shapes
-        // .attr('fill', 'rgba(169, 169, 169, 0.1)') // Set the fill color with some transparency
-        .attr("class", (d) => d.class) // assign a different color to each letter
-        .attr('stroke-width', 4) // Set the stroke width for group shapes
-        .attr('opacity', 1); // Set the stroke width for group shapes
+        .attr('stroke', 'black')
+        .attr("class", (d) => d.class)
+        .attr('stroke-width', 4)
+        .attr('opacity', 1);
 
 
         this.svg_blobs_title = this.svg_blobs_title
@@ -801,27 +798,31 @@ export class Tree {
         .enter().append('rect')
         .attr('width', node => Math.max(24, node.bag.length*20))
         .attr('height', 30)
-        // .attr('stroke', node => node.color ? node.color : this.node_color)
-        .attr('stroke', node => node.name === "W<<<" ? "pink" : "#454545")
-        // .attr('fill', 'white')
+        .attr('stroke', node => node.color ? node.color : this.node_color)
+        // .attr('stroke', node => node.name === "W<<<" ? "pink" : "#454545")
         .attr('fill', '#101010')
         .attr('stroke-width', 2)
         .attr('rx', 2) // set the x radius of the corners to 10 pixels
         .attr('ry', 2) // set the y radius of the corners to 10 pixels   
         .call(d3.drag()
             .on('start', (e,d) => {
+                d.stuck = false;
                 if (!e.active) this.simulation.alphaTarget(0.3).restart();
                 d.fx = d.x;
                 d.fy = d.y;
             })
             .on('drag', (e,d) => {
+                d.stuck = true;
                 d.fx = e.x;
                 d.fy = e.y;
             })
             .on('end', (e,d) => {
                 if (!e.active) this.simulation.alphaTarget(0);
-                d.fx = null;
-                d.fy = null;
+ 
+                if (!d.stuck) {
+                    d.fx = null;
+                    d.fy = null;
+                }
             }
         ));
     }

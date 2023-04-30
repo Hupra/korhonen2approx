@@ -2,8 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import nicetreed from '../graphs/nicu.json'
 import treed from '../graphs/graph1-tree.json'
 import graph1 from '../graphs/graph1.json'
-// import graph from '../graphs/graph-X.json'
-// import tree from '../graphs/graph-X-tree.json'
+// import treed from '../graphs/graphBS3-tree.json'
+// import graph1 from '../graphs/graphBS3.json'
+import graph from '../graphs/graph-X.json'
+import tree from '../graphs/graph-X-tree.json'
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import * as d3 from 'd3';
@@ -181,13 +183,14 @@ function Nicu() {
         for (const edge of nice_td.edges) {
             find_children[edge.source].push(edge.target);
         }
+        console.log("1BAG", find_children[1]);
 
         let newcounter = 0;
         let repcounter = 0;
 
         function rec(i,h,cccx){
             // out of bounds
-            if(h<0) return -Infinity;
+            if(h<0) return Infinity;
 
             // return value if res has been computed before;
             if (U[i][h][cccx] !== 42069) ++repcounter;
@@ -202,7 +205,7 @@ function Nicu() {
 
             if (children.length === 0)
             {
-                if(h>0) return -Infinity;
+                if(h>0) return Infinity;
                 return 0;
             }
             else if (children.length === 2)
@@ -210,16 +213,16 @@ function Nicu() {
                 let j = children[0];
                 let k = children[1];
 
-                let Bi_X  = DP.get_x(cccx,  Bi.length);
+                let Bi_X  = DP.extract(cccx)[3];
                 let Bi_X_size = DP.get_bin_size(Bi_X);
                 let zum = h + Bi_X_size;
 
-                let best = -Infinity;
+                let best = Infinity;
                 
                 // supper slow sadly :!
                 for (let h1 = Bi_X_size; h1 <= h; h1++) {
                     let h2 = zum-h1;
-                    best = Math.max(best, rec(j,h1,cccx)+rec(k,h2,cccx))
+                    best = Math.min(best, rec(j,h1,cccx)+rec(k,h2,cccx))
                 }
 
                 U[i][h][cccx] = best;
@@ -231,10 +234,7 @@ function Nicu() {
                 let Bj = find_bag[j];
 
                 // current parti
-                let Bi_c1 = DP.get_c1(cccx, Bi.length);
-                let Bi_c2 = DP.get_c2(cccx, Bi.length);
-                let Bi_c3 = DP.get_c3(cccx, Bi.length);
-                let Bi_X  = DP.get_x(cccx,  Bi.length);
+                let [Bi_c1, Bi_c2, Bi_c3, Bi_X] = DP.extract(cccx);
 
                 if(Bi.length > Bj.length){
                     // Bi > Bj
@@ -248,19 +248,19 @@ function Nicu() {
                     for (const u of arr1) {
                         for (const v of arr2) { // C1 <-> C2
                             if(has_edge[u][v]){
-                                U[i][h][cccx] = -Infinity;
-                                return -Infinity;
+                                U[i][h][cccx] = Infinity;
+                                return Infinity;
                         }}                        
                         for (const v of arr3) { // C1 <-> C3
                             if(has_edge[u][v]){
-                                U[i][h][cccx] = -Infinity;
-                                return -Infinity;
+                                U[i][h][cccx] = Infinity;
+                                return Infinity;
                     }}};
                     for (const u of arr2) {
                         for (const v of arr3) { // C2 <-> C3
                             if(has_edge[u][v]){
-                                U[i][h][cccx] = -Infinity;
-                                return -Infinity;
+                                U[i][h][cccx] = Infinity;
+                                return Infinity;
                     }}};
 
                     let v = DP.find_bag_diff(Bi,Bj);
@@ -275,12 +275,13 @@ function Nicu() {
                     let Bj_X  = DP.remove_and_rshift_i(Bi_X,  v);
                 
                     // visual -> move v up, and push left part 1 to the right
-                    let cvcvcvxv = DP.combine(Bj_c1, Bj_c2, Bj_c3, Bj_X, Bj.length);
+                    let cvcvcvxv = DP.combine(Bj_c1, Bj_c2, Bj_c3, Bj_X);
 
                     //|X ∩ Bj ∩ Bi -- since Bj <= Bi we can just check X cap Bj
                     let X_cap_Bj_cap_Bi = DP.get_bin_size(Bj_X)
                                                       // we wanna inc by, (h - what is also in this bag)
                     U[i][h][cccx] = rec(j, h-v_cap_X, cvcvcvxv) + ((h-v_cap_X)-X_cap_Bj_cap_Bi);
+                    // + ((h-v_cap_X)-X_cap_Bj_cap_Bi);
                 }
                 else{
                     // Bj > Bi
@@ -302,54 +303,58 @@ function Nicu() {
                     let X_cap_Bj_cap_Bi = DP.get_bin_size(Bi_X);
                     
                     // speed up, to avoid doing the same cases multiple times, where the same cas is one where the lements in c3 could just be be elements in c2
-                    if(Bj_c1===0 && Bj_c2===0 && Bj_c3===0) {
-                        let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X,   Bj.length);
-                        let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v, Bj.length);
+                    // if(Bj_c1===0 && Bj_c2===0 && Bj_c3===0) {
+                    //     let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X,   Bj.length);
+                    //     let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v, Bj.length);
     
-                        U[i][h][cccx] = Math.max(
-                            rec(j,h,cvccx) + (h-X_cap_Bj_cap_Bi),
-                            rec(j,h,cccxv) + (h-X_cap_Bj_cap_Bi)
-                        );
-                    }else if(Bj_c2===0 && Bj_c3===0) {
-                        let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X,   Bj.length);
-                        let ccvcx = DP.combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X,   Bj.length);
-                        let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v, Bj.length);
+                    //     U[i][h][cccx] = Math.min(
+                    //         rec(j,h,cvccx),
+                    //         rec(j,h,cccxv)
+                    //     ) + (h-X_cap_Bj_cap_Bi);
+                    // }else if(Bj_c2===0 && Bj_c3===0) {
+                    //     let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X,   Bj.length);
+                    //     let ccvcx = DP.combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X,   Bj.length);
+                    //     let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v, Bj.length);
     
-                        U[i][h][cccx] = Math.max(
-                            rec(j,h,cvccx) + (h-X_cap_Bj_cap_Bi),
-                            rec(j,h,ccvcx) + (h-X_cap_Bj_cap_Bi),
-                            rec(j,h,cccxv) + (h-X_cap_Bj_cap_Bi)
-                        );
-                    }else{
-                        let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X,   Bj.length);
-                        let ccvcx = DP.combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X,   Bj.length);
-                        let cccvx = DP.combine(Bj_c1,   Bj_c2,   Bj_c3_v, Bj_X,   Bj.length);
-                        let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v, Bj.length);
+                    //     U[i][h][cccx] = Math.min(
+                    //         rec(j,h,cvccx),
+                    //         rec(j,h,ccvcx),
+                    //         rec(j,h,cccxv)
+                    //     ) + (h-X_cap_Bj_cap_Bi);
+                    // }else{
+                    //     let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X,   Bj.length);
+                    //     let ccvcx = DP.combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X,   Bj.length);
+                    //     let cccvx = DP.combine(Bj_c1,   Bj_c2,   Bj_c3_v, Bj_X,   Bj.length);
+                    //     let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v, Bj.length);
 
-                        U[i][h][cccx] = Math.max(
-                            rec(j,h,cvccx) + (h-X_cap_Bj_cap_Bi),
-                            rec(j,h,ccvcx) + (h-X_cap_Bj_cap_Bi),
-                            rec(j,h,cccvx) + (h-X_cap_Bj_cap_Bi),
-                            rec(j,h,cccxv) + (h-X_cap_Bj_cap_Bi)
-                        );
-                    }
+                    //     // if((h-X_cap_Bj_cap_Bi)<0) console.log("ERROR FOUND", h, X_cap_Bj_cap_Bi);
+                    //     // return 0;
 
-                    // let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X,   Bj.length);
-                    // let ccvcx = DP.combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X,   Bj.length);
-                    // let cccvx = DP.combine(Bj_c1,   Bj_c2,   Bj_c3_v, Bj_X,   Bj.length);
-                    // let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v, Bj.length);
+                    //     U[i][h][cccx] = Math.min(
+                    //         rec(j,h,cvccx),
+                    //         rec(j,h,ccvcx),
+                    //         rec(j,h,cccvx),
+                    //         rec(j,h,cccxv)
+                    //     ) + (h-X_cap_Bj_cap_Bi);
+                    //     // + (h-X_cap_Bj_cap_Bi)
+                    // }
+
+                    let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X);
+                    let ccvcx = DP.combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X);
+                    let cccvx = DP.combine(Bj_c1,   Bj_c2,   Bj_c3_v, Bj_X);
+                    let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v);
 
                     // //|X ∩ Bj ∩ Bi -- since Bi <= Bj we can just check X cap Bi
                     // let X_cap_Bj_cap_Bi = DP.get_bin_size(Bi_X);
                     //                                   // we wanna inc by h - what is also in this bag
 
-                    // U[i][h][cccx] = Math.max(
-                    //     rec(j,h,cvccx) + (h-X_cap_Bj_cap_Bi),
-                    //     rec(j,h,ccvcx) + (h-X_cap_Bj_cap_Bi),
-                    //     rec(j,h,cccvx) + (h-X_cap_Bj_cap_Bi),
-                    //     rec(j,h,cccxv) + (h-X_cap_Bj_cap_Bi)
-                    // );
-
+                    U[i][h][cccx] = Math.min(
+                        rec(j,h,cvccx),
+                        rec(j,h,ccvcx),
+                        rec(j,h,cccvx),
+                        rec(j,h,cccxv)
+                    ) + (h-X_cap_Bj_cap_Bi);
+                    //  + (h-X_cap_Bj_cap_Bi)
                 }
             } 
             return U[i][h][cccx];
@@ -361,15 +366,18 @@ function Nicu() {
         let r_C3 = new Set();
         function dfs_X(i,h,cccx)
         {
-            console.log("dfs", i);
+            // console.log("dfs", i);
             let Bi = find_bag[i];
             let children = find_children[i];
 
+            // current parti
+            let [Bi_c1, Bi_c2, Bi_c3, Bi_X] = DP.extract(cccx);
+
             // save this x in X
-            let this_X = DP.idx_2_value(DP.decode_set(DP.get_x(cccx,  Bi.length)), Bi);
-            let this_C1 = DP.idx_2_value(DP.decode_set(DP.get_c1(cccx,  Bi.length)), Bi);
-            let this_C2 = DP.idx_2_value(DP.decode_set(DP.get_c2(cccx,  Bi.length)), Bi);
-            let this_C3 = DP.idx_2_value(DP.decode_set(DP.get_c3(cccx,  Bi.length)), Bi);
+            let this_X = DP.idx_2_value(DP.decode_set(Bi_X), Bi);
+            let this_C1 = DP.idx_2_value(DP.decode_set(Bi_c1), Bi);
+            let this_C2 = DP.idx_2_value(DP.decode_set(Bi_c2), Bi);
+            let this_C3 = DP.idx_2_value(DP.decode_set(Bi_c3), Bi);
             for (const x of this_X) X.add(x);
             for (const x of this_C1) r_C1.add(x);
             for (const x of this_C2) r_C2.add(x);
@@ -380,11 +388,6 @@ function Nicu() {
                 let j = children[0];
                 let Bj = find_bag[j];
 
-                // current parti
-                let Bi_c1 = DP.get_c1(cccx, Bi.length);
-                let Bi_c2 = DP.get_c2(cccx, Bi.length);
-                let Bi_c3 = DP.get_c3(cccx, Bi.length);
-                let Bi_X  = DP.get_x(cccx,  Bi.length);
 
                 if(Bi.length > Bj.length){
 
@@ -398,9 +401,9 @@ function Nicu() {
                     let Bj_c2 = DP.remove_and_rshift_i(Bi_c2, v);
                     let Bj_c3 = DP.remove_and_rshift_i(Bi_c3, v);
                     let Bj_X  = DP.remove_and_rshift_i(Bi_X,  v);
-                
                     // visual -> move v up, and push left part 1 to the right
-                    let cvcvcvxv = DP.combine(Bj_c1, Bj_c2, Bj_c3, Bj_X, Bj.length);
+                
+                    let cvcvcvxv = DP.combine(Bj_c1, Bj_c2, Bj_c3, Bj_X);
 
                     dfs_X(j, h-v_cap_X, cvcvcvxv);
   
@@ -421,10 +424,10 @@ function Nicu() {
                     let Bj_c3_v = DP.add_ith_bit_t(Bi_c3, v);
                     let Bj_X_v  = DP.add_ith_bit_t(Bi_X,  v);
 
-                    let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X,   Bj.length);
-                    let ccvcx = DP.combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X,   Bj.length);
-                    let cccvx = DP.combine(Bj_c1,   Bj_c2,   Bj_c3_v, Bj_X,   Bj.length);
-                    let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v, Bj.length);
+                    let cvccx = DP.combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X);
+                    let ccvcx = DP.combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X);
+                    let cccvx = DP.combine(Bj_c1,   Bj_c2,   Bj_c3_v, Bj_X);
+                    let cccxv = DP.combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v);
 
                     // when i swap to min instead of max, i have to take care to avoid -1
                     let cases = [cvccx, ccvcx, cccvx, cccxv];
@@ -433,7 +436,7 @@ function Nicu() {
                     console.log("all 4", U[j][h][cases[0]], U[j][h][cases[1]], U[j][h][cases[2]], U[j][h][cases[3]]);
 
                     for (let cid = 1; cid < 4; cid++) {
-                        if (U[j][h][cases[cid]] > U[j][h][cases[best_case]]) {
+                        if (U[j][h][cases[cid]] < U[j][h][cases[best_case]]) {
                             best_case = cid;
                         }
                     }
@@ -444,17 +447,16 @@ function Nicu() {
                 let j = children[0];
                 let k = children[1];
 
-                let Bi_X  = DP.get_x(cccx,  Bi.length);
                 let Bi_X_size = DP.get_bin_size(Bi_X);
                 let zum = h + Bi_X_size;
 
                 let best_h1  = 0;
-                let best_val = -Infinity;
+                let best_val = Infinity;
                 
                 // supper slow sadly :!
                 for (let h1 = Bi_X_size; h1 <= h; h1++) {
                     let h2 = zum-h1;
-                    if((U[j][h1][cccx] + U[k][h2][cccx]) > best_val){
+                    if((U[j][h1][cccx] + U[k][h2][cccx]) < best_val){
                         best_h1 = h1;
                     }
                 }
@@ -502,8 +504,10 @@ function Nicu() {
                 let c3_size = DP.get_bin_size(c3);
                 let  X_size = DP.get_bin_size(X);
                 
-                // check |Ci cup X| < W
-                if(Math.max(c1_size, c2_size, c3_size)+X_size < stop) {
+                // check |(Ci cap W) cup X| < W
+                // check |(Ci cap W)| <= W/2
+                if((Math.max(c1_size, c2_size, c3_size)+X_size < stop) &&
+                    Math.max(c1_size, c2_size, c3_size) <= stop/2) {
                     f(i,h,DP.combine(c1,c2,c3,X,stop));
                 }
             }
@@ -525,10 +529,12 @@ function Nicu() {
         // console.log("time:", elapsedTimeInSeconds)
 
         const startTime = performance.now();
-        for (let h = 0; h <= w; h++) {
+        for (let h = 0; h <= 3; h++) {
             let bag = DP.get_bag(nice_td,1);
             combi2(0,0,0,0,0,bag.length,rec,1,h);
         }
+        
+
         const endTime = performance.now();
         const elapsedTimeInSeconds = (endTime - startTime) / 1000;
         console.log("time:", elapsedTimeInSeconds)
@@ -539,36 +545,50 @@ function Nicu() {
         // const endTime = performance.now();
         // console.log("time:", (endTime - startTime) / 1000)
 
-        console.log(U);
-        console.log("new:", newcounter, "rep:", repcounter);
-        console.log("len", Object.keys(U[1][2]).length)
-        // 32768
-        // 11051
+        // console.log(U);
+        // console.log("new:", newcounter, "rep:", repcounter);
+        // console.log("len", Object.keys(U[1][2]).length)
+        // // 32768
+        // // 11051
         let rbag = 1;
         let h = 2;
         let highest = -420;
         let enc_set = null;
-        for (const key in U[rbag][h]) {
-            let cur = U[rbag][h][key];
-            if(cur > highest){
-                highest = cur;
-                enc_set = key;
-            }
-            // if(U[rbag][h][key] !== -Infinity){
-            //     console.log("-------");
-            //     console.log("res", U[rbag][h][key]);
-            //     DP.print_state(key, DP.get_bag(nice_td, rbag));
-            // }
-        }   
         
-        console.log("result", highest, enc_set);
-        DP.print_state(enc_set, DP.get_bag(nice_td, rbag));
-        dfs_X(rbag, h, enc_set);
-        console.log(X, r_C1, r_C2, r_C3);
+
+        // console.log("nam", Object.entries(U[rbag][h]).filter((arr) => arr[1] !== Infinity))
+
+        for(const pair of Object.entries(U[rbag][h]).filter((arr) => arr[1] !== Infinity)){
+            let enc = pair[0];
+            let dis = pair[1];
+            console.log("------------------------");
+            console.log("dist:", dis, "valid?", DP.valid_split(enc,w,h));
+            console.log(enc);
+            DP.print_state(enc, DP.get_bag(nice_td, rbag));
+            // dfs_X(rbag, h, enc);
+        }
+
+        // for (const key in U[rbag][h]) {
+        //     let cur = U[rbag][h][key];
+        //     if(cur > highest){
+        //         highest = cur;
+        //         enc_set = key;
+        //     }
+        //     // if(U[rbag][h][key] !== -Infinity){
+        //     //     console.log("-------");
+        //     //     console.log("res", U[rbag][h][key]);
+        //     //     DP.print_state(key, DP.get_bag(nice_td, rbag));
+        //     // }
+        // }   
+        
+        // console.log("result", highest, enc_set);
+        // DP.print_state(enc_set, DP.get_bag(nice_td, rbag));
+        // dfs_X(rbag, h, enc_set);
+        // console.log(X, r_C1, r_C2, r_C3);
 
 
         const treed_prime = T_2_TD(treed, [Array.from(r_C1), Array.from(r_C2), Array.from(r_C3)], Array.from(X));
-        const t3 = new Tree(treed_prime, d3.select(tree_container.current));
+        const t3 = new Tree(nice_td, d3.select(tree_container.current));
         t3.charge = -1200;
         t3.render();
         
