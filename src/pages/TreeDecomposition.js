@@ -38,6 +38,33 @@ function fix_T(t, num) {
     dig(s);
 }
 
+class Lock {
+    constructor() {
+        this._locked = false;
+        this._queue = [];
+    }
+
+    async lock() {
+        if (this._locked) {
+            await new Promise((resolve) => this._queue.push(resolve));
+        }
+        this._locked = true;
+    }
+
+    unlock() {
+        if (this._queue.length > 0) {
+            const resolve = this._queue.shift();
+            resolve();
+        } else {
+            this._locked = false;
+        }
+    }
+}
+
+function delay(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
 function TreeDecomposition() {
     const graph_container = useRef();
     const tree_container = useRef();
@@ -54,6 +81,8 @@ function TreeDecomposition() {
     useEffect(() => {
         let g = new Graph(graph, d3.select(graph_container.current));
         let t = new Tree(treee, d3.select(tree_container.current));
+
+        const vertexLock = new Lock();
 
         let counter = 6;
         let tcounter = 4;
@@ -73,11 +102,14 @@ function TreeDecomposition() {
             });
 
 
-            g.svg.on("click", function(event) {
+            g.svg.on("click", async function(event) {
+                await vertexLock.lock();
+
                 const [x, y] = d3.pointer(event);
                 add_vertex({id: ++counter, x, y});
                 if((g.nodes.length-6===3 && g.links.length-6>=3)) correcto(event.clientX, event.clientY, "Perfect!");
-
+                
+                vertexLock.unlock();
             });
 
             g.svg_nodes.call(d3.drag()
@@ -101,12 +133,13 @@ function TreeDecomposition() {
                     const {x, y} = point.matrixTransform(g.svg.node().getScreenCTM().inverse());
                     g.svg_temp_line.attr("x2", x+2).attr("y2", y+5);
                 })
-                .on('end', (e,d) => 
+                .on('end', async (e,d) => 
                 {
                     if (!e.active) g.simulation.alphaTarget(0);
                     g.svg_temp_line.attr("visibility", "hidden");
 
                     const target = g.nodes.find(n => Math.hypot(n.x - e.x, n.y - e.y) < 20);
+                    await vertexLock.lock();
 
                     if(target) {
                         const source = g.start_node;
@@ -114,6 +147,7 @@ function TreeDecomposition() {
                         let nam = target.id;
                         
                         console.log(num,nam);
+                        console.log(t.nodes)
                         
                         // degree
                         let d_num = g.links.reduce((zum, edge) => (edge.source.id === num||edge.target.id===num) + zum, 0);
@@ -153,7 +187,7 @@ function TreeDecomposition() {
 
                          if((g.nodes.length-6>=3 && g.links.length-6===3)) correcto(e.sourceEvent.clientX, e.sourceEvent.clientY, "Perfect!")
                     }
-
+                    vertexLock.unlock();
                 }
             ));
         }
@@ -172,7 +206,7 @@ function TreeDecomposition() {
             t.links = links;
             t.render();
 
-            set_tasks([g.nodes.length-6, g.links.length-6])
+            set_tasks([g.nodes.length-6, g.links.length-6]);
         }
 
         function add_edge(edge){
