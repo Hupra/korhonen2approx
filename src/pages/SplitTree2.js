@@ -124,13 +124,9 @@ function SplitTree2() {
                 <h4>Description</h4>
                 {/* <div>Fill out the correct inputs in the formulas below for each of the three newly created bags derived from the original bag {B}</div> */}
                 {/* <div>A simple approach is to look at the current bag in <InlineMath math="T"/> and look at the different colors. Each of these new bags will be the union of orange and one of the other colors.</div> */}
-                <p>To determine the correct inputs for the formulas of the three newly created bags derived from the original
-                     bag <InlineMath math={B}/>, follow this simple approach: Examine
-                      the current bag in tree decomposition <InlineMath math="T"/> and identify the
-                       distinct colors present. Each of these new bags will be the union of the orange
-                        vertices <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span> and one of the other colors <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span>.</p>
+                <p>For each bag in <InlineMath math={"T"}/>, it is necessary to determine the appropriate contents for the three bags that will replace it in <InlineMath math={"T’"}/>. This can be achieved by including the vertices from the original bag in <InlineMath math={"T"}/> that are associated with one of the specific components <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span> , and then adding the vertices from the original bag that are also present in <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span>.</p>
                 <h4>Tasks</h4>
-                <p>In the below tasks please enter the vertices that belongs to each bag separated by comma e.g., {"{"}4,8,3,7{"}"}</p>
+                <p>In the tasks below, please enter the vertices that belong to each bag, separated by commas, e.g., {"{"}4,8,3,7{"}"}</p>
                 <div className='task'>
                     <div>
                         <InlineMath math={B+"^1 = "+B+" \\cap ("}/>
@@ -218,12 +214,12 @@ function SplitTree2() {
 
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Splitting <InlineMath math="T"/></h2>
-        <p>After finding a balanced separator and combining components to obtain a split <InlineMath math={"(C_1, C_2, C_3, X)"}/> of <InlineMath math={"W"}/>, we can create a new tree decomposition T' by spltting each bag in T based on the components in our split.</p>
-        <p>We do this by iterating through each bag and generating three new bags, formed by determining the intersection between the original bag and the following sets, respectively: <InlineMath math="(C_1 \cup X)"/>, <InlineMath math="(C_2 \cup X)"/>, <InlineMath math="(C_3 \cup X)"/>
-        </p>    
+        <p>After identifying a balanced separator and combining components to obtain a split <InlineMath math={"(C_1, C_2, C_3, X)"}/> of <InlineMath math={"W"}/>, we can construct a new, improved tree decomposition <InlineMath math={"T’"}/> by dividing each bag in <InlineMath math={"T"}/> according to the components of our split.</p> 
+        <p>To accomplish this, we iterate through each bag and replace it with three new bags (or two if <InlineMath math={"C_3"}/> is empty), each containing the vertices from the original bag's intersection with a specific component and the separator. For each bag <InlineMath math="B_i" />, this results in three new bags consisting of the following sets: <InlineMath math=" B_i^1 = (B_i \cap (C_1 \cup X))"/>, <InlineMath math=" B_i^2 = (B_i \cap (C_2 \cup X))"/>, and <InlineMath math=" B_i^3 = (B_i \cap (C_3 \cup X))"/>   
+        </p>
         <hr/>
         <h2>Exercises</h2>
-        <i>In tree decomposition T, the vertices in each bag are assigned distinct colors according to their respective component affiliation.</i>
+        <i>In the tree decomposition <InlineMath math={"T"}/>, vertices within each bag are assigned distict colors based on their corresponding component affiliation.</i>
 
             { page_ready && page_state === 0 && <Puzzle i={page_state}/>}
             { page_ready && page_state === 1 && <Puzzle i={page_state}/>}

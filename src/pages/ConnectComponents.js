@@ -235,7 +235,7 @@ function ConnectComponents() {
         <p>Given a balanced separator, each component contains no 
             more than half of the vertices of <InlineMath math="W"/>. And 
             as such, it is always possible to reduce the number of components 
-            to at most three by combining some of them; this can be done by, for 
+            to at most three by combining some of them into a balanced split <InlineMath math="(C_1,C_2,C_3,X)"/>. This can be done by, for 
             instance, always combining the two smallest components until just three remain, 
             ultimately given us a balanced split.</p>
         <hr/>
@@ -250,7 +250,7 @@ function ConnectComponents() {
             separator <InlineMath math="X"/> from <InlineMath math="G"/>. <br/>Since we 
             require at most 3 final components for a balanced split, the task is to drag 
             the lesser component to the other two windows until all the vertices from <InlineMath math="W"/> 
-            are balanced such that no combined component cintains more than half of <InlineMath math="W"/>.</p>
+            are balanced such that no combined component contains more than half of <InlineMath math="W"/>.</p>
         <h4>Tasks</h4>
         <div className='task'>
             <span><InlineMath math={"|"}/><span className='C1'><InlineMath math={"C_1"}/></span><InlineMath math={"\\cap W| \\leq |W|/2"} /></span>
