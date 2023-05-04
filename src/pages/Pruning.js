@@ -16,6 +16,7 @@ function Pruning() {
     const [page_state, set_page_state] = useState(1);
     const tree_container = useRef();
     const tab = useRef();
+    const p1_svg = useRef();
 
     function state1(tree) {
         // "y_div": 5, "y_offset": -10
@@ -327,6 +328,7 @@ function Pruning() {
         switch (page_state) {
             case 1:
                 state1(tree);
+                state1_text(tree);
                 break;
             case 2:
                 state2(tree);
@@ -351,7 +353,44 @@ function Pruning() {
                 break;
           }
         setTimeout(() => {tab.current.style.left = (37*page_state-37).toString() + "px"}, 2);
+
+
+
+
+
     }, [page_state]);
+
+    function state1_text(tree){
+        function place_id(id, x, y, tree) {
+            let node = tree.nodes.find(node => node.id === id);
+            node.stuck = true;
+            node.x = x;
+            node.y = y;
+        }
+    
+        let test = {
+            nodes: [
+                {id: 1, bag: [1,2,4], name: "editable"},
+                {id: 2, bag: [1, 11], name: "non-editable"},
+            ], 
+            edges: [
+                
+            ]}
+        let wp = 50;
+        let hp = 50;
+        let w = p1_svg.current.clientWidth-(wp*2.5);
+        let h = p1_svg.current.clientHeight-(hp*2);
+        
+        place_id(1,  wp+(w*(1/5)), 5+hp+(h*(1/2)), test);
+        place_id(2,  wp+(w*(4/5)), 5+hp+(h*(1/2)), test);
+    
+        const p1g = new Tree(test, d3.select(p1_svg.current));
+        p1g.C = [[1,2,11],[4],[]];
+        p1g.X = [];
+        p1g.render();
+        p1g.svg_set_node_and_edge_if_name("xclude", ["non-editable"]);
+
+    }
 
   return (
     <>
@@ -359,6 +398,8 @@ function Pruning() {
 
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Pruning</h2>
+        <i>On this page, we will walk you through the various stages of the pruning process. Please follow the explanations provided and observe the step-by-step progress in <span className='ref'><InlineMath math="T"/></span></i>
+        <hr/>
         <ul className="mytabs">
             <div className={page_state===1?"tab active":"tab"} onClick={() => set_page_state(1)}>1</div>
             <div className={page_state===2?"tab active":"tab"} onClick={() => set_page_state(2)}>2</div>
@@ -369,14 +410,43 @@ function Pruning() {
             <div className={page_state===7?"tab active":"tab"} onClick={() => set_page_state(7)}>7</div>
             <div id="tab-selector" ref={tab}/>
         </ul>
+
+        {page_state===1 && <>
+        <h3 className='mt0'>Editable bags</h3>
+        <div className='exercise'>
+            <p>In a tree decomposition with a given split <span className='color-reverse'>{"("} <span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>, <span className='X'><InlineMath math="X"/></span>{")"}</span> rooted in the bag <InlineMath math="W"/>, a bag is editable if it meets the following criteria:</p>
+            <ol>
+                <li>The bag intersects a minimum of two distinct components.</li>
+                <li>All bags in the path from the current bag to the root bag <InlineMath math="W"/> are also editable.</li>
+            </ol>
+            <p>If a bag does not fulfill these requirements, it is non-editable.</p>
+            <hr></hr><br></br>
+            <p><i>Example of editable and non-editable bags</i>.</p>
+            <div className='small-svg' style={{height: "100px"}}>
+            <svg ref={p1_svg} className="cy" width="100%" height="100%"></svg>
+            </div>
+        </div>
+        </>}
+
+        {page_state===2 && <>
+        <h3 className='mt0'>Non-editable bags</h3>
+        <div className='exercise'>
+        </div>
+        </>}
+
+
         <button onClick={() => set_page_state(Math.max(1, page_state-1))}>Prev</button>
         <button onClick={() => set_page_state(Math.min(7, page_state+1))}>Next</button>
+
+        {page_state===7 && <>
         <br/><hr/>
         <p><i>With this pruning operation we have now seen every concept of the algorithm, 
             next we will explore how one goes about actually finding a minimum split. To do this we first must learn 
             about nice tree decompositions.</i></p>
         <Link to="#" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
         <br/><i>Next: Nice Tree Decomposition?</i>
+        </>}
+
     </SB></div></div>
     <div className='content'>
     <div className='svg_container'>
