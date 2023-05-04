@@ -17,6 +17,8 @@ function NiceTreeDeomposition() {
   const tree_container1 = useRef();
   const tree_container2 = useRef();
   const leaf = useRef();
+  const [data, set_data] = useState([]);
+
 
     useEffect(() => {
         const t1 = new Tree(tree, d3.select(tree_container1.current));
@@ -36,13 +38,6 @@ function NiceTreeDeomposition() {
           node.x = x;
           node.y = y;
         }
-
-        // place("r",  tree_container2.current.clientWidth/2, 50);
-        // place("W",  tree_container2.current.clientWidth/2, tree_container2.current.clientHeight-50);
-        // place("21", tree_container2.current.clientWidth/(6/1), 100);
-        // place("11", tree_container2.current.clientWidth/(6/1), tree_container2.current.clientHeight-150);
-        // place("30", tree_container2.current.clientWidth/(6/5), 100);
-        // place("12", tree_container2.current.clientWidth/(6/5), tree_container2.current.clientHeight-150);
 
         let hp = 100;
         let wp = 40;
@@ -123,6 +118,45 @@ function NiceTreeDeomposition() {
 
         const t3 = new Tree(test, d3.select(leaf.current));
         t3.render();
+        
+
+
+
+
+        let U = DP.init_U(nice_td);
+
+        let target_bag = 1;
+        let res;
+        let best_h;
+        for (let h = 0; h <= 4; h++) {
+            DP.try_h(U , target_bag, h, graph, nice_td);
+            res = DP.res_h(U, target_bag, h);
+            best_h = h;
+            if(res.length>1) break;
+        }
+        // console.log(DP.res_h(U, 1, 2)[0][0]);
+        // DP.print_state(DP.res_h(U, 1, 2)[0][0],[1,2,3,4,5,6,7,8])
+
+        t2.svg_nodes.call(d3.drag()
+        .on('start', (e,d) => 
+        {
+          let curRes = DP.res_h(U, d.id, best_h);
+          console.log(curRes);
+
+          let data = curRes.map(inst => {
+            let h    = best_h;
+            let cccx = inst[0];
+            let dist = inst[1];
+
+            return [h, dist, DP.find_res(U, d.id, h, graph, nice_td, cccx)];
+          })
+          console.log("data", data);
+          set_data(data);
+          })
+      );
+
+      
+
     }, []);
 
 
@@ -149,6 +183,42 @@ function NiceTreeDeomposition() {
         <p><InlineMath>{'\\text{Two children } j_1, j_2 \\text{ with } B_i = B_{j_1} = B_{j_2}'}</InlineMath></p>
         <hr></hr>
         <p>Write about r as root, because we want W to be split.</p>
+
+
+        {data.map((item, idx) => {
+          console.log("yup")
+        const [h, dist, cccx] = item;
+        const {C1, C2, C3, X} = cccx;
+
+        return (<> 
+      <div className='items'>
+        <InlineMath math={"|X|=" + h.toString() }/>
+        <InlineMath math={"d(X)=" + dist.toString() }/>
+      </div>
+
+        <div className='items'><div>
+            <InlineMath math={"X  = \\{"}/>
+            <div className={"X"}><InlineMath math={X.toString()} /></div>
+            <InlineMath math={"\\}"}/>
+        </div></div>
+ 
+        {[C1,C2,C3].map((item, idx) => {
+            const e = "\\}";
+            return (
+            <React.Fragment key={idx}>
+                <div className='items'><div>
+                <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
+                <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                <InlineMath math={e} />
+                </div></div>
+            </React.Fragment>
+        )})}
+      <br/>
+
+        </>)
+        
+        })}
+
     </div>
       </SB></div>
     </div>

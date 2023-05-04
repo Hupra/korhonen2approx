@@ -175,6 +175,7 @@ export class Graph {
         this.simulation      = this.create_svg_simulation();
         this.create_blobs();
         this.svg_links       = this.create_svg_links();
+        this.svg_temp_line   = this.create_temp_line();
         this.svg_nodes       = this.create_svg_nodes();
         this.svg_node_labels = this.create_svg_node_labels();
         this.svg_node_W_label= this.create_svg_node_label_in_W();
@@ -187,6 +188,13 @@ export class Graph {
             if(this.C[i].includes(parseInt(element))) return i+1;
         }
         return 0;
+    }
+
+    create_temp_line(){
+        return this.svg.append("line")
+        .attr('stroke', this.link_color)
+        .attr('stroke-width', this.link_width)
+        .attr("visibility", "hidden");
     }
 
     create_svg_links(){
@@ -499,6 +507,8 @@ export class Graph {
                     
                 }
             }
+            // update line start
+            if(this.svg_temp_line && this.start_node) this.svg_temp_line.attr("x1", this.start_node.x).attr("y1", this.start_node.y);
             
         });
     }

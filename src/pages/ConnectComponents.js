@@ -294,21 +294,21 @@ function ConnectComponents() {
                 <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
                 <svg id="yolo" ref={graph_container2} className="cy graph"></svg>
             </div>
-            <div className={'svg_container full top interactive' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>
+            <div className={'svg_container full top interactive grab' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>
                 <div className='svg_label'>Component - <InlineMath math="C_1"/></div>
                 <div className={'svg_counter ' + ((container_size[0]<=W.bag.length/2) ? "valid" : "invalid")}>
                     <InlineMath math={container_size[0].toString() + "\\leq" + (W.bag.length/2).toString()}/>
                 </div>
                 <svg ref={graph_container_c1} className="cy graph"></svg>                
             </div>
-            <div className={'svg_container full mid interactive' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>
+            <div className={'svg_container full mid interactive grab' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>
                 <div className='svg_label'>Component - <InlineMath math="C_2"/></div>
                 <div className={'svg_counter ' + ((container_size[1]<=W.bag.length/2) ? "valid" : "invalid")}>
                     <InlineMath math={container_size[1].toString() + "\\leq" + (W.bag.length/2).toString()}/>
                 </div>
                 <svg ref={graph_container_c2} className="cy graph"></svg>                
             </div>
-            <div className={'svg_container full bot interactive' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>
+            <div className={'svg_container full bot interactive grab' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>
                 <div className='svg_label'>Component - <InlineMath math="C_3"/></div>
                 <div className={'svg_counter ' + ((container_size[2]<=W.bag.length/2) ? "valid" : "invalid")}>
                     <InlineMath math={container_size[2].toString() + "\\leq" + (W.bag.length/2).toString()}/>

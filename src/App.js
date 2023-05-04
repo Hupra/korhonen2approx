@@ -16,6 +16,7 @@ import Page2 from './pages/Page2';
 import Page3 from './pages/Page3';
 import Color from './pages/Color';
 import Nicu from './pages/Nicu';
+import Radu from './pages/Radu';
 import { AnimatePresence } from 'framer-motion';
 import Pruning from './pages/Pruning';
 import Introduction from './pages/Introduction';
@@ -49,6 +50,7 @@ function App() {
           <NavLink activeClassName='active' to="/pruning">P</NavLink>
           <NavLink activeClassName='active' to="/nice-treedecomposition">NT</NavLink>
           <NavLink activeClassName='active' to="/nicu">N</NavLink>
+          <NavLink activeClassName='active' to="/radu">RD</NavLink>
     </div>
 
     <div className={fullNav ? ' location-full active' : 'location-full'}>
@@ -68,6 +70,7 @@ function App() {
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/pruning">Pruning</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/nice-treedecomposition">Nice Tree Decomposition</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/nicu">Nicu</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/radu">Radu Demo</NavLink>
     </div>
         
         <div className={fullNav ? ' main active' : 'main'}>
@@ -91,6 +94,7 @@ function App() {
               <Route path="pruning/*"                 element={<Pruning />} />
               <Route path="nice-treedecomposition/*"  element={<NiceTreeDecomposition />} />
               <Route path="nicu/*"                    element={<Nicu />} /> 
+              <Route path="radu/*"                    element={<Radu />} /> 
             </Routes>
          </AnimatePresence>
         </div>

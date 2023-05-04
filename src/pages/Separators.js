@@ -24,6 +24,7 @@ function Separators() {
     const [page_state, set_page_state] = useState(0);
     const tab = useRef();
 
+
     
     function init_exercise(graph) {
         setSeparator([]);
@@ -161,7 +162,10 @@ function Separators() {
 
 
         {page_state===1 && <div className='exercise'>
+
+
         <h4>Description</h4>
+        <i></i>
         
         <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
 

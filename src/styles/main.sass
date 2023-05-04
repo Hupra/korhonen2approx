@@ -388,6 +388,11 @@ line.xclude
         .cy
             border-color: $cx
             border-width: 2px
+    &.grab
+        circle, rect
+            cursor: grab
+    &.plus
+        cursor: crosshair
     &.active
         // border-right: 3px solid green !important
         // border-left: 3px solid green !important
@@ -948,6 +953,8 @@ h6, .h6
     margin-bottom: 10px
     padding: 5px 10px
     border-left: 5px solid grey
+    &>:first-child
+        margin-top: 0
 
 .indicator
     background-color: $cx !important
@@ -1056,10 +1063,10 @@ button:active
     display: flex
     gap: 7px
     height: auto
-    cursor: pointer
     position: relative
 
     div.tab
+        cursor: pointer
         background-color: #303030
         color: white
         border: $border-settings
@@ -1084,4 +1091,26 @@ button:active
         border-radius: 5px
         bottom: 2px
 
-        
+    &.auto
+        div.tab
+            width: auto
+            padding: 0px 8px
+
+
+@keyframes ripple-animation
+    0%
+        transform: scale(1)
+        opacity: 1
+    100%
+        transform: scale(30)
+        opacity: 0
+.ripple
+    width: 10px
+    height: 10px
+    position: absolute
+    border-radius: 50%
+    background-color: rgba(255, 165, 0, 0.1)
+    mix-blend-mode: overlay
+    animation: ripple-animation 1s ease-out infinite
+    pointer-events: none
+    border: 1px solid rgba(255, 255, 255, 0.1)
