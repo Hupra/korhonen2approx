@@ -156,6 +156,16 @@ function SeparatorsBalanced() {
         setTimeout(() => {tab.current.style.left = (37*page_state-37).toString() + "px"}, 2);
     }, [page_state]);
 
+
+    function mi(x) {
+        if(x === "G") graph_container.current.style.background = "#000000";
+        if(x === "T") tree_container.current.style.background = "#000000";
+    }
+    function mo() {
+        graph_container.current.style.background = "";
+        tree_container.current.style.background = "";
+    }
+
   return (
     <>
     <AnimatedPage>
@@ -179,10 +189,12 @@ function SeparatorsBalanced() {
 
     { page_state===1 && <div className='exercise'>
 
-        <p><i>In <span className='ref'><InlineMath math="G"/></span> , vertices are assigned distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are in the bag <InlineMath math="W"/> in <span className='ref'><InlineMath math="T"/></span>.</i></p>
+        <p><i>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> , vertices are assigned 
+        distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are 
+        in the bag <InlineMath math="W"/> in <span className='ref'  onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>.</i></p>
         {/* <p>A bag <InlineMath math="W"/> is consider <i>spittable</i> if <InlineMath math="|(C_i \cap W) \cup X| < |W|"/> for all</p> */}
         <h4>Description</h4>
-        <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their 
+        <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their 
         inclusion in the balanced separator <InlineMath math="X"/> of <InlineMath math="W"/>.</p>
         <h4>Tasks</h4>
         <div className='task'>
@@ -243,10 +255,10 @@ function SeparatorsBalanced() {
 
     { page_state===2 && <div className='exercise'>
 
-        <p><i>In <span className='ref'><InlineMath math="G"/></span> , vertices are assigned distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are in the bag <InlineMath math="W"/> in <span className='ref'><InlineMath math="T"/></span>.</i></p>
+        <p><i>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> , vertices are assigned distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are in the bag <InlineMath math="W"/> in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>.</i></p>
         {/* <p>A bag <InlineMath math="W"/> is consider <i>spittable</i> if <InlineMath math="|(C_i \cap W) \cup X| < |W|"/> for all</p> */}
         <h4>Description</h4>
-        <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their 
+        <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their 
         inclusion in the balanced separator <InlineMath math="X"/> of <InlineMath math="W"/>.</p>
         <h4>Tasks</h4>
         <div className='task'>
@@ -303,10 +315,10 @@ function SeparatorsBalanced() {
 
     { page_state===3 && <div className='exercise'>
 
-    <p><i>In <span className='ref'><InlineMath math="G"/></span> , vertices are assigned distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are in the bag <InlineMath math="W"/> in <span className='ref'><InlineMath math="T"/></span>.</i></p>
+    <p><i>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> , vertices are assigned distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are in the bag <InlineMath math="W"/> in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>.</i></p>
     {/* <p>A bag <InlineMath math="W"/> is consider <i>spittable</i> if <InlineMath math="|(C_i \cap W) \cup X| < |W|"/> for all</p> */}
     <h4>Description</h4>
-    <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their 
+    <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their 
     inclusion in the balanced separator <InlineMath math="X"/> of <InlineMath math="W"/>.</p>
     <h4>Tasks</h4>
     <div className='task'>

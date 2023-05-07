@@ -641,11 +641,11 @@ export function try_h(U, target_bag, h, g, nice) {
             
             // check |(Ci cap W) cup X| < W
             // check |(Ci cap W)| <= W/2
-            // if((Math.max(c1_size, c2_size, c3_size)+X_size < stop) &&
-            //     Math.max(c1_size, c2_size, c3_size) <= stop/2) {
-            //     f(i,h,combine(c1,c2,c3,X,stop));
-            // }
-            f(i,h,combine(c1,c2,c3,X,stop));
+            if((Math.max(c1_size, c2_size, c3_size)+X_size < stop) &&
+                Math.max(c1_size, c2_size, c3_size) <= stop/2) {
+                f(i,h,combine(c1,c2,c3,X,stop));
+            }
+            // f(i,h,combine(c1,c2,c3,X,stop));
         }
     }
 

@@ -137,7 +137,12 @@ function Separators() {
 
 
     
-    
+    function mi(x) {
+        if(x === "G") graph_container.current.style.background = "#000000";
+    }
+    function mo() {
+        graph_container.current.style.background = "";
+    }
     
             
     
@@ -167,7 +172,7 @@ function Separators() {
         <h4>Description</h4>
         <i></i>
         
-        <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
+        <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
 
         
         <h4>Tasks</h4>
@@ -236,7 +241,7 @@ function Separators() {
         {page_state===2 && <div className='exercise'>
         <h4>Description</h4>
         
-        <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
+        <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
         
         <h4>Tasks</h4>
         <div className='task'>
@@ -300,7 +305,7 @@ function Separators() {
         {page_state===3 && <div className='exercise'>
         <h4>Description</h4>
         
-        <p>Click on the vertices in <span className='ref'><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
+        <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their inclusion in the separator <InlineMath math="X"/>.</p>
         
         <h4>Tasks</h4>
         <div className='task'>

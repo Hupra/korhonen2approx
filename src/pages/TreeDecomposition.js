@@ -250,6 +250,16 @@ function TreeDecomposition() {
     }, [page_state]);
 
 
+    function mi(x) {
+        if(x === "G") graph_container.current.style.background = "#000000";
+        if(x === "T") tree_container.current.style.background = "#000000";
+    }
+    function mo() {
+        graph_container.current.style.background = "";
+        tree_container.current.style.background = "";
+    }
+
+
   return (
     <>
     <AnimatedPage>
@@ -304,10 +314,10 @@ function TreeDecomposition() {
                 <ol>
                     <li>
                         Position your cursor over the edges and vertices of 
-                        the graph to view their impact on "T."
+                        the graph to view their impact on <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span> .
                     </li>
                     <li>
-                        To introduce a new vertex to the graph "G," click 
+                        To introduce a new vertex to the graph <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> , click 
                         on the desired location within the graph area.
                     </li>
                     <li>
@@ -341,7 +351,7 @@ function TreeDecomposition() {
     </div>
     </div>
     <div className='content'>
-        <div className={page_state === 2 ? 'svg_container interactive plus focus-svg' : 'svg_container'}>
+        <div className={page_state === 2 ? 'svg_container interactive plus focus-svg' : 'svg_container interactive plus'}>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
             <svg ref={graph_container} className="cy" width="100%" height="100%"></svg>
         </div>

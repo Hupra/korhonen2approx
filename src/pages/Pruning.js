@@ -392,13 +392,22 @@ function Pruning() {
 
     }
 
+    function mi(x) {
+        if(x === "T") tree_container.current.style.background = "#000000";
+    }
+    function mo() {
+        tree_container.current.style.background = "";
+    }
+
   return (
     <>
     <AnimatedPage>
 
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Pruning</h2>
-        <i>On this page, we will walk you through the various stages of the pruning process. Please follow the explanations provided and observe the step-by-step progress in <span className='ref'><InlineMath math="T"/></span></i>
+        <i>On this page, we will walk you through the various stages of the 
+            pruning process. Please follow the explanations provided and 
+            observe the step-by-step progress in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span></i>
         <hr/>
         <ul className="mytabs">
             <div className={page_state===1?"tab active":"tab"} onClick={() => set_page_state(1)}>1</div>
@@ -428,29 +437,106 @@ function Pruning() {
         </div>
         </>}
 
+
+
         {page_state===2 && <>
-        <h3 className='mt0'>Non-editable bags</h3>
+        <h3 className='mt0'>Non-editable subtrees</h3>
         <div className='exercise'>
+        <p>In the tree decomposition, non-editable bags generate a set of 
+        rooted subtrees, known as non-editable subtrees. By definition, any 
+        bag below a non-editable bag must also be non-editable. These non-editable 
+        subtrees are visually represented with a black blob surrounding them.</p>
+
+        <p><i>Notice how the color of vertex 14 changes in 
+            bags E and G when going to the next page.</i></p>
         </div>
         </>}
 
 
-        <button onClick={() => set_page_state(Math.max(1, page_state-1))}>Prev</button>
-        <button onClick={() => set_page_state(Math.min(7, page_state+1))}>Next</button>
+
+        {page_state===3 && <>
+        <h3 className='mt0'>Color Non-editable subtrees</h3>
+        <div className='exercise'>
+        <p>In T, the root <InlineMath math="(D,H,K,Z)"/> of a non-editable 
+        subtree intersects only 
+        one component, <InlineMath math="C_i"/>, and separates its children from 
+        other vertices in <InlineMath math="G"/>. Consequently, if a bag below this 
+        root contains vertices from 
+        components (<InlineMath math="C_j"/> or <InlineMath math="C_k"/>), we 
+        are free to change their association to <InlineMath math="C_i"/> as
+        they do not influence the editable bags.</p>
+
+        <p><i>Feel free to click back to see the last 
+            page before the colors were changed in T.</i></p>
+        </div>
+        </>}
+
+
+
+
+        {page_state===4 && <>
+        <h3 className='mt0'>Detaching the Non-editable subtrees</h3>
+        <div className='exercise'>
+            <ol>
+                <li>We detach the Non-editable subtrees 
+                    from <InlineMath math="T"/>.</li>
+                <li>We outline the the subtree formed by the editable bags.</li>
+            </ol>
+
+            <p>For now, we will just focus on the editable subtree. Later we will reattach the 
+                non-editable subtrees at the end.</p>
+            </div>
+        </>}
+
+        {page_state===5 && <>
+        <h3 className='mt0'>Splitting the editable subtree</h3>
+        <div className='exercise'>
+            <p>We now split the editable subtree using 
+            the concepts we have seen on the previous pages, i.e., we 
+            split it into <InlineMath math="T^1, T^2, T^3"/> and 
+            combine the trees in <InlineMath math="X"/>.</p>
+        </div>
+        </>}
+
+        {page_state===6 && <>
+            <h3 className='mt0'>Splitting the editable subtree</h3>
+            <div className='exercise'>
+            <p>The non-editable subtrees are now reconnected 
+            to the rest of the tree decomposition. 
+            Specifically, if a non-editable subtree 
+            intersects with <InlineMath math="C_i"/>, it 
+            will be reattached to <InlineMath math="T^i"/>.</p>
+            </div>
+        </>}
+
+
+        {page_state===7 && <>
+            <h3 className='mt0'><InlineMath math="T''"/> complete</h3>
+            <div className='exercise'>
+            <p>This concludes the pruning operation; we now have created an improved 
+                tree decomposition without changing too many unnecessary bags. 
+                We denote the tree decomposition made this way as <InlineMath math="T''"/>.</p>
+            </div>
+        </>}
+
+
+        <button className={page_state===1 && 'disable'} onClick={() => set_page_state(Math.max(1, page_state-1))}>Back</button>
+        <button className={page_state===7 && 'disable'} onClick={() => set_page_state(Math.min(7, page_state+1))}>Next</button>
 
         {page_state===7 && <>
         <br/><hr/>
         <p><i>With this pruning operation we have now seen every concept of the algorithm, 
             next we will explore how one goes about actually finding a minimum split. To do this we first must learn 
             about nice tree decompositions.</i></p>
-        <Link to="#" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
-        <br/><i>Next: Nice Tree Decomposition?</i>
+        <Link to="/nice-treedecomposition" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link>        
+        <br/><i>Next: Nice Tree Decomposition</i>
         </>}
+
 
     </SB></div></div>
     <div className='content'>
     <div className='svg_container'>
-            <div className='svg_label'>Tree Decomposition - <InlineMath math="T"/></div>
+            <div className='svg_label'>Tree Decomposition - <InlineMath math={page_state===7 ? "T''" : "T"}/></div>
             <svg ref={tree_container} className="cy" width="100%" height="100%"></svg>
         </div>
         

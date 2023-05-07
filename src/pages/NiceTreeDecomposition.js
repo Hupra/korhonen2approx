@@ -128,7 +128,7 @@ function NiceTreeDeomposition() {
         let target_bag = 1;
         let res;
         let best_h;
-        for (let h = 4; h <= 4; h++) {
+        for (let h = 0; h <= 4; h++) {
             DP.try_h(U , target_bag, h, graph, nice_td);
             res = DP.res_h(U, target_bag, h);
             best_h = h;

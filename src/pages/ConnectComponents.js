@@ -223,6 +223,13 @@ function ConnectComponents() {
 
     }, []);
 
+    function mi(x) {
+        if(x === "G") graph_container.current.style.background = "#000000";
+    }
+    function mo() {
+        graph_container.current.style.background = "";
+    }
+    
   return (
     <>
     <AnimatedPage>
@@ -240,7 +247,7 @@ function ConnectComponents() {
             ultimately given us a balanced split.</p>
         <hr/>
         <h2>Exercises</h2>
-        <p>In <span className='ref'><InlineMath math="G"/></span>, we see a graph that has been separated into multiple components. <i>To begin the exercise click the button below to hide the graph.</i></p>
+        <p>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span>, we see a graph that has been separated into multiple components. <i>To begin the exercise click the button below to hide the graph.</i></p>
         <button onClick={() => set_show_G(!show_G)}>{show_G ? "Hide Graph" : "Show Graph"}</button>
         
         <h4>Description</h4>

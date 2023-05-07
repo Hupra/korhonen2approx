@@ -279,9 +279,9 @@ function SplitTree() {
         {page_state === 3 && <>
             <br/><hr/>
             {(tasks[0] && tasks[1] && tasks[2]) ?
-            <><Link to="/min-split" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
+            <><Link to="/pruning" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Pruning Operation</i></>
             :
-            <><Link to="/min-split" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>}
+            <><Link to="/pruning" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Pruning Operation</i></>}
         </>}
 
     </SB></div></div>
