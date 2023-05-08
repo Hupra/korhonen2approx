@@ -387,12 +387,12 @@ function SeparatorsBalanced() {
 
         <div className='horizontal-split'>
             <div className='svg_container'>
+                <svg id="yolo" ref={graph_container2} className="cy graph"></svg>
                 <div className='svg_label'>Components - <InlineMath math="C_1, ..., C_h"/></div>
-                <svg id="yolo" ref={graph_container2} className="cy graph" width="100%" height="100%"></svg>
             </div>
             <div className='svg_container'>
+                <svg ref={tree_container} className="cy tree"></svg>
                 <div className='svg_label'>Tree Decomposition - <InlineMath math="T"/></div>
-                <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
             </div>
         </div>
 

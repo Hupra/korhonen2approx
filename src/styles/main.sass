@@ -143,6 +143,7 @@ line.xclude
         text-decoration: none
         box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
         font-wight: 600
+        font-size: 14px
 
         ion-icon
             font-size: 20px
@@ -189,6 +190,7 @@ line.xclude
         box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
         font-wight: 600
         position: relative
+        font-size: 14px
         
         // left: -200px
 
@@ -290,6 +292,9 @@ line.xclude
             gap: $gap
             flex-direction: column
             position: relative
+
+            .svg_container
+                display: flex // mac os fix
 
         .vertical-split
             height: 100%

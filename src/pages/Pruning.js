@@ -499,7 +499,7 @@ function Pruning() {
         </>}
 
         {page_state===6 && <>
-            <h3 className='mt0'>Splitting the editable subtree</h3>
+            <h3 className='mt0'>Attaching the Non-editable subtrees</h3>
             <div className='exercise'>
             <p>The non-editable subtrees are now reconnected 
             to the rest of the tree decomposition. 

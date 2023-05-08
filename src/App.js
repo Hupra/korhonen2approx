@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Flow from './pages/Flow';
@@ -20,18 +20,24 @@ import Radu from './pages/Radu';
 import { AnimatePresence } from 'framer-motion';
 import Pruning from './pages/Pruning';
 import Introduction from './pages/Introduction';
-import ScalePage from './pages/components/ScalePage';
+import useWindowSize from './pages/components/useWindowSize';
 
 
 function App() {
-  ScalePage(1080);
-  
-
+  const ALL = useRef();
   const [fullNav, setFullNav] = useState(false);
   const location = useLocation();
+  const window_size = useWindowSize();
+  
+  // adjust site to work on different resolutions
+  useEffect(() => {
+    const screen_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    const scale = screen_height / 1080;
+    if(scale<1) ALL.current.style.zoom = scale;
+  }, [window_size]);
 
   return (
-      <div className='container'>
+      <div ref={ALL} className='container'>
         
         <div className={!fullNav ? ' location active' : 'location'}>
         <a href='' onClick={() => setFullNav(!fullNav)}><ion-icon name="reorder-four-outline"></ion-icon></a>
