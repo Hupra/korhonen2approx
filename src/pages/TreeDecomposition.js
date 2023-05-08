@@ -268,17 +268,18 @@ function TreeDecomposition() {
         <div className='sidebar_bubble'>
     <SB style={{ height: '100vh', width: '100vw' }}>
 
+        <h2>Preface</h2>
+        <p><i>We briefly explain tree decomposition and treewidth, 
+            as these concepts are essential for the algorithm.</i></p>
+            <hr/>
             <ul className="mytabs auto" ref={tabsref}>
                 <div className={page_state===1?"tab active":"tab"} onClick={() => set_page_state(1)}>Explanation</div>
                 <div className={page_state===2?"tab active":"tab"} onClick={() => set_page_state(2)}>Exercises</div>
-            <div id="tab-selector" ref={tabref}/>
-        </ul>
+                <div id="tab-selector" ref={tabref}/>
+            </ul>
 
         {page_state === 1 && <>
-        <h2 style={{marginTop: 0}}>Preface</h2>
-        <p><i>We briefly explain tree decomposition and treewidth, 
-            as these concepts are essential for the algorithm.</i></p>
-        <h3>Tree Decomposition</h3>
+        <h2 style={{marginTop: 0}}>Tree Decomposition</h2>
         <div>
             For a graph <InlineMath math={'G=(V,E)'}/> a tree decomposition <InlineMath math={'T'}/> is a tree of <InlineMath math={'n'}/> nodes and <InlineMath math={'n'}/> bags, with each node pointing to exactly one bag. Additionally the following must be satisfied:
             <div>
