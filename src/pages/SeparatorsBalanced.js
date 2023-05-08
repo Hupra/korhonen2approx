@@ -191,7 +191,7 @@ function SeparatorsBalanced() {
 
         <p><i>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> , vertices are assigned 
         distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are 
-        in the bag <InlineMath math="W"/> in <span className='ref'  onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>.</i></p>
+        in the bag <InlineMath math="W"/> in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>.</i></p>
         {/* <p>A bag <InlineMath math="W"/> is consider <i>spittable</i> if <InlineMath math="|(C_i \cap W) \cup X| < |W|"/> for all</p> */}
         <h4>Description</h4>
         <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their 

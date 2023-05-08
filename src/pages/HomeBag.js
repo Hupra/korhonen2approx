@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import graph from '../graphs/intro-treedecomposition-graph.json'
 import graph from '../graphs/graph1.json'
+import p1tree from '../graphs/homebag1.json'
+import p1treex from '../graphs/homebag1x.json'
+import p1treeux from '../graphs/homebag1ux.json'
 import tree from '../graphs/homebag2.json'
 import treex from '../graphs/homebag2x.json'
 import treeux from '../graphs/homebag2ux.json'
@@ -15,7 +18,7 @@ import SB from './components/SB';
 import M from 'materialize-css';
 
 
-function Page3() {
+function HomeBag() {
     // general
     const tabsref = useRef();
     const tabref = useRef();
@@ -24,6 +27,9 @@ function Page3() {
 
     //part 1
     const collapsibleRef = useRef(null);
+    const p1tree_container = useRef();
+    const p1tree_containerx = useRef();
+    const p1tree_containerux = useRef();
 
 
     //part 2
@@ -38,7 +44,41 @@ function Page3() {
     const [tux, set_tux] = useState(0);
     
 
-    const w = tree.nodes.find(node => node.name === "W");
+
+
+    useEffect(() => {
+        let X = [8,11];
+        // let C = [[5, 6, 7, 8], [1, 2], [4]];
+        let C = [[],[],[]];
+
+        // const tree_decomposition = T_2_TD(tree, C, X);
+        // console.log("treed", tree_decomposition, C, X);
+
+        const t   = new Tree(p1tree, d3.select(p1tree_container.current));
+        const tx  = new Tree(p1treex, d3.select(p1tree_containerx.current));
+        const tux = new Tree(p1treeux, d3.select(p1tree_containerux.current));
+    
+        t.X   = X;
+        t.C   = C;
+        tx.X  = X;
+        tux.X = X;
+        t.charge   = -800;
+        tx.charge  = -800;
+        tux.charge = -800;
+        t.render();
+        tx.render();
+        tux.render();
+        t.svg_set_node_and_edge_if_name("xclude", ["X"]);
+        tx.svg_set_node_and_edge_if_name("xclude", ["X"]);
+        tux.svg_set_node_and_edge_if_name("xclude", ["X"]);
+        t.svg_set_node_class("homebag", ["F", "B"]);
+
+    }, [part]);
+
+
+
+
+
 
     useEffect(() => {
         let X = tree.nodes.find(node => node.name === "X").bag;
@@ -424,7 +464,35 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
 
         </SB></div></div>
 
-        <div className={part===1 ? 'content' : 'content hidden' }></div>
+        <div className={part===1 ? 'content' : 'content hidden' }>
+            <div className='svg_container'>
+                <svg ref={p1tree_container} className="cy tree" width="100%" height="100%"></svg>
+                <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <InlineMath math="T+X"/></div>
+            </div>
+        <div className={ page_state > 1 ? 'wall' : 'wall opa-0'}>+</div>
+
+            <div className={ page_state > 0 ? 'svg_container' : 'svg_container opa-0'}>
+                <svg ref={p1tree_containerx} className="cy tree" width="100%" height="100%"></svg>
+                <div className='svg_label'><InlineMath math="2."/> Tree - <InlineMath math="T^X + X"/></div>
+            </div>
+        <div className={ page_state > 1 ? 'wall' : 'wall opa-0'}>=</div>
+
+            <div className={ page_state > 1 ? 'svg_container' : 'svg_container opa-0'}>
+                <svg ref={p1tree_containerux} className="cy tree" width="100%" height="100%"></svg>
+                <div className='svg_label'><InlineMath math="3."/> Tree Decomposition - <InlineMath math="(T \cup T^X) + X"/></div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
 
         <div className={part===2 ? 'content' : 'content hidden' }>
             <div className={'svg_container' + ((page_state%2===0 && page_state<=4) ? " focus-svg " : " ") + ((page_state%2===0 && page_state<=4) ? " interactive" : "")}>
@@ -458,4 +526,4 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
     </>);
 }
     
-export default Page3;
+export default HomeBag;

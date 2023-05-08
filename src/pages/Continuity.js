@@ -11,7 +11,7 @@ import {split, cup, cap, list_is_same, T_2_TD} from "../functions.js"
 import AnimatedPage from './components/AnimatedPage';
 import SB from './components/SB';
 
-function Page1() {
+function Continuity() {
     const tree_container = useRef();
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
@@ -68,8 +68,8 @@ function Page1() {
                 <button onClick={() => button_handler(10)} className={selected===10 ? "error disable" : "disable"}>10 <ion-icon name="close-outline" /></button>
             </div>
             <hr/>
-        <Link to="/page2" className='button'>Continue <ion-icon name="arrow-forward-outline"></ion-icon></Link>
-        <br/><i>Next: Home Bag Part 1</i>
+        <Link to="/homebag" className='button'>Continue <ion-icon name="arrow-forward-outline"></ion-icon></Link>
+        <br/><i>Next: Home Bag</i>
         </SB></div></div>
         <div className='content'>
             <div className='svg_container'>
@@ -81,4 +81,4 @@ function Page1() {
     </>);
 }
     
-export default Page1;
+export default Continuity;

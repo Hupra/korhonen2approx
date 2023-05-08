@@ -11,9 +11,8 @@ import SeparatorsBalanced from './pages/SeparatorsBalanced';
 import SplitTree from './pages/SplitTree';
 import SplitTree2 from './pages/SplitTree2';
 import ConnectComponents from './pages/ConnectComponents';
-import Page1 from './pages/Page1';
-import Page2 from './pages/Page2';
-import Page3 from './pages/Page3';
+import Continuity from './pages/Continuity';
+import HomeBag from './pages/HomeBag';
 import Color from './pages/Color';
 import Nicu from './pages/Nicu';
 import Radu from './pages/Radu';
@@ -30,11 +29,11 @@ function App() {
   const window_size = useWindowSize();
   
   // adjust site to work on different resolutions
-  // useEffect(() => {
-  //   const screen_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-  //   const scale = screen_height / 1080;
-  //   if(scale<1) ALL.current.style.zoom = scale;
-  // }, [window_size]);
+  useEffect(() => {
+    const screen_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+    const scale = screen_height / 1080;
+    if(scale<1) ALL.current.style.zoom = scale;
+  }, [window_size]);
 
   return (
       <div ref={ALL} className='container'>
@@ -49,9 +48,8 @@ function App() {
           <NavLink activeClassName='active' to="/balanced-separators">BS</NavLink>
           <NavLink activeClassName='active' to="/connect-components">CC</NavLink>
           <NavLink activeClassName='active' to="/splitting-tree2">S1</NavLink>
-          <NavLink activeClassName='active' to="/page1">CI</NavLink>
-          <NavLink activeClassName='active' to="/page2">H1</NavLink>
-          <NavLink activeClassName='active' to="/page3">H2</NavLink>
+          <NavLink activeClassName='active' to="/continuity">CI</NavLink>
+          <NavLink activeClassName='active' to="/homebag">HB</NavLink>
           <NavLink activeClassName='active' to="/min-split">MS</NavLink>
           <NavLink activeClassName='active' to="/pruning">P</NavLink>
           <NavLink activeClassName='active' to="/nice-treedecomposition">NT</NavLink>
@@ -69,9 +67,8 @@ function App() {
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/balanced-separators">Balanced Separatos</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/connect-components">Connected Components</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/splitting-tree2">Splitting T</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page1">Continuity Issue</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page2">Home Bag Part 1</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/page3">Home Bag Part 2</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/continuity">Continuity Issue</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/homebag">Home Bag</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/min-split">Minimum Split</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/pruning">Pruning</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/nice-treedecomposition">Nice Tree Decomposition</NavLink>
@@ -92,9 +89,8 @@ function App() {
               <Route path="balanced-separators/*"     element={<SeparatorsBalanced />} /> 
               <Route path="splitting-tree2/*"         element={<SplitTree2 />} /> 
               <Route path="connect-components/*"      element={<ConnectComponents />} />
-              <Route path="page1/*"                   element={<Page1 />} /> 
-              <Route path="page2/*"                   element={<Page2 />} /> 
-              <Route path="page3/*"                   element={<Page3 />} /> 
+              <Route path="continuity/*"              element={<Continuity />} /> 
+              <Route path="homebag/*"                 element={<HomeBag />} /> 
               <Route path="min-split/*"               element={<SplitTree />} /> 
               <Route path="color/*"                   element={<Color />} /> 
               <Route path="pruning/*"                 element={<Pruning />} />

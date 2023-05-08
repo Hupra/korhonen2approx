@@ -124,7 +124,7 @@ function SplitTree2() {
                 <h4>Description</h4>
                 {/* <div>Fill out the correct inputs in the formulas below for each of the three newly created bags derived from the original bag {B}</div> */}
                 {/* <div>A simple approach is to look at the current bag in <InlineMath math="T"/> and look at the different colors. Each of these new bags will be the union of orange and one of the other colors.</div> */}
-                <p>For each bag in <InlineMath math={"T"}/>, it is necessary to determine the appropriate contents for the three bags that will replace it in <InlineMath math={"T’"}/>. This can be achieved by including the vertices from the original bag in <InlineMath math={"T"}/> that are associated with one of the specific components <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span> , and then adding the vertices from the original bag that are also present in <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span>.</p>
+                <p>For each bag in <InlineMath math={"T"}/>, it is necessary to determine the appropriate contents for the three bags that will replace it in <InlineMath math={"T'"}/>. This can be achieved by including the vertices from the original bag in <InlineMath math={"T"}/> that are associated with one of the specific components <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span> , and then adding the vertices from the original bag that are also present in <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span>.</p>
                 <h4>Tasks</h4>
                 <p>In the tasks below, please enter the vertices that belong to each bag, separated by commas, e.g., {"{"}4,8,3,7{"}"}</p>
                 <div className='task'>
@@ -254,9 +254,9 @@ function SplitTree2() {
             <br/><hr/>
 
             {(page_state > 3) ?
-            <><Link to="/page1" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
+            <><Link to="/continuity" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
             :
-            <><Link to="/page1" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
+            <><Link to="/continuity" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
             }
             
 
