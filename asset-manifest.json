@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/korhonen2approx/static/css/main.e7acb96b.css",
-    "main.js": "/korhonen2approx/static/js/main.52e5368c.js",
+    "main.css": "/korhonen2approx/static/css/main.46f81b8e.css",
+    "main.js": "/korhonen2approx/static/js/main.7c7bc3bd.js",
     "static/js/787.28cb0dcd.chunk.js": "/korhonen2approx/static/js/787.28cb0dcd.chunk.js",
     "static/media/treebags2.png": "/korhonen2approx/static/media/treebags2.9d4d77204032926e9498.png",
     "static/media/KaTeX_AMS-Regular.ttf": "/korhonen2approx/static/media/KaTeX_AMS-Regular.853be92419a6c3766b9a.ttf",
@@ -65,12 +65,12 @@
     "static/media/KaTeX_Size3-Regular.woff": "/korhonen2approx/static/media/KaTeX_Size3-Regular.7947224e8a9914fa332b.woff",
     "static/media/KaTeX_Size3-Regular.woff2": "/korhonen2approx/static/media/KaTeX_Size3-Regular.e1951519f6f0596f7356.woff2",
     "index.html": "/korhonen2approx/index.html",
-    "main.e7acb96b.css.map": "/korhonen2approx/static/css/main.e7acb96b.css.map",
-    "main.52e5368c.js.map": "/korhonen2approx/static/js/main.52e5368c.js.map",
+    "main.46f81b8e.css.map": "/korhonen2approx/static/css/main.46f81b8e.css.map",
+    "main.7c7bc3bd.js.map": "/korhonen2approx/static/js/main.7c7bc3bd.js.map",
     "787.28cb0dcd.chunk.js.map": "/korhonen2approx/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.e7acb96b.css",
-    "static/js/main.52e5368c.js"
+    "static/css/main.46f81b8e.css",
+    "static/js/main.7c7bc3bd.js"
   ]
 }
