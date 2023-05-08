@@ -191,6 +191,12 @@ function Page3() {
                 break;
           }
     }, [part]);
+
+    const set_active_tab = (index) => {
+        const collapsibleInstance = M.Collapsible.getInstance(collapsibleRef.current);
+        collapsibleInstance.open(index);
+        set_page_state(index);
+    };
     
     return(
     <>
@@ -225,7 +231,8 @@ bag is above or below another bag.</p> */}
 <ul className="collapsible" ref={collapsibleRef}>
     <li className="active">
 
-        <div className="collapsible-header" onClick={() => set_page_state(0)}><h5>Figure 1. - <InlineMath math="T"/></h5></div>
+        <div className="collapsible-header chtop" onClick={() => set_page_state(0)}>
+            <h5><span className={page_state === 0 ? "active":""}>Figure 1.</span><InlineMath math="\quad T"/></h5></div>
         <div className="collapsible-body">
 <p>The home bag of vertex <InlineMath math="x"/> is the bag containing <InlineMath math="x"/> that is closest to the root
 bag <InlineMath math="W"/>. We define the function <InlineMath math="hb(x)"/> to be the function
@@ -236,10 +243,12 @@ The following are the home bags for the vertices of <InlineMath math="X"/> in <I
     <li><InlineMath math="hb(11) = B"/></li>
 </ul>
 <p>They are highlighted with green in <InlineMath math="T"/>.</p>
+<button onClick={()=> set_active_tab(1)} className='mb0'>Next</button>
         </div>
     </li>
     <li>
-        <div className="collapsible-header" onClick={() => set_page_state(1)}><h5>Figure 2. - <InlineMath math="T^X"/></h5></div>
+        <div className="collapsible-header chmid" onClick={() => set_page_state(1)}>
+            <h5><span className={page_state === 1 ? "active":""}>Figure 2.</span><InlineMath math="\quad T^X"/></h5></div>
         <div className="collapsible-body">
 <p>Since we know that <InlineMath math="W"/> will be connected to <InlineMath math="X"/> when we create <InlineMath math="T'"/>, we can already see that the vertices of <InlineMath math="X"/> will not
     form a connected subtree in <InlineMath math="T'"/>, we know this as they already don't form a subtree in <InlineMath math="T"/> if we include the addition of <InlineMath math="X"/>.  This is fixed by for every <InlineMath math="x ∈ X"/>, <InlineMath math="x"/> is added into all bags in the path from the home 
@@ -249,11 +258,14 @@ The following are the home bags for the vertices of <InlineMath math="X"/> in <I
 <p>To better illustrate what vertices needs to be added to <InlineMath math="T"/>, we create a 
 tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/> must be added to each bag.
 </p>
+<button onClick={()=> set_active_tab(2)} className='mb0'>Next</button>
+
         </div>
     </li>
     <li>
-        <div className="collapsible-header" onClick={() => set_page_state(2)}><h5>Figure 3. - <InlineMath math="T \cup T^X"/></h5></div>
-        <div className="collapsible-body">
+        <div className={page_state === 2 ? "collapsible-header chmid" : "collapsible-header chbot"} onClick={() => set_page_state(2)}>
+            <h5><span className={page_state === 2 ? "active":""}>Figure 3.</span><InlineMath math="\quad T \cup T^X"/></h5></div>
+        <div className={page_state === 2 ? "collapsible-body soft" : "collapsible-body"}>
 <p>Now, if we take the union of each bag 
     in <InlineMath math="T"/> and <InlineMath math="T^X"/>, we 
     obtain the tree <InlineMath math="T \cup T^X"/>, as 
@@ -268,17 +280,10 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
     </li>
 </ul>
 
-{/* 
-                In Figure 7 (b) bags containing the vertices of X do not form connected
-subtrees in T. This is fixed by adding the missing vertices that would make it
-a valid tree decomposition, in the following way:
-For every x ∈ X, x is added into all bags in the path from the home bag
-hb(x) to the root bag W. We define the set of vertices added to a given bag B
-as BX</p> */}
             {page_state%3===2 ?
-            <><Link to="/page3" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag Part 2</i></>
+            <><button onClick={() => change_subpage(2)} className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Next: Home Bag Exercises</i></>
             :
-            <><Link to="/page3" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Home bag Part2</i></>
+            <><button onClick={() => change_subpage(2)} className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Next: Home Bag Exercises</i></>
             }
         </>}
 
@@ -407,7 +412,7 @@ as BX</p> */}
             </div>
             }
 
-            <button onClick={() => set_page_state(page_state+1)}>dev cheat</button>
+            {/* <button onClick={() => set_page_state(page_state+1)}>dev cheat</button> */}
             </div>
             <hr/>
             {page_state>=7 ?

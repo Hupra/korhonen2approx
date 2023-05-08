@@ -915,18 +915,36 @@ button, .button
 //         margin: 0 20px
 
 .collapsible
-    // margin-left: -10px
-    // margin-right: -10px
+    border-radius: 6px
 
     .collapsible-body
+        border-left: $border-settings
+        border-bottom: $border-settings
+        border-right: $border-settings
         padding: 30px 20px
         // background-color: #101010
         // color: white
+        &.soft
+            border-bottom-left-radius: 6px
+            border-bottom-right-radius: 6px
 
     .collapsible-header
         background-color: #303030
         color: white
         border-color: grey
+        border-left: $border-settings
+        border-right: $border-settings
+        border-bottom: $border-settings
+        &.chtop
+            border-top-left-radius: 6px
+            border-top-right-radius: 6px
+            border-top: $border-settings
+        &.chbot
+            border-bottom-left-radius: 6px
+            border-bottom-right-radius: 6px
+            border-bottom: $border-settings
+        span.active
+            color: $cx
         h1,h2,h3,h4,h5,h6
             margin-bottom: 0
             margin-top: 0
@@ -1129,6 +1147,8 @@ g
 
 .mt0
     margin-top: 0
+.mb0
+    margin-bottom: 0
 
 svg
     transition: background 0.3s ease-in-out

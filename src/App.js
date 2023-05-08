@@ -30,11 +30,11 @@ function App() {
   const window_size = useWindowSize();
   
   // adjust site to work on different resolutions
-  useEffect(() => {
-    const screen_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    const scale = screen_height / 1080;
-    if(scale<1) ALL.current.style.zoom = scale;
-  }, [window_size]);
+  // useEffect(() => {
+  //   const screen_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  //   const scale = screen_height / 1080;
+  //   if(scale<1) ALL.current.style.zoom = scale;
+  // }, [window_size]);
 
   return (
       <div ref={ALL} className='container'>
