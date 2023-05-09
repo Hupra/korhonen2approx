@@ -71,7 +71,7 @@ function HomeBag() {
         t.svg_set_node_and_edge_if_name("xclude", ["X"]);
         tx.svg_set_node_and_edge_if_name("xclude", ["X"]);
         tux.svg_set_node_and_edge_if_name("xclude", ["X"]);
-        t.svg_set_node_class("homebag", ["F", "B"]);
+        t.svg_set_node_class("error", ["F", "B"]);
 
     }, [part]);
 
@@ -107,7 +107,6 @@ function HomeBag() {
         tux.X = X;
         t.render();
         tx.render();
-        // t.svg_set_node_class("homebag", ["F", "B"]);
         t.svg_set_node_and_edge_if_name("xclude", ["X"]);
         tx.svg_set_node_and_edge_if_name("xclude", ["X"]);
         
@@ -237,7 +236,22 @@ function HomeBag() {
         collapsibleInstance.open(index);
         set_page_state(index);
     };
-    
+    function mi(x) {
+        if(x === "T") p1tree_container.current.style.background = "#000000";
+        if(x === "TX") p1tree_containerx.current.style.background = "#000000";
+        if(x === "TTX") p1tree_containerux.current.style.background = "#000000";
+        if(x === "T2") tree_container.current.style.background = "#000000";
+        if(x === "TX2") tree_containerx.current.style.background = "#000000";
+        if(x === "TTX2") tree_containerux.current.style.background = "#000000";
+    }
+    function mo() {
+        p1tree_container.current.style.background = "";
+        p1tree_containerx.current.style.background = "";
+        p1tree_containerux.current.style.background = "";
+        tree_container.current.style.background = "";
+        tree_containerx.current.style.background = "";
+        tree_containerux.current.style.background = "";
+    }
     return(
     <>
     <AnimatedPage>
@@ -245,7 +259,9 @@ function HomeBag() {
             <h2>Home Bag</h2>
             <p>
                 <i>
-                In all the trees to the right, an extra bag, denoted by <InlineMath math="X"/>, is added. This bag is displayed here solely to demonstrate that it serves as the connecting point for each of the three new tree decompositions after a split is executed.
+                An extra bag, denoted by <InlineMath math="X"/>, is added to the top of the trees to the right. 
+                This bag is displayed here solely to demonstrate that it will serve as the connecting point 
+                for <InlineMath math="T^1"/>, <InlineMath math="T^2"/> and <InlineMath math="T^3"/> when constructing <InlineMath math="T'"/>.
                 </i>
             </p>
 
@@ -277,12 +293,12 @@ bag is above or below another bag.</p> */}
 <p>The home bag of vertex <InlineMath math="x"/> is the bag containing <InlineMath math="x"/> that is closest to the root
 bag <InlineMath math="W"/>. We define the function <InlineMath math="hb(x)"/> to be the function
 that maps a vertex to its home bag in <InlineMath math="T"/>.
-The following are the home bags for the vertices of <InlineMath math="X"/> in <InlineMath math="T"/>.</p>
+The following are the home bags for the vertices of <InlineMath math="X"/> in <InlineMath math="T"/>:</p>
 <ul>
     <li><InlineMath math="hb(8) = F"/></li>
     <li><InlineMath math="hb(11) = B"/></li>
 </ul>
-<p>They are highlighted with green in <InlineMath math="T"/>.</p>
+<p>They are highlighted with white in <InlineMath math="T"/>.</p>
 <button onClick={()=> set_active_tab(1)} className='mb0'>Next</button>
         </div>
     </li>
@@ -290,14 +306,22 @@ The following are the home bags for the vertices of <InlineMath math="X"/> in <I
         <div className="collapsible-header chmid" onClick={() => set_page_state(1)}>
             <h5><span className={page_state === 1 ? "active":""}>Figure 2.</span><InlineMath math="\quad T^X"/></h5></div>
         <div className="collapsible-body">
-<p>Since we know that <InlineMath math="W"/> will be connected to <InlineMath math="X"/> when we create <InlineMath math="T'"/>, we can already see that the vertices of <InlineMath math="X"/> will not
-    form a connected subtree in <InlineMath math="T'"/>, we know this as they already don't form a subtree in <InlineMath math="T"/> if we include the addition of <InlineMath math="X"/>.  This is fixed by for every <InlineMath math="x ∈ X"/>, <InlineMath math="x"/> is added into all bags in the path from the home 
-    bag <InlineMath math="hb(x)"/> to the root bag <InlineMath math="W"/>. We define the set of vertices added to a given 
-    bag <InlineMath math="B"/> as <InlineMath math="B^X"/>.
-</p>
-<p>To better illustrate what vertices needs to be added to <InlineMath math="T"/>, we create a 
-tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/> must be added to each bag.
-</p>
+        <p>When <InlineMath math="T'"/> is constructed, we know that the bags that will replace <InlineMath math="W"/> 
+        will be connected to a new bag <InlineMath math="X"/>. We can observe 
+        in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> that 
+        when vertices of <InlineMath math="X"/> are not in <InlineMath math="W"/>, the bags containing the vertices 
+        of <InlineMath math="X"/> do not form a connected subtree, which will still be the case for their replacement bags 
+        in <InlineMath math="T'"/>. 
+        To address this issue, every vertex <InlineMath math="x ∈ X"/> is added to all bags in the path from 
+        the home bag <InlineMath math="hb(x)"/> to the root bag <InlineMath math="W"/>. 
+        We define the set of vertices added during this process to a given bag <InlineMath math="B"/> as <InlineMath math="B^X"/>.
+        </p>
+        <p>To better illustrate which vertices need to be added 
+        to <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>, we create a new 
+        tree <span className='ref' onMouseOver={() => mi("TX")} onMouseOut={mo}><InlineMath math="T^X"/></span> that 
+        demonstrates which vertices of <InlineMath math="X"/> must be added to each bag.</p>
+
+
 <button onClick={()=> set_active_tab(2)} className='mb0'>Next</button>
 
         </div>
@@ -306,15 +330,14 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
         <div className={page_state === 2 ? "collapsible-header chmid" : "collapsible-header chbot"} onClick={() => set_page_state(2)}>
             <h5><span className={page_state === 2 ? "active":""}>Figure 3.</span><InlineMath math="\quad T \cup T^X"/></h5></div>
         <div className={page_state === 2 ? "collapsible-body soft" : "collapsible-body"}>
-<p>Now, if we take the union of each bag 
-    in <InlineMath math="T"/> and <InlineMath math="T^X"/>, we 
-    obtain the tree <InlineMath math="T \cup T^X"/>, as 
-    seen in <InlineMath math="Figure"/> <InlineMath math="3"/>. This 
-    tree has vertices added from the home 
+    <p>If we combine <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span> and <span className='ref' 
+    onMouseOver={() => mi("TX")} onMouseOut={mo}><InlineMath math="T^X"/></span> by taking the union of each bag, we obtain the 
+    tree <span className='ref' onMouseOver={() => mi("TTX")} onMouseOut={mo}><InlineMath math="T \cup T^X"/></span> .
+    This tree has vertices added from the home 
     bag of every vertex in <InlineMath math="X"/> up to <InlineMath math="W"/>.</p>
 
     <p>By using this tree decomposition as a substitute for <InlineMath math="T"/> when we create <InlineMath math="T'"/>, we can 
-        effectively resolve the issue of lacking continuity in <InlineMath math="T'"/>.</p>
+        effectively stop the issue of lacking continuity in <InlineMath math="T'"/> from happening.</p>
 
         </div>
     </li>
@@ -348,17 +371,21 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
             <h2 className='mt0'> Exercises</h2>
             <div className='exercise'>
             <h4>Description</h4>
-            <p>In these exercises you will need to apply the knowledge of home bags learned on the 
-                previous page to add the extra vertices to T^X such that T’ does not break any 
+            <p>In these exercises you will need to apply the knowledge of home bags to add the extra vertices 
+                to <span className='ref' onMouseOver={() => mi("TX2")} onMouseOut={mo}><InlineMath math="T^X"/></span> such 
+                that <InlineMath math="T'"/> does not break any 
                 rules for a tree decomposition. First you will need to 
-                find the home bag for a specific vertex in 
-                figure 1 and then add the vertex to all necessary 
-                bags in figure 2. In the end the two figures will be combined into 
-                figure 3 which can then be used as a substitute for T to make T’.</p>
+                find the home bag for a specific vertex 
+                in <span className='ref' onMouseOver={() => mi("T2")} onMouseOut={mo}><InlineMath math="T"/></span> and 
+                then add the vertex to all necessary bags 
+                in <span className='ref' onMouseOver={() => mi("TX2")} onMouseOut={mo}><InlineMath math="T^X"/></span>. 
+                In the end the two figures will be combined 
+                into <span className='ref' onMouseOver={() => mi("TTX2")} onMouseOut={mo}><InlineMath math="T \cup T^X"/></span> which 
+                can then be used as a substitute for <InlineMath math="T"/> when constructing <InlineMath math="T'"/>.</p>
             <h4>Tasks</h4>
             <div className='task'>
                 <div>
-                    Click on <InlineMath math="hb(11)"/> in figure <InlineMath math="1"/>
+                    Click on <InlineMath math="hb(11)"/> in <span className='ref' onMouseOver={() => mi("T2")} onMouseOut={mo}><InlineMath math="T"/></span>
                 </div>
                 <div>
                     <ion-icon name={page_state>0 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
@@ -368,7 +395,8 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
             {page_state>0 ?
             <div className='task'>
                 <div>
-                Click on bags where vertex <InlineMath math="11"/> is missing in <InlineMath math="figure"/> <InlineMath math="2"/>.
+                Click on the bags where vertex <InlineMath math="11"/> should be inserted 
+                in <span className='ref' onMouseOver={() => mi("TX2")} onMouseOut={mo}><InlineMath math="T^X"/></span>
                 </div>
                 <div>
                     <ion-icon name={page_state>1 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
@@ -383,7 +411,7 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
             {page_state>1 ?
             <div className='task'>
                 <div>
-                    Click on <InlineMath math="hb(13)"/> in <InlineMath math="figure"/> <InlineMath math="1"/>
+                    Click on <InlineMath math="hb(13)"/> in <span className='ref' onMouseOver={() => mi("T2")} onMouseOut={mo}><InlineMath math="T"/></span>
                 </div>
                 <div>
                     <ion-icon name={page_state>2 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
@@ -398,7 +426,7 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
             {page_state>2 ?
             <div className='task'>
                 <div>
-                Click on bags where vertex <InlineMath math="13"/> is missing in <InlineMath math="figure"/> <InlineMath math="2"/>.
+                Click on the bags where vertex <InlineMath math="13"/> should be inserted in <span className='ref' onMouseOver={() => mi("TX2")} onMouseOut={mo}><InlineMath math="T^X"/></span>
                 </div>
                 <div>
                     <ion-icon name={page_state>3 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
@@ -413,7 +441,7 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
             {page_state>3 ?
             <div className='task'>
                 <div>
-                    Click on <InlineMath math="hb(15)"/> in <InlineMath math="figure"/> <InlineMath math="1"/>
+                    Click on <InlineMath math="hb(15)"/> in <span className='ref' onMouseOver={() => mi("T2")} onMouseOut={mo}><InlineMath math="T"/></span>
                 </div>
                 <div>
                     <ion-icon name={page_state>4 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
@@ -428,7 +456,7 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
             {page_state>4 ?
             <div className='task'>
                 <div>
-                    Click on bags where vertex <InlineMath math="15"/> is missing in <InlineMath math="figure"/> <InlineMath math="2"/>.
+                    Click on the bags where vertex <InlineMath math="15"/> should be inserted in <span className='ref' onMouseOver={() => mi("TX2")} onMouseOut={mo}><InlineMath math="T^X"/></span>
                 </div>
                 <div>
                     <ion-icon name={page_state>5 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
@@ -444,7 +472,7 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
             <div className='task'>
                 <div>
                     <ion-icon name={page_state>6 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
-                    <div>Combine <InlineMath>T</InlineMath> and <InlineMath>T^X</InlineMath> on the right.</div></div>
+                    <div>Combine <InlineMath>T</InlineMath> and <InlineMath>T^X</InlineMath> in <span className='ref' onMouseOver={() => mi("TTX2")} onMouseOut={mo}><InlineMath math="T \cup T^X"/></span></div></div>
                 </div>
             :
             <div className='task locked'>
@@ -467,19 +495,19 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
         <div className={part===1 ? 'content' : 'content hidden' }>
             <div className='svg_container'>
                 <svg ref={p1tree_container} className="cy tree" width="100%" height="100%"></svg>
-                <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <InlineMath math="T+X"/></div>
+                <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <InlineMath math="T"/></div>
             </div>
         <div className={ page_state > 1 ? 'wall' : 'wall opa-0'}>+</div>
 
             <div className={ page_state > 0 ? 'svg_container' : 'svg_container opa-0'}>
                 <svg ref={p1tree_containerx} className="cy tree" width="100%" height="100%"></svg>
-                <div className='svg_label'><InlineMath math="2."/> Tree - <InlineMath math="T^X + X"/></div>
+                <div className='svg_label'><InlineMath math="2."/> Tree - <InlineMath math="T^X"/></div>
             </div>
         <div className={ page_state > 1 ? 'wall' : 'wall opa-0'}>=</div>
 
             <div className={ page_state > 1 ? 'svg_container' : 'svg_container opa-0'}>
                 <svg ref={p1tree_containerux} className="cy tree" width="100%" height="100%"></svg>
-                <div className='svg_label'><InlineMath math="3."/> Tree Decomposition - <InlineMath math="(T \cup T^X) + X"/></div>
+                <div className='svg_label'><InlineMath math="3."/> Tree Decomposition - <InlineMath math="T \cup T^X"/></div>
             </div>
         </div>
 
@@ -497,11 +525,11 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
         <div className={part===2 ? 'content' : 'content hidden' }>
             <div className={'svg_container' + ((page_state%2===0 && page_state<=4) ? " focus-svg " : " ") + ((page_state%2===0 && page_state<=4) ? " interactive" : "")}>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
-                <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <InlineMath math="T+X"/></div>
+                <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <InlineMath math="T"/></div>
             </div>
             <div className={'svg_container' + ((page_state%2===1 && page_state<=5)? " focus-svg " : " ") + ((page_state%2===1 && page_state<=5) ? " interactive" : "")}>
                 <svg ref={tree_containerx} className="cy tree" width="100%" height="100%"></svg>
-                <div className='svg_label'><InlineMath math="2."/> Tree - <InlineMath math="T^X + X"/></div>
+                <div className='svg_label'><InlineMath math="2."/> Tree - <InlineMath math="T^X"/></div>
             </div>
             <div className={'svg_container' + (page_state===6 ? " interactive" : "")}>
                 {page_state===6 &&
@@ -516,7 +544,7 @@ tree <InlineMath math="T^X"/> that shows what vertices of <InlineMath math="X"/>
                     </div>
                 </button>}
                 <svg ref={tree_containerux} className="cy tree" width="100%" height="100%"></svg>
-                <div className='svg_label'><InlineMath math="3."/> Tree Decomposition - <InlineMath math="(T \cup T^X) + X"/></div>
+                <div className='svg_label'><InlineMath math="3."/> Tree Decomposition - <InlineMath math="T \cup T^X"/></div>
             </div>
         </div>
 
