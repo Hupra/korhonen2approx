@@ -430,7 +430,6 @@ export class Graph {
                 return null;
             }
         })
-        // .attr('font-family', 'sans-serif') // Set the font-family for text
         .attr('font-size', '14px') // Set the font-size for text
         .attr("class", (d) => d.class) // assign a different color to each letter
         .attr('stroke-width', 4) // Set the stroke width for group shapes
@@ -667,6 +666,11 @@ export class Tree {
         .append('g')
         .attr('class', 'group-shapes')
         .selectAll('path');
+
+        this.svg_groups_title = this.svg
+        .append('g')
+        .attr('class', 'groups-title')
+        .selectAll('text');
     }
 
     update_svg_groups(){
@@ -720,6 +724,47 @@ export class Tree {
         // .attr('fill', 'rgba(169, 169, 169, 0.1)') // Set the fill color with some transparency
         .attr("class", (d) => "C" + d.id.toString()) // assign a different color to each letter
         .attr('stroke-width', 2); // Set the stroke width for group shapes
+
+
+        this.svg_groups_title = this.svg_groups_title
+        .data(data, data => data.id)
+        .join('text')
+        .text(function (d) { return "T";})
+        .attr('x', (d) => {
+            console.log(d);
+            if (d && d.polygon) {
+                const midPoint = d.polygon.reduce((zum, point) => zum+point[0], 0)/d.polygon.length
+                return midPoint;
+                
+                const topPoint = d.polygon.reduce((minPoint, point) => point[1] < minPoint[1] ? point : minPoint);
+                return topPoint[0]-50;
+            } else {
+                return null;
+            }
+        })
+        .attr('y', (d) => {
+            if (d && d.polygon) {
+                const topPoint = d.polygon.reduce((minPoint, point) => point[1] < minPoint[1] ? point : minPoint);
+                return topPoint[1] - 15;
+            } else {
+                return null;
+            }
+        })
+        .attr('font-size', '15px')
+        .attr("class", (d) => d.class)
+        .attr('stroke', 'black')
+        .attr('stroke-width', 4)
+        .attr('paint-order', 'stroke')
+        .attr('opacity', 1)
+        .attr('fill', 'white');
+
+        this.svg_groups_title.each(function (d) {
+            const text = d3.select(this);
+            text.append("tspan")
+                        .attr("baseline-shift", "super")
+                        .attr("font-size", "80%")
+                        .text(d.id.toString());
+        });
     }
 
     create_blobs(){
@@ -788,6 +833,8 @@ export class Tree {
         .text((d) => d.text)
         .attr('x', (d) => {
             if (d && d.polygon) {
+                const midPoint = d.polygon.reduce((zum, point) => zum+point[0], 0)/d.polygon.length
+                return midPoint-(d.text.length)*3;
                 const topPoint = d.polygon.reduce((minPoint, point) => point[1] < minPoint[1] ? point : minPoint);
                 return topPoint[0]-(d.text.length)*5;
             } else {
@@ -802,7 +849,6 @@ export class Tree {
                 return null;
             }
         })
-        .attr('font-family', 'sans-serif') // Set the font-family for text
         .attr('font-size', '12px') // Set the font-size for text
         .attr("class", (d) => d.class) // assign a different color to each letter
         .attr('stroke-width', 4) // Set the stroke width for group shapes
@@ -979,11 +1025,10 @@ create_svg_node_labels(text_function = node => node.id) {
         });
         
     }
-    svg_set_node_class(clazz, errors){
-        this.svg_nodes.classed(clazz, node => errors.some((sa) => {
-            return node.sup && node.name===sa[0] && node.sup===sa[1]
-        }));
-        this.svg_node_labels.classed(clazz, node => errors.includes(node.name));
+    svg_set_node_class(clazz, names){
+        let indices = this.nodes.filter(node => names.includes(node.name)).map(node => node.id);
+        this.svg_nodes.classed(clazz, node => indices.includes(node.id));
+        this.svg_node_labels.classed(clazz, node => indices.includes(node.id));
     }
     svg_set_node_and_edge_if_name(clazz, names){
         let indices = this.nodes.filter(node => names.includes(node.name)).map(node => node.id);

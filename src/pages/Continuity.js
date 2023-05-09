@@ -48,8 +48,11 @@ function Continuity() {
     {/* " : "alert-circle-outline" */}
         <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
             <h2>Continuity Issue</h2>
-            <p>When building the new tree decomposition T', it must still follow the 3 rules for a tree decomposition. But if the separator X contains vertices that are outside of W, T' can break rule 3 that says:</p>
-            <p> For every vertex <InlineMath math="v"/> contained in both bags <InlineMath math="B_i"/> and <InlineMath math="B_j"/>, the path in <InlineMath math="T"/> going from <InlineMath math="B_i"/> to <InlineMath math="B_j"/> must be of only bags containing <InlineMath math="v"/>.
+            <p>When building the new tree decomposition <InlineMath math="T'"/>, it must still follow the 3 rules for a tree 
+            decomposition. But if the separator <InlineMath math="X"/> contains 
+            vertices that are outside of <InlineMath math="W"/>, <InlineMath math="T'"/> can break rule 3 that says:</p>
+            <p> For every vertex <InlineMath math="v"/> contained in both bags <InlineMath math="B_i"/> and <InlineMath math="B_j"/>, the 
+            path in <InlineMath math="T"/> going from <InlineMath math="B_i"/> to <InlineMath math="B_j"/> must be of only bags containing <InlineMath math="v"/>.
             </p>
             <p>Below, you can click the different buttons to highlight the bags containing that vertex to see if they are connected.</p>
 

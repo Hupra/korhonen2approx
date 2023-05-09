@@ -141,7 +141,7 @@ function TreeDecomposition() {
                     const target = g.nodes.find(n => Math.hypot(n.x - e.x, n.y - e.y) < 20);
                     await vertexLock.lock();
 
-                    if(target) {
+                    if(target && target.id !== g.start_node.id) {
                         const source = g.start_node;
                         let num = source.id;
                         let nam = target.id;
