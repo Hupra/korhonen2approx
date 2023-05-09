@@ -72,7 +72,7 @@ function Introduction() {
 
     <div className='sidebar'>
       <div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
-      <h2>Introduction2</h2>
+      <h2>Introduction</h2>
       <p>The algorithm takes a graph <InlineMath math="G"/>, integer <InlineMath math="k"/>, and a tree decomposition <InlineMath math="T"/> of <InlineMath math="G"/> with width at most <InlineMath math="4k+3"/>, then iteratively attempts to construct a new tree decomposition with a smaller width. 
       The process continues until a tree decomposition with width <InlineMath math="\leq 2k + 1"/> is found
        or it returns that <InlineMath math="tw(G) > k"/>.</p>
