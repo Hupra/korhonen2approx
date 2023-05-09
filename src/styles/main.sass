@@ -687,6 +687,19 @@ circle.node_in_w
     min-height: 34px
     position: relative
 
+    &.minh
+        min-height: 50px
+
+    input
+        margin: 0
+        flex: 1
+        height: 20px
+        
+    .big
+        font-size: 15px
+    .bigbig
+        font-size: 18px
+
     ion-icon
         position: relative
         font-size: 1.7em
@@ -743,18 +756,14 @@ p
     justify-content: space-between
 button, .button
     align-items: center
-    // background-color: #3FFF00
     background-color: #202020
     border: 3px solid chartreuse
     border-radius: .25rem
     box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0
     box-sizing: border-box
-    color: black
     cursor: pointer
     display: inline-flex
-    font-family: system-ui,-apple-system,system-ui,"Helvetica Neue",Helvetica,Arial,sans-serif
     font-family: 'Roboto Slab', serif
-    color: black
     color: white
     text-shadow: 1px 1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, -1px -1px 0 #000
     font-size: 16px
@@ -774,7 +783,9 @@ button, .button
     vertical-align: baseline
     width: auto
     box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,rgba(45, 35, 66, 0.3) 0 7px 13px -3px
-
+    &:focus
+        background-color: #202020
+        border-color: orange !important
     &:hover, &:focus
         box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px
     &:hover
@@ -827,8 +838,11 @@ button, .button
         width: 50px
         max-width: 200px
         resize: vertical
-        &:focus
-            outline: none
+        &:focus, &:active
+            box-shadow: none !important
+            outline: none !important
+            border: none !important
+            border-bottom: 2px dotted white !important
 
 .content.frontpage
     width: 100%

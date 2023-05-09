@@ -109,8 +109,20 @@ function SplitTree2() {
             if (input.slice(-1) === ",") input = input.slice(0,-1);
             let input_answer = input.split(",").map(x => parseInt(x));
             let correct = cap(cup(C, separator), bag);
-            // console.log(input_answer, correct);
+            console.log(input_answer, correct);
             return list_is_same(input_answer, correct);
+        }
+
+        const beauty = (ci, C) => {
+            let correct = cap(cup(C, separator), bag);
+            tprime.svg_show_stuff(B, ci+1);
+            return (
+                correct.map((v, i) => {
+                    return C.includes(v) 
+                    ? <span className="bigbig"><span className={"C"+(ci+1).toString()}>{v.toString()}</span>{i < correct.length - 1 && ","}</span>
+                    : <span className="bigbig"><span className="X">{v.toString()}</span>{i < correct.length - 1 && ","}</span>
+                })
+            );
         }
 
         const handleInputChange = (event, set) => {
@@ -127,56 +139,78 @@ function SplitTree2() {
                 <p>For each bag in <InlineMath math={"T"}/>, it is necessary to determine the appropriate contents for the three bags that will replace it in <InlineMath math={"T'"}/>. This can be achieved by including the vertices from the original bag in <InlineMath math={"T"}/> that are associated with one of the specific components <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span> , and then adding the vertices from the original bag that are also present in <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span>.</p>
                 <h4>Tasks</h4>
                 <p>In the tasks below, please enter the vertices that belong to each bag, separated by commas, e.g., {"{"}4,8,3,7{"}"}</p>
-                <div className='task'>
-                    <div>
+                <div className='task minh'>
+                    <div className="big" style={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%"}}>
+                            
                         <InlineMath math={B+"^1 = "+B+" \\cap ("}/>
                         <span className='C1'><InlineMath math="C_1 "/></span><span> </span> 
                         <InlineMath math={"\\cup"}/><span> </span>
                         <span className='X'><InlineMath math="X"/></span>
                         <InlineMath math={")=\\{"}/>
-
+                        {!check_input(ic1, components[0]) ?
                         <input value={ic1} onChange={e => handleInputChange(e, set_ic1)}></input>
+                        :
+                        <span>{beauty(0, components[0])}</span>}
                         <InlineMath math={"\\}"}/>
                     </div>
                     <div>
                         <ion-icon name={check_input(ic1, components[0]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                     </div>
                 </div>
-                <div className='task'>
-                    <div>
+                <div className='task minh'>
+                    <div className="big" style={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%"}}>
+                            
                         <InlineMath math={B+"^2 = "+B+" \\cap ("}/>
                         <span className='C2'><InlineMath math="C_2 "/></span><span> </span> 
                         <InlineMath math={"\\cup"}/><span> </span>
                         <span className='X'><InlineMath math="X"/></span>
                         <InlineMath math={")=\\{"}/>
 
+                        {!check_input(ic2, components[1]) ?
                         <input value={ic2} onChange={e => handleInputChange(e, set_ic2)}></input>
+                        :
+                        <span>{beauty(1, components[1])}</span>}
                         <InlineMath math={"\\}"}/>
                     </div>
                     <div>
                         <ion-icon name={check_input(ic2, components[1]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                     </div>
                 </div>
-                <div className='task'>
-                    <div>
+                <div className='task minh'>
+                    <div className="big" style={{
+                        display: "flex",
+                        alignItems: "center",
+                        width: "100%"}}>
+
                         <InlineMath math={B+"^3 = "+B+" \\cap ("}/>
                         <span className='C3'><InlineMath math="C_3 "/></span><span> </span> 
                         <InlineMath math={"\\cup"}/><span> </span>
                         <span className='X'><InlineMath math="X"/></span>
                         <InlineMath math={")=\\{"}/>
-
+                        {!check_input(ic3, components[2]) ?
                         <input value={ic3} onChange={e => handleInputChange(e, set_ic3)}></input>
+                        :
+                        <span>{beauty(2, components[2])}</span>}
                         <InlineMath math={"\\}"}/>
                     </div>
                     <div>
                         <ion-icon name={check_input(ic3, components[2]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                     </div>
                 </div>
-                <button className={(
+                
+                {
                     check_input(ic1, components[0]) && 
                     check_input(ic2, components[1]) && 
-                    check_input(ic3, components[2])) ? "" : "disable"
-                } onClick={() => set_page_state(page_state+1)}>Create bags <ion-icon name="bag-add-outline"></ion-icon></button>
+                    check_input(ic3, components[2]) 
+                    ? <button onClick={() => set_page_state(page_state+1)}>Next Exercise</button>
+                    : <button onClick={() => set_page_state(page_state+1)} className='disable'>Skip Exercise</button>
+                }
 
             </div>)
     }
@@ -190,7 +224,14 @@ function SplitTree2() {
         return<>
             <h4>Description</h4>
             <p>We have now generated three new bags for every bag in the original tree decomposition <InlineMath math="T"/>. These new bags constitute three distinct tree decompositions, which we refer to as <InlineMath math="T^1, T^2, T^3"/>. To merge these, we introduce a new bag, <InlineMath math="X"/>, that contains the vetices of the separator.</p>
-            <button onClick={() => set_page_state(page_state+1)}>Add X to T'</button>
+            <h4>Tasks</h4>
+            
+            <div className='task minh'>
+                <div>
+                    <ion-icon name={page_state>3 ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
+                    <div>Add <InlineMath>X</InlineMath> to <InlineMath>T'</InlineMath> on the right.</div>
+                </div>
+            </div>
         </>
     }
 
@@ -219,6 +260,7 @@ function SplitTree2() {
         </p>
         <hr/>
         <h2>Exercises</h2>
+        <div className='exercise'>
         <i>In the tree decomposition <InlineMath math={"T"}/>, vertices within each bag are assigned distict colors based on their corresponding component affiliation.</i>
 
             { page_ready && page_state === 0 && <Puzzle i={page_state}/>}
@@ -226,46 +268,18 @@ function SplitTree2() {
             { page_ready && page_state === 2 && <Puzzle i={page_state}/>}
             { page_ready && page_state === 3 && <PuzzleSeparator i={page_state}/>}
             { page_ready && page_state === 4 && <PuzzleDone i={page_state}/>}
-
-        {/* <h4>Variables</h4>
-        <div className='items flex'>
-            <div>
-                <InlineMath math={"X  = \\{"}/>
-                <div className={"X"}><InlineMath math={separator.toString()} /></div>
-                <InlineMath math={"\\}"}/>
-            </div>
-            <div>
-            </div>
-        </div>
         
-        {components.map((item, idx) => {
-            return (
-                <React.Fragment key={idx}>
-                    <div className='items flex'>
-                        <div>
-                            <InlineMath math={"C_"+(idx+1).toString()+" = \\{"} />
-                            <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
-                            <InlineMath math={"\\}"} />
-                        </div>
-                    </div>
-                </React.Fragment>
-            )})} */}
+        </div>
+        <br/><hr/>
 
-            <br/><hr/>
+        {(page_state > 3) ?
+        <><Link to="/continuity" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
+        :
+        <><Link to="/continuity" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
+        }
+        
 
-            {(page_state > 3) ?
-            <><Link to="/continuity" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
-            :
-            <><Link to="/continuity" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>
-            }
-            
-
-            {/* <div className='button-container'>
-                <button onClick={() => {show.push("W");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>W</button>
-                <button onClick={() => {show.push("A");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>A</button>
-                <button onClick={() => {show.push("B");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>B</button>
-                <button onClick={() => {show.push("X");set_show(show);tprime.render();tprime.svg_hide_stuff(show)}}>X</button>
-            </div> */}
+           
     </SB></div></div>
     <div className='content'>
         <div className='horizontal-split w1-3'>
@@ -286,21 +300,20 @@ function SplitTree2() {
         <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>
 
         <div className='svg_container w2-3'>
+        {page_state===3 &&
+                <button className='combine-btn focus'
+                onClick={(e) => {
+                        set_page_state(page_state+1);
+                        // correcto(e.clientX, e.clientY, 'Correcto!');}
+                    }}>
+                    <div>Add <InlineMath math="X"/> to <InlineMath math="T'"/>
+                </div>
+                </button>}
+
             <div className='svg_label'>Tree Decomposition - <InlineMath math="T'"/></div>
             <svg ref={tree_container2} className="cy tree" width="100%" height="100%"></svg>
         </div>
-        {/* <svg ref={tree_container} className="cy hidden" width="100%" height="100%"></svg> */}
-        
-        {/* <div className='horizontal-split'>
-            <div className='svg_container'>
-                <div className='svg_label'>Tree Decomposition - <InlineMath math="T"/></div>
-                <svg ref={tree_container} className="cy" width="100%" height="100%"></svg>
-            </div>
-            <div className='svg_container'>
-                <div className='svg_label'>Tree Decomposition - <InlineMath math="T'"/></div>
-                <svg ref={tree_container2} className="cy" width="100%" height="100%"></svg>
-            </div>
-        </div> */}
+ 
     </div>
     </AnimatedPage>
 

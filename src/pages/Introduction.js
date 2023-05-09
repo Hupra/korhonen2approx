@@ -8,6 +8,7 @@ import {Graph, Tree} from "../classes.js"
 import * as d3 from 'd3';
 import graph from '../graphs/graph1.json'
 import tree from '../graphs/graph1-tree.json'
+import treef from '../graphs/graph1-tree-fixed.json'
 
 
 
@@ -17,10 +18,19 @@ function Introduction() {
   const tree_container2 = useRef();
 
     useEffect(() => {
+        let node = treef.nodes.find(node => node.name === "X");
+        node.stuck = true;
+        node.x = tree_container2.current.clientWidth/2-5;
+        node.y = tree_container2.current.clientHeight*(1/3);
+
         const t1 = new Tree(tree, d3.select(tree_container1.current));
-        const t2 = new Tree(tree, d3.select(tree_container2.current));
+        const t2 = new Tree(treef, d3.select(tree_container2.current));
+
+
         t1.render();
         t2.render();
+
+        
         
         const g = new Graph(graph, d3.select(graph_container.current));
         // g.charge = -900

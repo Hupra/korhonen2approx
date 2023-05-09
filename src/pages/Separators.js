@@ -23,6 +23,7 @@ function Separators() {
     const [separator, setSeparator] = useState([]);
     const [page_state, set_page_state] = useState(0);
     const tab = useRef();
+    const max_length = 10;
 
 
     
@@ -207,18 +208,23 @@ function Separators() {
         <h4>Variables</h4>
         <div className='items'><div>
             <InlineMath math={"X  = \\{"}/>
-            <div className={"X"}><InlineMath math={separator.toString()} /></div>
+            {separator.length<=max_length 
+                ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
+                : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
+            }
             <InlineMath math={"\\}"}/>
         </div></div>
 
         {components.map((item, idx) => {
-            const e = "\\}";
             return (
             <React.Fragment key={idx}>
                 <div className='items'><div>
                 <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
-                <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
-                <InlineMath math={e} />
+                {item.length<=max_length 
+                ? <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                : <div className={"C"+(idx+1).toString()}><InlineMath math={item.slice(0,max_length).toString() + ", ..."} /></div>
+                }
+                <InlineMath math={"\\}"} />
                 </div></div>
             </React.Fragment>
         )})}
@@ -273,7 +279,10 @@ function Separators() {
         <h4>Variables</h4>
         <div className='items'><div>
             <InlineMath math={"X  = \\{"}/>
-            <div className={"X"}><InlineMath math={separator.toString()} /></div>
+            {separator.length<=max_length 
+                ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
+                : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
+            }
             <InlineMath math={"\\}"}/>
         </div></div>
 
@@ -283,7 +292,10 @@ function Separators() {
             <React.Fragment key={idx}>
                 <div className='items'><div>
                 <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
-                <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                {item.length<=max_length 
+                ? <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                : <div className={"C"+(idx+1).toString()}><InlineMath math={item.slice(0,max_length).toString() + ", ..."} /></div>
+                }
                 <InlineMath math={e} />
                 </div></div>
             </React.Fragment>
@@ -339,7 +351,11 @@ function Separators() {
         <h4>Variables</h4>
         <div className='items'><div>
             <InlineMath math={"X  = \\{"}/>
-            <div className={"X"}><InlineMath math={separator.toString()} /></div>
+            {separator.length<=max_length 
+                ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
+                : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
+            }
+            
             <InlineMath math={"\\}"}/>
         </div></div>
  
@@ -349,7 +365,10 @@ function Separators() {
             <React.Fragment key={idx}>
                 <div className='items'><div>
                 <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
-                <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                {item.length<=max_length 
+                ? <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                : <div className={"C"+(idx+1).toString()}><InlineMath math={item.slice(0,max_length).toString() + ", ..."} /></div>
+                }
                 <InlineMath math={e} />
                 </div></div>
             </React.Fragment>

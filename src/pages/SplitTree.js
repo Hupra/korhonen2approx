@@ -28,6 +28,7 @@ import SB from './components/SB';
 
 function SplitTree() {
     
+    const max_length = 10;
     const graph_container = useRef();
     const graph_container2 = useRef();
     const tree_container = useRef();
@@ -248,7 +249,10 @@ function SplitTree() {
                 <div className='items'>
                     <div>
                         <InlineMath math={"X  = \\{"}/>
-                        <div className={"X"}><InlineMath math={separator.toString()} /></div>
+                        {separator.length<=max_length 
+                        ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
+                        : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
+                        }
                         <InlineMath math={"\\}"}/>
                     </div>
                 </div>
@@ -257,7 +261,11 @@ function SplitTree() {
                     <React.Fragment key={idx}>
                         <div className='items'><div>
                         <InlineMath math={"C_"+(idx+1).toString()+" = \\{"} />
-                        <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                        {
+                        item.length<=max_length 
+                        ? <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                        : <div className={"C"+(idx+1).toString()}><InlineMath math={item.slice(0,max_length).toString() + ", ..."} /></div>
+                        }
                         <InlineMath math={"\\}"} />
                         </div></div>
                     </React.Fragment>

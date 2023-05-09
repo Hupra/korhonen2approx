@@ -35,6 +35,8 @@ function SeparatorsBalanced() {
     const [page_state, set_page_state] = useState(0);
     const [state_W, set_state_W] = useState([]);
     const tab = useRef();
+    const max_length = 10;
+
 
     function init_exercise(graph, graphs, tree) {
 
@@ -210,7 +212,10 @@ function SeparatorsBalanced() {
     <h4>Variables</h4>
     <div className='items'><div>
         <InlineMath math={"X  = \\{"}/>
-        <div className={"X"}><InlineMath math={separator.toString()} /></div>
+        {separator.length<=max_length 
+        ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
+        : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
+        }
         <InlineMath math={"\\}"}/>
     </div>
 
@@ -220,7 +225,7 @@ function SeparatorsBalanced() {
         {components.map((item, idx) => {
             const CW = item.filter(e => state_W.includes(e));
             const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
-            const m = CW.toString();
+            const m = CW.length<=max_length ? CW.toString() : CW.slice(0,max_length).toString() + ", ...";
             const e = "\\}";
             return (
             <React.Fragment key={idx}>
@@ -274,7 +279,10 @@ function SeparatorsBalanced() {
         <h4>Variables</h4>
         <div className='items'><div>
         <InlineMath math={"X  = \\{"}/>
-        <div className={"X"}><InlineMath math={separator.toString()} /></div>
+        {separator.length<=max_length 
+        ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
+        : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
+        }
         <InlineMath math={"\\}"}/>
         </div>
 
@@ -284,7 +292,7 @@ function SeparatorsBalanced() {
         {components.map((item, idx) => {
             const CW = item.filter(e => state_W.includes(e));
             const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
-            const m = CW.toString();
+            const m = CW.length<=max_length ? CW.toString() : CW.slice(0,max_length).toString() + ", ...";
             const e = "\\}";
             return (
             <React.Fragment key={idx}>
@@ -334,7 +342,10 @@ function SeparatorsBalanced() {
     <h4>Variables</h4>
     <div className='items'><div>
     <InlineMath math={"X  = \\{"}/>
-    <div className={"X"}><InlineMath math={separator.toString()} /></div>
+    {separator.length<=max_length 
+        ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
+        : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
+    }
     <InlineMath math={"\\}"}/>
     </div>
 
@@ -344,7 +355,7 @@ function SeparatorsBalanced() {
     {components.map((item, idx) => {
         const CW = item.filter(e => state_W.includes(e));
         const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
-        const m = CW.toString();
+        const m = CW.length<=max_length ? CW.toString() : CW.slice(0,max_length).toString() + ", ...";
         const e = "\\}";
         return (
         <React.Fragment key={idx}>

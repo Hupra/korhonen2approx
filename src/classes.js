@@ -611,7 +611,21 @@ export class Tree {
         this.svg_node_labels.classed("hidden", d => !show.includes(d.name[0]));
         this.svg_node_names.classed("hidden", d => !show.includes(d.name[0]));
         this.svg_links.classed("hidden", d => !show.includes(d.source.name[0]) || !show.includes(d.target.name[0]));
-        // this.svg_nodes.classed("opacity", d => !show.includes(d.name[0]));
+    }
+    
+    svg_show_stuff(name, i){
+        this.svg_nodes.each(function(d) {
+            if (d.name === name && d.group === i) d3.select(this).classed("hidden", false);
+        });
+        this.svg_node_labels.each(function(d) {
+            if (d.name === name && d.group === i) d3.select(this).classed("hidden", false);
+        });
+        this.svg_node_names.each(function(d) {
+            if (d.name === name && d.group === i) d3.select(this).classed("hidden", false);
+        });
+        // this.svg_links.each(function(d) {
+        //     if ((d.source.name === name && d.source.group === i) || (d.target.name === name && d.target.group === i)) d3.select(this).classed("hidden", false);
+        // });
     }
 
     svg_set_node_pos(id, x, y){
