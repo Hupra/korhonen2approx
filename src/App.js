@@ -8,8 +8,8 @@ import TreeDecomposition from './pages/TreeDecomposition';
 import NiceTreeDecomposition from './pages/NiceTreeDecomposition';
 import Separators from './pages/Separators';
 import SeparatorsBalanced from './pages/SeparatorsBalanced';
-import SplitTree from './pages/SplitTree';
-import SplitTree2 from './pages/SplitTree2';
+import MinSplit from './pages/MinSplit';
+import SplittingT from './pages/SplittingT';
 import ConnectComponents from './pages/ConnectComponents';
 import Continuity from './pages/Continuity';
 import HomeBag from './pages/HomeBag';
@@ -46,7 +46,7 @@ function App() {
           <NavLink activeclassname='active' to="/separators">S</NavLink>
           <NavLink activeclassname='active' to="/balanced-separators">BS</NavLink>
           <NavLink activeclassname='active' to="/connect-components">CC</NavLink>
-          <NavLink activeclassname='active' to="/splitting-tree2">S1</NavLink>
+          <NavLink activeclassname='active' to="/splitting-t">S1</NavLink>
           <NavLink activeclassname='active' to="/continuity">CI</NavLink>
           <NavLink activeclassname='active' to="/homebag">HB</NavLink>
           <NavLink activeclassname='active' to="/min-split">MS</NavLink>
@@ -64,7 +64,7 @@ function App() {
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/separators">Separators</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/balanced-separators">Balanced Separatos</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/connect-components">Connected Components</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/splitting-tree2">Splitting T</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/splitting-t">Splitting T</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/continuity">Continuity Issue</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/homebag">Home Bag</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/min-split">Minimum Split</NavLink>
@@ -85,11 +85,11 @@ function App() {
               <Route path="introduction/*"            element={<Introduction />} /> 
               <Route path="separators/*"              element={<Separators />} /> 
               <Route path="balanced-separators/*"     element={<SeparatorsBalanced />} /> 
-              <Route path="splitting-tree2/*"         element={<SplitTree2 />} /> 
+              <Route path="splitting-t/*"             element={<SplittingT />} /> 
               <Route path="connect-components/*"      element={<ConnectComponents />} />
               <Route path="continuity/*"              element={<Continuity />} /> 
               <Route path="homebag/*"                 element={<HomeBag />} /> 
-              <Route path="min-split/*"               element={<SplitTree />} /> 
+              <Route path="min-split/*"               element={<MinSplit />} /> 
               <Route path="color/*"                   element={<Color />} /> 
               <Route path="pruning/*"                 element={<Pruning />} />
               <Route path="nice-treedecomposition/*"  element={<NiceTreeDecomposition />} />

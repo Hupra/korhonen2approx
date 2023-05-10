@@ -1,7 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Sandbox from './components/Sandbox3';
+import React, { useEffect, useRef } from 'react';
 import AnimatedPage from './components/AnimatedPage';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { InlineMath } from 'react-katex';
 import SB from './components/SB';
 import {Graph, Tree} from "../classes.js"
@@ -33,21 +32,7 @@ function Introduction() {
         
         
         const g = new Graph(graph, d3.select(graph_container.current));
-        // g.charge = -900
-        // g.blobs = [
-        //   // { "bags": [1,5,9], "class": "outline-black", "text": "Separator: X", "offset": 50 },
-        //   { "bags": [2,3,4], "class": "cut dotted", "text": "", "offset": 50 },
-        //   { "bags": [6,7,8], "class": "cut dotted", "text": "", "offset": 50 },
-        //   { "bags": [10,11,12], "class": "cut dotted", "text": "", "offset": 50 },
-        //   { "bags": [1,2,3,4,5,6,7,8,9,10,11,12], "class": "outline-X", "text": "Bag: W", "offset": 50 },
-        //   // { "bags": [1,2,3,4,5,6,7], "class": "outline-C1", "text": "Non-editable subtree", "offset": 40 },
-        //   // { "bags": [1,7,8,9,10,11], "class": "outline-C2", "text": "Non-editable subtree", "offset": 20 },
 
-          
-        //   // { "bags": [1,2,3,4,5], "class": "outline-C1", "text": "Non-editable subtree", "offset": 27 },
-        //   // { "bags": [5,6,7,8,9], "class": "outline-C2", "text": "Non-editable subtree", "offset": 27 },
-        //   // { "bags": [1,9,10,11,12], "class": "outline-C3", "text": "Non-editable subtree", "offset": 27 },
-        // ];
         g.render();
 
     }, []);

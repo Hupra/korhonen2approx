@@ -26,7 +26,7 @@ import { max, setWith } from 'lodash';
 import SB from './components/SB';
 
 
-function SplitTree() {
+function MinSplit() {
     
     const max_length = 10;
     const graph_container = useRef();
@@ -338,4 +338,4 @@ function SplitTree() {
     </>
   );
 }
-export default SplitTree;
+export default MinSplit;

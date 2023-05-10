@@ -1,9 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
-import Sandbox from './components/Sandbox3';
+import React, { useEffect, useRef } from 'react';
 import AnimatedPage from './components/AnimatedPage';
-import { Link, useLocation } from 'react-router-dom';
-import { InlineMath } from 'react-katex';
-import SB from './components/SB';
+import { Link } from 'react-router-dom';
 
 function Home() {
 

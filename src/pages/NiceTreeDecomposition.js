@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Sandbox from './components/Sandbox3';
 import AnimatedPage from './components/AnimatedPage';
-import { Link, useLocation } from 'react-router-dom';
 import { InlineMath } from 'react-katex';
 import SB from './components/SB';
-import {Graph, Tree} from "../classes.js"
+import {Tree} from "../classes.js"
 import * as d3 from 'd3';
 import graph from '../graphs/graph1.json'
 import tree from '../graphs/graph1-tree.json'

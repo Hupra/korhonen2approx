@@ -13,7 +13,7 @@ import SB from './components/SB';
 
 
 
-function SplitTree2() {
+function SplittingT() {
 
 
 
@@ -347,4 +347,4 @@ function SplitTree2() {
     </>
   );
 }
-export default SplitTree2;
+export default SplittingT;

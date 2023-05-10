@@ -260,9 +260,9 @@ function ConnectComponents() {
             container_size[0]<=W.bag.length/2 && 
             container_size[1]<=W.bag.length/2 && 
             container_size[2]<=W.bag.length/2) ?
-        <><Link to="/splitting-tree2" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting Tree Decomposition</i></>
+        <><Link to="/splitting-t" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting Tree Decomposition</i></>
         :
-        <><Link to="/splitting-tree2" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting Tree Decomposition</i></>
+        <><Link to="/splitting-t" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting Tree Decomposition</i></>
         }
 
         </div>  

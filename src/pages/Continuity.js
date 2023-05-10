@@ -23,18 +23,14 @@ function Continuity() {
         let C = [[5, 6, 7, 8], [1, 2], [4]];
 
         const tree_decomposition = T_2_TD(tree, C, X);
-        // const xn = tree_decomposition.nodes.find(node => node.name === "X");
-        // xn.y_div = 3;
-        // xn.y_offset = -1;
+
         const t = new Tree(tree_decomposition, d3.select(tree_container.current));
         t.charge = -3000;
         t.X = X;
         t.C = C;
         t.render();
         setTd(t);
-        // t.svg_set_node_class("error", [["W", "1"], ["W", "2"]]);
-        // t.svg_set_node_class_if_contains("error", 9);
-// "y_div": 3, "y_offset": -120
+
     }, []);
 
     const button_handler = (i) => {
