@@ -29,7 +29,6 @@ const layer = {
 
 const AnimatedPage = ({ children }) => {
   const location = useLocation();
-  console.log(1,location);
   
     return (
         <motion.div

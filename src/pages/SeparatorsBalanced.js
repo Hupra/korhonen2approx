@@ -29,7 +29,9 @@ function SeparatorsBalanced() {
     const graph_container = useRef();
     const graph_container2 = useRef();
     const tree_container = useRef();
+    const info_svg = useRef();
     const [isFocus, setIsFocus] = useState(true);
+    const [reset, set_reset] = useState(0);
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const [page_state, set_page_state] = useState(0);
@@ -39,6 +41,44 @@ function SeparatorsBalanced() {
 
 
     function init_exercise(graph, graphs, tree) {
+
+
+        // mini info svg:
+        let blobs2 = []
+        blobs2.push({ 
+            "bags": [1],
+            "class": "",
+            "text": "Vertex in W",
+            "offset": 10 });
+        blobs2.push({ 
+            "bags": [9],
+            "class": "",
+            "text": "Vertex not in W",
+            "offset": 10 });
+
+        let w = info_svg.current.clientWidth;
+        let h = info_svg.current.clientHeight;
+        
+        let test = {
+            nodes: [
+                {id: 1, x: (w*(2/7)), y: 10+(h*(1/2)), stuck: true},
+                {id: 9, x: (w*(5/7)), y: 10+(h*(1/2)), stuck: true}
+            ], 
+            edges: []}
+    
+        const info = new Graph(test, d3.select(info_svg.current));
+        info.blobs = blobs2;
+        info.C = [[1,9],[],[]];
+        info.X = [];
+        info.W = [1];
+        info.render();
+        ///////////////////////////////////
+
+        
+
+
+
+
 
         const W = tree.nodes.find(node => node.name === "W");
         set_state_W(W.bag);
@@ -156,18 +196,18 @@ function SeparatorsBalanced() {
           }
 
         setTimeout(() => {tab.current.style.left = (37*page_state-37).toString() + "px"}, 2);
-    }, [page_state]);
+    }, [page_state, reset]);
 
 
     function mi(x) {
-        if(x === "G") graph_container.current.style.background = "#000000";
-        if(x === "T") tree_container.current.style.background = "#000000";
+        if(x === "G") graph_container.current.parentNode.classList.add('reftar');
+        if(x === "T") tree_container.current.parentNode.classList.add('reftar');
     }
     function mo() {
-        graph_container.current.style.background = "";
-        tree_container.current.style.background = "";
+        graph_container.current.parentNode.classList.remove('reftar');
+        tree_container.current.parentNode.classList.remove('reftar');
     }
-
+          
   return (
     <>
     <AnimatedPage>
@@ -177,8 +217,14 @@ function SeparatorsBalanced() {
         a separator that, when removed from <InlineMath math="G"/>, splits the vertices of <InlineMath math="G"/> into 
         components so that no more than half of the vertices of <InlineMath math="W"/> are placed in a single component.
         <br/>More precisely <InlineMath math="\forall i: |W \cap C_i| \leq |W|/2"/>.</p>
-        <hr/>
-        <h2>Exercises</h2>
+        <hr/><br></br>
+        <p><i>Vertices are marked with a <InlineMath math="W"/> if they are 
+        in the bag <InlineMath math="W"/> in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>.</i></p>
+        
+        <div className='small-svg' style={{height: "100px"}}>
+        <svg ref={info_svg} className="cy" width="100%" height="100%"></svg>
+        </div>
+        <h2 style={{marginTop: "10px"}}>Exercises</h2>
 
         <ul className="mytabs">
             <div className={page_state===1?"tab active":"tab"} onClick={() => set_page_state(1)}>1</div>
@@ -191,10 +237,7 @@ function SeparatorsBalanced() {
 
     { page_state===1 && <div className='exercise'>
 
-        <p><i>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> , vertices are assigned 
-        distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are 
-        in the bag <InlineMath math="W"/> in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>.</i></p>
-        {/* <p>A bag <InlineMath math="W"/> is consider <i>spittable</i> if <InlineMath math="|(C_i \cap W) \cup X| < |W|"/> for all</p> */}
+       {/* <p>A bag <InlineMath math="W"/> is consider <i>spittable</i> if <InlineMath math="|(C_i \cap W) \cup X| < |W|"/> for all</p> */}
         <h4>Description</h4>
         <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their 
         inclusion in the balanced separator <InlineMath math="X"/> of <InlineMath math="W"/>.</p>
@@ -211,7 +254,7 @@ function SeparatorsBalanced() {
 
     <h4>Variables</h4>
     <div className='items'><div>
-        <InlineMath math={"X  = \\{"}/>
+        <span className="X" style={{marginRight: "4px"}}><InlineMath math={"X"}/></span><InlineMath math={"  = \\{"}/>
         {separator.length<=max_length 
         ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
         : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
@@ -224,19 +267,21 @@ function SeparatorsBalanced() {
 
         {components.map((item, idx) => {
             const CW = item.filter(e => state_W.includes(e));
-            const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
             const m = CW.length<=max_length ? CW.toString() : CW.slice(0,max_length).toString() + ", ...";
             const e = "\\}";
             return (
             <React.Fragment key={idx}>
                 <div className='items'>
                     <div>
-                        <InlineMath math={s} />
+                        <span className={"C"+(idx+1).toString()} style={{marginRight: "3px"}}><InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <span style={{marginRight: "4px"}}><InlineMath math={"\\cap"}/></span> <span><InlineMath math={"W = \\{"} /></span>
                         <div className={"C"+(idx+1).toString()}><InlineMath math={m} /></div>
                         <InlineMath math={e} />
                     </div>
                     <div>
-                        <InlineMath math={"|C_"+(idx+1).toString()+"\\cap W| = " + CW.length.toString()} />
+                        <InlineMath math={"|"}/><span className={"C"+(idx+1).toString()} style={{marginRight: "3px"}}><InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <span style={{marginRight: "4px"}}><InlineMath math={"\\cap"}/></span> <span><InlineMath math={"W| = " + CW.length.toString()} /></span>
+                        
                     </div>
                 </div>
             </React.Fragment>
@@ -260,7 +305,6 @@ function SeparatorsBalanced() {
 
     { page_state===2 && <div className='exercise'>
 
-        <p><i>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> , vertices are assigned distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are in the bag <InlineMath math="W"/> in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>.</i></p>
         {/* <p>A bag <InlineMath math="W"/> is consider <i>spittable</i> if <InlineMath math="|(C_i \cap W) \cup X| < |W|"/> for all</p> */}
         <h4>Description</h4>
         <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their 
@@ -278,7 +322,7 @@ function SeparatorsBalanced() {
 
         <h4>Variables</h4>
         <div className='items'><div>
-        <InlineMath math={"X  = \\{"}/>
+        <span className="X" style={{marginRight: "4px"}}><InlineMath math={"X"}/></span><InlineMath math={"  = \\{"}/>
         {separator.length<=max_length 
         ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
         : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
@@ -291,19 +335,21 @@ function SeparatorsBalanced() {
 
         {components.map((item, idx) => {
             const CW = item.filter(e => state_W.includes(e));
-            const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
             const m = CW.length<=max_length ? CW.toString() : CW.slice(0,max_length).toString() + ", ...";
             const e = "\\}";
             return (
             <React.Fragment key={idx}>
                 <div className='items'>
                     <div>
-                        <InlineMath math={s} />
+                        <span className={"C"+(idx+1).toString()} style={{marginRight: "3px"}}><InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <span style={{marginRight: "4px"}}><InlineMath math={"\\cap"}/></span> <span><InlineMath math={"W = \\{"} /></span>
                         <div className={"C"+(idx+1).toString()}><InlineMath math={m} /></div>
                         <InlineMath math={e} />
                     </div>
                     <div>
-                        <InlineMath math={"|C_"+(idx+1).toString()+"\\cap W| = " + CW.length.toString()} />
+                        <InlineMath math={"|"}/><span className={"C"+(idx+1).toString()} style={{marginRight: "3px"}}><InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <span style={{marginRight: "4px"}}><InlineMath math={"\\cap"}/></span> <span><InlineMath math={"W| = " + CW.length.toString()} /></span>
+                        
                     </div>
                 </div>
             </React.Fragment>
@@ -323,7 +369,6 @@ function SeparatorsBalanced() {
 
     { page_state===3 && <div className='exercise'>
 
-    <p><i>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> , vertices are assigned distinct colors according to their respective component affiliation and marked with a <InlineMath math="W"/> if they are in the bag <InlineMath math="W"/> in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span>.</i></p>
     {/* <p>A bag <InlineMath math="W"/> is consider <i>spittable</i> if <InlineMath math="|(C_i \cap W) \cup X| < |W|"/> for all</p> */}
     <h4>Description</h4>
     <p>Click on the vertices in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to toggle their 
@@ -341,7 +386,7 @@ function SeparatorsBalanced() {
 
     <h4>Variables</h4>
     <div className='items'><div>
-    <InlineMath math={"X  = \\{"}/>
+    <span className="X" style={{marginRight: "4px"}}><InlineMath math={"X"}/></span><InlineMath math={"  = \\{"}/>
     {separator.length<=max_length 
         ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
         : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
@@ -353,24 +398,26 @@ function SeparatorsBalanced() {
     </div>
 
     {components.map((item, idx) => {
-        const CW = item.filter(e => state_W.includes(e));
-        const s = "C_"+(idx+1).toString()+"\\cap W = \\{";
-        const m = CW.length<=max_length ? CW.toString() : CW.slice(0,max_length).toString() + ", ...";
-        const e = "\\}";
-        return (
-        <React.Fragment key={idx}>
-            <div className='items'>
-                <div>
-                    <InlineMath math={s} />
-                    <div className={"C"+(idx+1).toString()}><InlineMath math={m} /></div>
-                    <InlineMath math={e} />
+            const CW = item.filter(e => state_W.includes(e));
+            const m = CW.length<=max_length ? CW.toString() : CW.slice(0,max_length).toString() + ", ...";
+            const e = "\\}";
+            return (
+            <React.Fragment key={idx}>
+                <div className='items'>
+                    <div>
+                        <span className={"C"+(idx+1).toString()} style={{marginRight: "3px"}}><InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <span style={{marginRight: "4px"}}><InlineMath math={"\\cap"}/></span> <span><InlineMath math={"W = \\{"} /></span>
+                        <div className={"C"+(idx+1).toString()}><InlineMath math={m} /></div>
+                        <InlineMath math={e} />
+                    </div>
+                    <div>
+                        <InlineMath math={"|"}/><span className={"C"+(idx+1).toString()} style={{marginRight: "3px"}}><InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <span style={{marginRight: "4px"}}><InlineMath math={"\\cap"}/></span> <span><InlineMath math={"W| = " + CW.length.toString()} /></span>
+                        
+                    </div>
                 </div>
-                <div>
-                    <InlineMath math={"|C_"+(idx+1).toString()+"\\cap W| = " + CW.length.toString()} />
-                </div>
-            </div>
-        </React.Fragment>
-    )})}
+            </React.Fragment>
+        )})}
 
     </div>}
 
@@ -392,6 +439,7 @@ function SeparatorsBalanced() {
     <div className='content'>
         <div className={isFocus ? "svg_container interactive active focus-svg":'svg_container interactive active'}>
             <svg id="nolo" ref={graph_container} className="cy graph" width="100%" height="100%"></svg>
+            <div className='svg_reset' onClick={()=>set_reset(reset+1)}><ion-icon name="refresh-outline"></ion-icon></div>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
         </div>
         <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>

@@ -233,22 +233,23 @@ function SplitTree() {
                     <ion-icon name={tasks[0] ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
                 <div className='task'>
-                    <span>2.<InlineMath math="\quad"/>Minimize <InlineMath math="|X|"/>.</span>
+                    <span>2.<InlineMath math="\quad"/>Minimize <InlineMath math="|"/><span className='X'><InlineMath math="X"/></span><InlineMath math="|"/>.</span>
                     <ion-icon name={(tasks[0] && tasks[1]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
                 <div className='task'>
-                    <span>3.<InlineMath math="\quad"/>Minimize <InlineMath math="d(X)"/>.</span>
+                    <span>3.<InlineMath math="\quad"/>Minimize <InlineMath math="d("/><span className='X'><InlineMath math="X"/></span><InlineMath math=")"/>.</span>
                     <ion-icon name={(tasks[0] && tasks[1] && tasks[2]) ? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
                 </div>
                 <h4>Variables</h4>
                 <div className='items'>
                     <div><InlineMath math={"|W|/2 = " + (state_W.length/2).toString()}/></div>
-                    <div><InlineMath math={"|X| = " + separator.length.toString()}/></div>
-                    <div><InlineMath math={"d(X) = " + dX.toString()}/></div>
+                    <div><InlineMath math={"|"}/> <span className="X"><InlineMath math={"X"}/></span> <InlineMath math={"| = " + separator.length.toString()}/></div>
+                    <div><InlineMath math={"d("}/> <span className="X"><InlineMath math={"X"}/></span> <InlineMath math={") = " + dX.toString()}/></div>
+                   
                 </div>
                 <div className='items'>
                     <div>
-                        <InlineMath math={"X  = \\{"}/>
+                        <span className="X" style={{marginRight: "4px"}}><InlineMath math={"X"}/></span><InlineMath math={"  = \\{"}/>
                         {separator.length<=max_length 
                         ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
                         : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
@@ -260,7 +261,11 @@ function SplitTree() {
                 return (
                     <React.Fragment key={idx}>
                         <div className='items'><div>
-                        <InlineMath math={"C_"+(idx+1).toString()+" = \\{"} />
+
+
+                        <span className={"C"+(idx+1).toString()}  style={{marginRight: "4px"}}>
+                        <InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <InlineMath math={" = \\{"} />
                         {
                         item.length<=max_length 
                         ? <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>

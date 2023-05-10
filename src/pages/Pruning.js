@@ -393,10 +393,10 @@ function Pruning() {
     }
 
     function mi(x) {
-        if(x === "T") tree_container.current.style.background = "#000000";
+        if(x === "T") tree_container.current.parentNode.classList.add('reftar');
     }
     function mo() {
-        tree_container.current.style.background = "";
+        tree_container.current.parentNode.classList.remove('reftar');
     }
 
   return (

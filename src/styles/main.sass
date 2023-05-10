@@ -370,7 +370,32 @@ line.xclude
         padding: 5px 10px
         font-size: 14px
         border: $border-settings
+        // font-weight: 300
+    .svg_reset
+        position: absolute
+        bottom: 7px
+        left: 7px
+        background-color: #101010
+        border-radius: 5px
+        padding: 5px 10px
+        font-size: 16px
+        border: $border-settings
         font-weight: 300
+        color: white
+        cursor: pointer
+        display: flex
+        justify-content: center
+        align-items: center
+        
+        &:after
+            content: "Reset"
+            margin-left: 5px
+            mar
+        &:hover ion-icon
+            transition: all 500ms
+            transform: rotate(360deg)
+            color: orange
+
 
     .svg_counter
         position: absolute
@@ -432,7 +457,17 @@ line.xclude
         left: -200%
     &.full
         border-right: 2px dotted #050505
-            
+
+
+.reftar
+    
+    svg
+        background-color: #101010 !important
+        border: 2px dotted orange !important
+    .svg_label
+        background: orange
+        color: black
+
 .splitline
     margin: 5px
     padding: 10px
@@ -581,6 +616,7 @@ line
 span.color-reverse
     color: white
     background-color: #101010
+    border: 1px solid black
     padding: 3px
     border-radius: 8px
     display: inline-block
@@ -589,15 +625,21 @@ span.ref
     display: inline-block
     font-style: normal
 
-    color: white
-    background-color: #101010
-    border-radius: 5px
+    color: black
+    background-color: white
+    border-radius: 6px
     padding: 0px 4px
+    line-height: auto
     // font-size: 14px
     border: $border-settings
     font-weight: 300
-    cursor: pointer
-    
+    // cursor: pointer
+    margin: 0 2px
+    &:hover
+        // color: orange
+        background: orange
+
+
 span
     &.C1
         color: $c1
@@ -1164,5 +1206,5 @@ g
 .mb0
     margin-bottom: 0
 
-svg
+svg, .svg_label
     transition: background 0.3s ease-in-out

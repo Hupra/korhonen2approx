@@ -69,6 +69,7 @@ function TreeDecomposition() {
     const graph_container = useRef();
     const tree_container = useRef();
     const [tasks, set_tasks] = useState([0, 0]);
+    const [reset, set_reset] = useState(0);
     const [page_state, set_page_state] = useState(1);
     const tabsref = useRef();
     const tabref = useRef();
@@ -225,7 +226,7 @@ function TreeDecomposition() {
 
         add_functionality();
 
-    }, []);
+    }, [reset]);
 
     useEffect(() => {
 
@@ -251,13 +252,14 @@ function TreeDecomposition() {
 
 
     function mi(x) {
-        if(x === "G") graph_container.current.style.background = "#000000";
-        if(x === "T") tree_container.current.style.background = "#000000";
+        if(x === "G") graph_container.current.parentNode.classList.add('reftar');
+        if(x === "T") tree_container.current.parentNode.classList.add('reftar');
     }
     function mo() {
-        graph_container.current.style.background = "";
-        tree_container.current.style.background = "";
+        graph_container.current.parentNode.classList.remove('reftar');
+        tree_container.current.parentNode.classList.remove('reftar');
     }
+
 
 
   return (
@@ -309,7 +311,7 @@ function TreeDecomposition() {
             <h2 style={{marginTop: 0}}>Exercises</h2>
             <div className='exercise'>
                 <i>
-            <p>Play around with the graph "G" to the right and see 
+            <p>Play around with the graph <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to the right and see 
                 how the tree decomposition changes. You can interact 
                 with the graph in the following ways:</p></i>
                 <ol>
@@ -354,6 +356,7 @@ function TreeDecomposition() {
     <div className='content'>
         <div className={page_state === 2 ? 'svg_container interactive plus focus-svg' : 'svg_container interactive plus'}>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
+            <div className='svg_reset' onClick={()=>set_reset(reset+1)}><ion-icon name="refresh-outline"></ion-icon></div>
             <svg ref={graph_container} className="cy" width="100%" height="100%"></svg>
         </div>
         <div className='svg_container'>

@@ -31,16 +31,22 @@ function SplitTree2() {
     const w = tree.nodes.find(node => node.name === "W");
     const node_name = tree.nodes.map(x => x.name);
     const node_bag = tree.nodes.map(x => x.bag);
+    
+    function mi(x) {
+        if(x === "T") tree_container.current.parentNode.classList.add('reftar');
+        if(x === "T'") tree_container2.current.parentNode.classList.add('reftar');
+    }
+    function mo() {
+        tree_container.current.parentNode.classList.remove('reftar');
+        tree_container2.current.parentNode.classList.remove('reftar');
+    }
 
     useEffect(() => {
-        console.log("page render");
         let removed_nodes = [];
         let removed_links = [];
         let nodes1 = graph.nodes.map(node => w.bag.some(x => x === node.id) ? {...node, color: w.color} : node);
-        let edges2 = graph.edges.map(edge => {return { source: edge.source.toString() + "'", target: edge.target.toString() + "'", color: edge.color }});
        
         let graph1 = {nodes: nodes1, edges: graph.edges}
-        let graph2 = {nodes: nodes1.map(node => {return {...node, "id" : node.id + "'"}}), edges: edges2};
 
         const g  = new Graph(graph1, d3.select(graph_container.current));
         const g2 = new Graph(graph1, d3.select(graph_container2.current));
@@ -131,12 +137,20 @@ function SplitTree2() {
             if (regex.test(inputValue)) set(inputValue);
           };
 
+        
+
         return (
             <div className='build-a-bag'>
                 <h4>Description</h4>
                 {/* <div>Fill out the correct inputs in the formulas below for each of the three newly created bags derived from the original bag {B}</div> */}
                 {/* <div>A simple approach is to look at the current bag in <InlineMath math="T"/> and look at the different colors. Each of these new bags will be the union of orange and one of the other colors.</div> */}
-                <p>For each bag in <InlineMath math={"T"}/>, it is necessary to determine the appropriate contents for the three bags that will replace it in <InlineMath math={"T'"}/>. This can be achieved by including the vertices from the original bag in <InlineMath math={"T"}/> that are associated with one of the specific components <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span> , and then adding the vertices from the original bag that are also present in <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span>.</p>
+                <p>For each bag in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>, it is 
+                necessary to determine the appropriate contents for the three bags that will 
+                replace it in <span className='ref' onMouseOver={() => mi("T'")} onMouseOut={mo}><InlineMath math="T'"/></span>. This can be 
+                achieved by including the vertices from the original 
+                bag in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> that 
+                are associated with one of the specific 
+                components <span className='color-reverse'>{"("}<span className='C1'><InlineMath math="C_1"/></span>, <span className='C2'><InlineMath math="C_2"/></span>, <span className='C3'><InlineMath math="C_3"/></span>{")"}</span> , and then adding the vertices from the original bag that are also present in <span className='color-reverse'>{"("}<span className='X'><InlineMath math="X"/></span>{")"}</span>.</p>
                 <h4>Tasks</h4>
                 <p>In the tasks below, please enter the vertices that belong to each bag, separated by commas, e.g., {"{"}4,8,3,7{"}"}</p>
                 <div className='task minh'>
@@ -243,7 +257,7 @@ function SplitTree2() {
         },[i])
         return<>
             <h2>Attention</h2>
-            <p>An improved tree decomposition <InlineMath math="T'"/> has been made, but there can still exists a problem with it, which will be explained in the next section.</p>
+            <p>An improved tree decomposition <span className='ref' onMouseOver={() => mi("T'")} onMouseOut={mo}><InlineMath math="T'"/></span> has been made, but there can still exists a problem with it, which will be explained in the next section.</p>
         </>
     }
     
@@ -255,13 +269,26 @@ function SplitTree2() {
 
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Splitting <InlineMath math="T"/></h2>
-        <p>After identifying a balanced separator and combining components to obtain a split <InlineMath math={"(C_1, C_2, C_3, X)"}/> of <InlineMath math={"W"}/>, we can construct a new, improved tree decomposition <InlineMath math={"T’"}/> by dividing each bag in <InlineMath math={"T"}/> according to the components of our split.</p> 
-        <p>To accomplish this, we iterate through each bag and replace it with three new bags (or two if <InlineMath math={"C_3"}/> is empty), each containing the vertices from the original bag's intersection with a specific component and the separator. For each bag <InlineMath math="B_i" />, this results in three new bags consisting of the following sets: <InlineMath math=" B_i^1 = (B_i \cap (C_1 \cup X))"/>, <InlineMath math=" B_i^2 = (B_i \cap (C_2 \cup X))"/>, and <InlineMath math=" B_i^3 = (B_i \cap (C_3 \cup X))"/>   
+        <p>After identifying a balanced separator and combining components to obtain a split <InlineMath math={"(C_1, C_2, C_3, X)"}/> of <InlineMath math={"W"}/>, we can construct a new, improved tree decomposition <InlineMath math={"T'"}/> by dividing each bag in <InlineMath math={"T"}/> according to the components of our split.</p> 
+        <p>To accomplish this, we iterate through each bag and replace it with 
+            three new bags (or two if <InlineMath math={"C_3"}/> is empty), each 
+            containing the vertices from the original bag's intersection with a 
+            specific component and the separator. For each bag <InlineMath math="B" />, this 
+            results in three new bags consisting of the following 
+            sets:
         </p>
+            <ul style={{marginTop: "10px", marginLeft: "15px"}}>
+                <li><InlineMath math=" B^1 = B \cap (C_1 \cup X)"/></li>
+                <li><InlineMath math=" B^2 = B \cap (C_2 \cup X)"/></li>
+                <li><InlineMath math=" B^3 = B \cap (C_3 \cup X)"/></li>
+            </ul>
+            
+            
         <hr/>
         <h2>Exercises</h2>
         <div className='exercise'>
-        <i>In the tree decomposition <InlineMath math={"T"}/>, vertices within each bag are assigned distict colors based on their corresponding component affiliation.</i>
+        <i>In the tree decomposition <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>, vertices 
+        within each bag are assigned distict colors based on their corresponding component affiliation.</i>
 
             { page_ready && page_state === 0 && <Puzzle i={page_state}/>}
             { page_ready && page_state === 1 && <Puzzle i={page_state}/>}

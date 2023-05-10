@@ -117,19 +117,19 @@ function HomeBag() {
         let page_state_loc = page_state;
         t.svg_nodes.on("click", function(e,node) {
             if(page_state_loc === 0 && node.name==="B"){
-                t.svg_set_node_class("homebag", ["B"]);
+                t.svg_set_node_class("error", ["B"]);
                 page_state_loc+=1;
                 set_page_state(page_state_loc);
                 correcto(e.clientX, e.clientY, 'Correcto!');
             }
             if(page_state_loc === 2 && node.name==="G"){
-                t.svg_set_node_class("homebag", ["B","G"]);
+                t.svg_set_node_class("error", ["B","G"]);
                 page_state_loc+=1;
                 set_page_state(page_state_loc);
                 correcto(e.clientX, e.clientY, 'Correcto!');
             }
             if(page_state_loc === 4 && node.name==="H"){
-                t.svg_set_node_class("homebag", ["B","G","H"]);
+                t.svg_set_node_class("error", ["B","G","H"]);
                 page_state_loc+=1;
                 set_page_state(page_state_loc);
                 correcto(e.clientX, e.clientY, 'Correcto!');
@@ -236,21 +236,24 @@ function HomeBag() {
         collapsibleInstance.open(index);
         set_page_state(index);
     };
+
+
+
     function mi(x) {
-        if(x === "T") p1tree_container.current.style.background = "#000000";
-        if(x === "TX") p1tree_containerx.current.style.background = "#000000";
-        if(x === "TTX") p1tree_containerux.current.style.background = "#000000";
-        if(x === "T2") tree_container.current.style.background = "#000000";
-        if(x === "TX2") tree_containerx.current.style.background = "#000000";
-        if(x === "TTX2") tree_containerux.current.style.background = "#000000";
+        if(x === "T") p1tree_container.current.parentNode.classList.add('reftar');
+        if(x === "TX") p1tree_containerx.current.parentNode.classList.add('reftar');
+        if(x === "TTX") p1tree_containerux.current.parentNode.classList.add('reftar');
+        if(x === "T2") tree_container.current.parentNode.classList.add('reftar');
+        if(x === "TX2") tree_containerx.current.parentNode.classList.add('reftar');
+        if(x === "TTX2") tree_containerux.current.parentNode.classList.add('reftar');
     }
     function mo() {
-        p1tree_container.current.style.background = "";
-        p1tree_containerx.current.style.background = "";
-        p1tree_containerux.current.style.background = "";
-        tree_container.current.style.background = "";
-        tree_containerx.current.style.background = "";
-        tree_containerux.current.style.background = "";
+        p1tree_container.current.parentNode.classList.remove('reftar');
+        p1tree_containerx.current.parentNode.classList.remove('reftar');
+        p1tree_containerux.current.parentNode.classList.remove('reftar');
+        tree_container.current.parentNode.classList.remove('reftar');
+        tree_containerx.current.parentNode.classList.remove('reftar');
+        tree_containerux.current.parentNode.classList.remove('reftar');
     }
     return(
     <>
@@ -525,7 +528,7 @@ The following are the home bags for the vertices of <InlineMath math="X"/> in <I
         <div className={part===2 ? 'content' : 'content hidden' }>
             <div className={'svg_container' + ((page_state%2===0 && page_state<=4) ? " focus-svg " : " ") + ((page_state%2===0 && page_state<=4) ? " interactive" : "")}>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
-                <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <InlineMath math="T"/></div>
+                <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <span className='reftar'><InlineMath math="T"/></span></div>
             </div>
             <div className={'svg_container' + ((page_state%2===1 && page_state<=5)? " focus-svg " : " ") + ((page_state%2===1 && page_state<=5) ? " interactive" : "")}>
                 <svg ref={tree_containerx} className="cy tree" width="100%" height="100%"></svg>

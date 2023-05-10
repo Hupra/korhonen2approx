@@ -18,7 +18,9 @@ import M from 'materialize-css';
 function Separators() {
     const graph_container = useRef();
     const graph_container2 = useRef();
+    const info_svg = useRef();
     const [isFocus, setIsFocus] = useState(true);
+    const [reset, set_reset] = useState(0);
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const [page_state, set_page_state] = useState(0);
@@ -28,6 +30,39 @@ function Separators() {
 
     
     function init_exercise(graph) {
+
+
+        // mini info svg:
+        let blobs2 = []
+        blobs2.push({ "bags": [1], "class": "","text": "Separator X", "offset": 10 });
+        blobs2.push({ "bags": [2], "class": "","text": "Component 1", "offset": 10 });
+        blobs2.push({ "bags": [3], "class": "","text": "Component 2", "offset": 10 });
+        blobs2.push({ "bags": [4], "class": "","text": "Component 3", "offset": 10 });
+
+        let w = info_svg.current.clientWidth;
+        let h = info_svg.current.clientHeight;
+        
+        let test = {
+            nodes: [
+                {id: 1, x: (w*(.5/4)), y: 10+(h*(1/2)), stuck: true},
+                {id: 2, x: (w*(1.5/4)), y: 10+(h*(1/2)), stuck: true},
+                {id: 3, x: (w*(2.5/4)), y: 10+(h*(1/2)), stuck: true},
+                {id: 4, x: (w*(3.5/4)), y: 10+(h*(1/2)), stuck: true}
+            ], 
+            edges: []}
+    
+        const info = new Graph(test, d3.select(info_svg.current));
+        info.blobs = blobs2;
+        info.C = [[2],[3],[4]];
+        info.X = [1];
+        info.render();
+        info.svg_set_component_color();
+        ///////////////////////////////////
+
+
+
+
+
         setSeparator([]);
         setComponents([]);
 
@@ -134,18 +169,16 @@ function Separators() {
           }
 
           setTimeout(() => {tab.current.style.left = (37*page_state-37).toString() + "px"}, 2);
-    }, [page_state]);
+    }, [page_state, reset]);
 
 
     
     function mi(x) {
-        if(x === "G") graph_container.current.style.background = "#000000";
+        if(x === "G") graph_container.current.parentNode.classList.add('reftar');
     }
     function mo() {
-        graph_container.current.style.background = "";
-    }
-    
-            
+        graph_container.current.parentNode.classList.remove('reftar');
+    }           
     
 
   return (
@@ -156,8 +189,13 @@ function Separators() {
         
         <p>A separator is a set of vertices <InlineMath math="X \subseteq V(G)"/>, where removing <InlineMath math="X"/> from 
         <InlineMath math="G"/> results in the connected components <InlineMath math="C_1,...,C_h"/> in the graph <InlineMath math="G[V \setminus X]"/>
-        </p><hr></hr>
-        <h2>Exercises</h2>
+        </p><hr></hr><br></br>
+        <p><i>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> , vertices are assigned 
+        distinct colors according to their respective component affiliation</i></p>
+        <div className='small-svg' style={{height: "100px"}}>
+        <svg ref={info_svg} className="cy" width="100%" height="100%"></svg>
+        </div>
+        <h2 style={{marginTop: "10px"}}>Exercises</h2>
 
         <ul className="mytabs">
             <div className={page_state===1?"tab active":"tab"} onClick={() => set_page_state(1)}>1</div>
@@ -207,7 +245,7 @@ function Separators() {
         }
         <h4>Variables</h4>
         <div className='items'><div>
-            <InlineMath math={"X  = \\{"}/>
+            <span className="X" style={{marginRight: "4px"}}><InlineMath math={"X"}/></span><InlineMath math={"  = \\{"}/>
             {separator.length<=max_length 
                 ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
                 : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
@@ -219,7 +257,9 @@ function Separators() {
             return (
             <React.Fragment key={idx}>
                 <div className='items'><div>
-                <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
+                <span className={"C"+(idx+1).toString()}  style={{marginRight: "4px"}}>
+                        <InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <InlineMath math={" = \\{"} />
                 {item.length<=max_length 
                 ? <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
                 : <div className={"C"+(idx+1).toString()}><InlineMath math={item.slice(0,max_length).toString() + ", ..."} /></div>
@@ -278,7 +318,7 @@ function Separators() {
         }
         <h4>Variables</h4>
         <div className='items'><div>
-            <InlineMath math={"X  = \\{"}/>
+            <span className="X" style={{marginRight: "4px"}}><InlineMath math={"X"}/></span><InlineMath math={"  = \\{"}/>
             {separator.length<=max_length 
                 ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
                 : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
@@ -291,7 +331,9 @@ function Separators() {
             return (
             <React.Fragment key={idx}>
                 <div className='items'><div>
-                <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
+                <span className={"C"+(idx+1).toString()}  style={{marginRight: "4px"}}>
+                        <InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <InlineMath math={" = \\{"} />
                 {item.length<=max_length 
                 ? <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
                 : <div className={"C"+(idx+1).toString()}><InlineMath math={item.slice(0,max_length).toString() + ", ..."} /></div>
@@ -350,7 +392,7 @@ function Separators() {
         }
         <h4>Variables</h4>
         <div className='items'><div>
-            <InlineMath math={"X  = \\{"}/>
+            <span className="X" style={{marginRight: "4px"}}><InlineMath math={"X"}/></span><InlineMath math={"  = \\{"}/>
             {separator.length<=max_length 
                 ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
                 : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
@@ -364,7 +406,9 @@ function Separators() {
             return (
             <React.Fragment key={idx}>
                 <div className='items'><div>
-                <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
+                <span className={"C"+(idx+1).toString()}  style={{marginRight: "4px"}}>
+                        <InlineMath math={"C_"+(idx+1).toString()}/></span>
+                        <InlineMath math={" = \\{"} />
                 {item.length<=max_length 
                 ? <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
                 : <div className={"C"+(idx+1).toString()}><InlineMath math={item.slice(0,max_length).toString() + ", ..."} /></div>
@@ -394,6 +438,7 @@ function Separators() {
     <div className='content'>
         <div className={isFocus ? "svg_container interactive active focus-svg":'svg_container interactive active'}>
             <svg id="nolo" ref={graph_container} className="cy" width="100%" height="100%"></svg>
+            <div className='svg_reset' onClick={()=>set_reset(reset+1)}><ion-icon name="refresh-outline"></ion-icon></div>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
         </div>
         <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>

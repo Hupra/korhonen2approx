@@ -417,7 +417,7 @@ export class Graph {
         .attr('x', (d) => {
             if (d && d.polygon) {
                 const topPoint = d.polygon.reduce((minPoint, point) => point[1] < minPoint[1] ? point : minPoint);
-                return topPoint[0]-(d.text.length)*5;
+                return topPoint[0]-(d.text.length)*3.8;
             } else {
                 return null;
             }
@@ -441,6 +441,13 @@ export class Graph {
       
 
     create_svg_simulation(){
+
+        this.nodes.forEach(node => {
+            if(node.stuck){
+                node.fx = node.x;
+                node.fy = node.y;
+            }
+        })
 
         const w = this.svg.node().getBoundingClientRect().width;
         const h = this.svg.node().getBoundingClientRect().height;
@@ -731,7 +738,6 @@ export class Tree {
         .join('text')
         .text(function (d) { return "T";})
         .attr('x', (d) => {
-            console.log(d);
             if (d && d.polygon) {
                 const midPoint = d.polygon.reduce((zum, point) => zum+point[0], 0)/d.polygon.length
                 return midPoint;

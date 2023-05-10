@@ -21,6 +21,8 @@ function ConnectComponents() {
     const graph_container_c2 = useRef();
     const graph_container_c3 = useRef();
     const [isFocus, setIsFocus] = useState(true);
+    const [reset, set_reset] = useState(0);
+    const [gbp, set_gbp] = useState(1);
     const [components, setComponents] = useState([]);
     const [separator, setSeparator] = useState([]);
     const [page_ready, set_page_ready] = useState(false);
@@ -30,6 +32,8 @@ function ConnectComponents() {
     
     
     useEffect(() => {
+
+        set_container_size([W.bag.length-1,0,0]);
     
         let removed_nodes = [];
         let removed_links = [];
@@ -188,47 +192,19 @@ function ConnectComponents() {
         }
         copy_g2_state();
 
-        // 
-        // Add an event listener to the nodes to handle the click event
-        // g.svg_nodes.on("click", function(event,d) {
-
-        //     const node = d3.select(this);
-        //     const node_id = parseInt(node.attr("idx").toString());
-
-        //     if(!node.classed("X")){
-        //         // remove node from graph and save removed nodes+links in arrays here
-        //         const removed  = g2.remove_node(node_id);
-        //         removed_nodes.push(...removed.nodes);
-        //         removed_links.push(...removed.links);
-        //     }else{
-        //         console.log("test", removed_nodes, node_id);
-        //         // add nodes+links back into graph
-        //         // 1. find node in the array saving removed nodes
-        //         // 2. find links in the array saving removed links,
-        //         //    and make sure the node it's connected to is in the graph.
-        //         const nodes = split(removed_nodes, node => node.id === node_id);
-        //         const links = split(removed_links, link => {
-        //             return (link.source.id===node_id && !removed_nodes.some(node => node.id === link.target.id))
-        //             ||     (link.target.id===node_id && !removed_nodes.some(node => node.id === link.source.id))
-        //         });
-        //         removed_nodes = nodes.keep; //maybe use ref
-        //         removed_links = links.keep;
-        //         g2.add_links(links.remove);
-        //         g2.add_nodes(nodes.remove);
-        //     }
-        // });
-
         set_page_ready(true);
 
 
-    }, []);
+    }, [reset]);
 
     function mi(x) {
-        if(x === "G") graph_container.current.style.background = "#000000";
+        if(x === "G") graph_container.current.parentNode.classList.add('reftar');
     }
     function mo() {
-        graph_container.current.style.background = "";
+        graph_container.current.parentNode.classList.remove('reftar');
     }
+
+
     
   return (
     <>
@@ -237,25 +213,24 @@ function ConnectComponents() {
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Combining Components</h2>
         <p>A balanced separator that results in, at most,
-             three components is considered a balanced split.</p>
+             three components is considered a split of <InlineMath math="W"/>.</p>
 
         <p>Given a balanced separator, each component contains no 
             more than half of the vertices of <InlineMath math="W"/>. And 
             as such, it is always possible to reduce the number of components 
-            to at most three by combining some of them into a balanced split <InlineMath math="(C_1,C_2,C_3,X)"/>. This can be done by, for 
-            instance, always combining the two smallest components until just three remain, 
-            ultimately given us a balanced split.</p>
+            to at most three by combining some of them into a split <InlineMath math="(C_1,C_2,C_3,X)"/>. This can be done by, for 
+            instance, always combining the two smallest components until just three remain.</p>
         <hr/>
-        <h2>Exercises</h2>
+        <h2 style={{marginTop: "10px"}}>Exercises</h2>
         <p>In <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span>, we see a graph that has been separated into multiple components. <i>To begin the exercise click the button below to hide the graph.</i></p>
-        <button onClick={() => set_show_G(!show_G)}>{show_G ? "Hide Graph" : "Show Graph"}</button>
+        <button className={gbp===1 ? "":"hidden"} onClick={() => {set_show_G(!show_G); set_gbp(2)}}>{show_G ? "Hide Graph" : "Show Graph"}</button>
         
         <h4>Description</h4>
         <p>To the right, we have 3 windows, one for each final component 
             that are needed for a split. The first window is now filled 
             with all the initial separated components obtained from removing the 
             separator <InlineMath math="X"/> from <InlineMath math="G"/>. <br/>Since we 
-            require at most 3 final components for a balanced split, the task is to drag 
+            require at most 3 final components for a split, the task is to drag 
             the lesser component to the other two windows until all the vertices from <InlineMath math="W"/> 
             are balanced such that no combined component contains more than half of <InlineMath math="W"/>.</p>
         <h4>Tasks</h4>
@@ -274,7 +249,10 @@ function ConnectComponents() {
             <span><InlineMath math={container_size[2].toString() + "\\leq" + (W.bag.length/2).toString()}/></span>
             <ion-icon name={container_size[2]<=W.bag.length/2? "checkmark-circle" : "alert-circle-outline"} checkmark-circle></ion-icon>
         </div>
-        <p>Click the show graph button to see how the components are affected.</p>
+        <br></br>
+        <p style={{margin: 0}}>Click the show graph button to see how the components are affected.</p>
+        <button className={gbp!==1 ? "":"hidden"} onClick={() => set_show_G(!show_G)}>{show_G ? "Hide Graph" : "Show Graph"}</button>
+
         <br/>
         <div>
         <hr/>
@@ -306,6 +284,8 @@ function ConnectComponents() {
                 <div className={'svg_counter ' + ((container_size[0]<=W.bag.length/2) ? "valid" : "invalid")}>
                     <InlineMath math={container_size[0].toString() + "\\leq" + (W.bag.length/2).toString()}/>
                 </div>
+                <div className='svg_reset' onClick={()=>set_reset(reset+1)}><ion-icon name="refresh-outline"></ion-icon></div>
+
                 <svg ref={graph_container_c1} className="cy graph"></svg>                
             </div>
             <div className={'svg_container full mid interactive grab' + (show_G ? " blur" : "") + (isFocus ? " focus-svg":'')}>

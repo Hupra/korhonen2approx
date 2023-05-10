@@ -31,7 +31,7 @@ function App() {
   // adjust site to work on different resolutions
   useEffect(() => {
     const screen_height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-    const scale = screen_height / 1080;
+    const scale = screen_height / 970;
     if(scale<1) ALL.current.style.zoom = scale;
   }, [window_size]);
 
@@ -40,40 +40,38 @@ function App() {
         
         <div className={!fullNav ? ' location active' : 'location'}>
         <a href='' onClick={() => setFullNav(!fullNav)}><ion-icon name="reorder-four-outline"></ion-icon></a>
-          {/* <NavLink activeClassName='active' to="/flow">Flow</NavLink> */}
-          <NavLink exact activeClassName='active' to="/"><ion-icon name="home-outline"></ion-icon></NavLink>
-          <NavLink activeClassName='active' to="/treedecomposition"><ion-icon name="leaf-outline"></ion-icon></NavLink>
-          <NavLink activeClassName='active' to="/introduction">I</NavLink>
-          <NavLink activeClassName='active' to="/separators">S</NavLink>
-          <NavLink activeClassName='active' to="/balanced-separators">BS</NavLink>
-          <NavLink activeClassName='active' to="/connect-components">CC</NavLink>
-          <NavLink activeClassName='active' to="/splitting-tree2">S1</NavLink>
-          <NavLink activeClassName='active' to="/continuity">CI</NavLink>
-          <NavLink activeClassName='active' to="/homebag">HB</NavLink>
-          <NavLink activeClassName='active' to="/min-split">MS</NavLink>
-          <NavLink activeClassName='active' to="/pruning">P</NavLink>
-          <NavLink activeClassName='active' to="/nice-treedecomposition">NT</NavLink>
-          <NavLink activeClassName='active' to="/nicu">N</NavLink>
-          <NavLink activeClassName='active' to="/radu">RD</NavLink>
+          <NavLink activeclassname='active' to="/" exact="true"><ion-icon name="home-outline"></ion-icon></NavLink>
+          <NavLink activeclassname='active' to="/treedecomposition"><ion-icon name="leaf-outline"></ion-icon></NavLink>
+          <NavLink activeclassname='active' to="/introduction">I</NavLink>
+          <NavLink activeclassname='active' to="/separators">S</NavLink>
+          <NavLink activeclassname='active' to="/balanced-separators">BS</NavLink>
+          <NavLink activeclassname='active' to="/connect-components">CC</NavLink>
+          <NavLink activeclassname='active' to="/splitting-tree2">S1</NavLink>
+          <NavLink activeclassname='active' to="/continuity">CI</NavLink>
+          <NavLink activeclassname='active' to="/homebag">HB</NavLink>
+          <NavLink activeclassname='active' to="/min-split">MS</NavLink>
+          <NavLink activeclassname='active' to="/pruning">P</NavLink>
+          <NavLink activeclassname='active' to="/nice-treedecomposition">NT</NavLink>
+          <NavLink activeclassname='active' to="/nicu">N</NavLink>
+          <NavLink activeclassname='active' to="/radu">RD</NavLink>
     </div>
 
     <div className={fullNav ? ' location-full active' : 'location-full'}>
-          {/* <NavLink activeClassName='active' to="/flow">Flow</NavLink> */}
           <a onClick={() => setFullNav(!fullNav)}><ion-icon name="close-outline"></ion-icon></a>
-          <NavLink onClick={() => setFullNav(false)} exact activeClassName='active' to="/">Home</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/treedecomposition">Tree Decomposition</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/introduction">Introducton</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/separators">Separators</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/balanced-separators">Balanced Separatos</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/connect-components">Connected Components</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/splitting-tree2">Splitting T</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/continuity">Continuity Issue</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/homebag">Home Bag</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/min-split">Minimum Split</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/pruning">Pruning</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/nice-treedecomposition">Nice Tree Decomposition</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/nicu">Nicu</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeClassName='active' to="/radu">Radu Demo</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/" exact="true">Home</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/treedecomposition">Tree Decomposition</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/introduction">Introducton</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/separators">Separators</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/balanced-separators">Balanced Separatos</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/connect-components">Connected Components</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/splitting-tree2">Splitting T</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/continuity">Continuity Issue</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/homebag">Home Bag</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/min-split">Minimum Split</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/pruning">Pruning</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/nice-treedecomposition">Nice Tree Decomposition</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/nicu">Nicu</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/radu">Radu Demo</NavLink>
     </div>
         
         <div className={fullNav ? ' main active' : 'main'}>
