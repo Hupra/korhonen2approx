@@ -39,12 +39,23 @@ function MinSplit() {
     const [separator, setSeparator] = useState([]);
     const [tasks, set_tasks] = useState([false, false, false]);
     const [dX, set_dX] = useState(0);
+    const [reset, set_reset] = useState(0);
+
 
     const [page_state, set_page_state] = useState(1);
     const [state_W, set_state_W] = useState([]);
     const tab = useRef();
 
     function init_exercise(graph, tree, min_x, min_dx) {
+
+        //reset graphs
+        const tx = new Tree({edges: [], nodes: []}, d3.select(tree_container3.current));
+        tx.render();
+        const t2  = new Tree({edges: [], nodes: []}, d3.select(tree_container2.current));
+        t2.render();
+
+
+
         const W = tree.nodes.find(node => node.name === "W");
         set_state_W(W.bag);
 
@@ -197,7 +208,7 @@ function MinSplit() {
                 break;
           }
         setTimeout(() => {tab.current.style.left = (37*page_state-37).toString() + "px"}, 2);
-    }, [page_state]);
+    }, [page_state, reset]);
 
   return (
     <>
@@ -311,6 +322,8 @@ function MinSplit() {
                     <InlineMath math={"\\quad\\quad |X|="+separator.length}/>
                     <InlineMath math={"\\quad\\quad d(X)="+dX}/>
                 </div>
+            <div className='svg_reset' onClick={()=>set_reset(reset+1)}><ion-icon name="refresh-outline"></ion-icon></div>
+
             </div>
             <div className='vertical-split'>
                 <div className='svg_container'>

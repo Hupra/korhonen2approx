@@ -42,6 +42,8 @@ function HomeBag() {
     const [t,     set_t] = useState(0);
     const [tx,   set_tx] = useState(0);
     const [tux, set_tux] = useState(0);
+    const [reset, set_reset] = useState(0);
+
     
 
 
@@ -198,9 +200,7 @@ function HomeBag() {
         update_tx(tx);
         tx.svg_set_node_and_edge_if_name("xclude", ["X"]);
 
-        // tasks done
-        // tux.render();
-    }, [part]);
+    }, [part, reset]);
 
     function change_subpage(num){
         set_page_state(0);
@@ -528,6 +528,7 @@ The following are the home bags for the vertices of <InlineMath math="X"/> in <I
         <div className={part===2 ? 'content' : 'content hidden' }>
             <div className={'svg_container' + ((page_state%2===0 && page_state<=4) ? " focus-svg " : " ") + ((page_state%2===0 && page_state<=4) ? " interactive" : "")}>
                 <svg ref={tree_container} className="cy tree" width="100%" height="100%"></svg>
+                <div className='svg_reset' onClick={()=>{set_reset(reset+1); set_page_state(0)}}><ion-icon name="refresh-outline"></ion-icon></div>
                 <div className='svg_label'><InlineMath math="1."/> Tree Decomposition - <span className='reftar'><InlineMath math="T"/></span></div>
             </div>
             <div className={'svg_container' + ((page_state%2===1 && page_state<=5)? " focus-svg " : " ") + ((page_state%2===1 && page_state<=5) ? " interactive" : "")}>
