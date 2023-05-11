@@ -105,14 +105,16 @@ function SplittingT() {
         const input2_ref = useRef();
         const input3_ref = useRef();
         const button_ref = useRef();
-
+        
         useEffect(()=>{
             tprime.render();
             tprime.svg_hide_stuff(node_name.slice(0,i));
             set_ic1("");
             set_ic2("");
             set_ic3("");
-            if(input1_ref.current) input1_ref.current.focus();
+            if(input1_ref.current) {
+                setTimeout(() => input1_ref.current.focus(), 0);
+            }
         },[i])
         
         const check_input = (input, C) => {
