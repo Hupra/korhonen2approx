@@ -38,7 +38,7 @@ function Home() {
       <h3>Welcome to an interactive learning experience for<br/> Korhonen's 2-approximation algorithm for treewidth!</h3>
       <Link to="/treedecomposition" className='button focus'>Start<ion-icon name="arrow-forward-outline"></ion-icon></Link>
       </div>
-      <p className=''></p>
+      <p className='credit'>Image generated using Midjourney AI</p>
     </div>
     </div>
     </AnimatedPage>

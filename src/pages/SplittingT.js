@@ -101,6 +101,10 @@ function SplittingT() {
         const [ic1, set_ic1] = useState('');
         const [ic2, set_ic2] = useState('');
         const [ic3, set_ic3] = useState('');
+        const input1_ref = useRef();
+        const input2_ref = useRef();
+        const input3_ref = useRef();
+        const button_ref = useRef();
 
         useEffect(()=>{
             tprime.render();
@@ -108,6 +112,7 @@ function SplittingT() {
             set_ic1("");
             set_ic2("");
             set_ic3("");
+            if(input1_ref.current) input1_ref.current.focus();
         },[i])
         
         const check_input = (input, C) => {
@@ -115,11 +120,13 @@ function SplittingT() {
             if (input.slice(-1) === ",") input = input.slice(0,-1);
             let input_answer = input.split(",").map(x => parseInt(x));
             let correct = cap(cup(C, separator), bag);
-            console.log(input_answer, correct);
             return list_is_same(input_answer, correct);
         }
 
         const beauty = (ci, C) => {
+            if(ci===0 && input2_ref.current) input2_ref.current.focus();
+            if(ci===1 && input3_ref.current) input3_ref.current.focus();
+            if(ci===2 && button_ref.current) button_ref.current.focus();
             let correct = cap(cup(C, separator), bag);
             tprime.svg_show_stuff(B, ci+1);
             return (
@@ -165,7 +172,7 @@ function SplittingT() {
                         <span className='X'><InlineMath math="X"/></span>
                         <InlineMath math={")=\\{"}/>
                         {!check_input(ic1, components[0]) ?
-                        <input value={ic1} onChange={e => handleInputChange(e, set_ic1)}></input>
+                        <input ref={input1_ref} value={ic1} onChange={e => handleInputChange(e, set_ic1)}></input>
                         :
                         <span>{beauty(0, components[0])}</span>}
                         <InlineMath math={"\\}"}/>
@@ -187,7 +194,7 @@ function SplittingT() {
                         <InlineMath math={")=\\{"}/>
 
                         {!check_input(ic2, components[1]) ?
-                        <input value={ic2} onChange={e => handleInputChange(e, set_ic2)}></input>
+                        <input ref={input2_ref} value={ic2} onChange={e => handleInputChange(e, set_ic2)}></input>
                         :
                         <span>{beauty(1, components[1])}</span>}
                         <InlineMath math={"\\}"}/>
@@ -208,7 +215,7 @@ function SplittingT() {
                         <span className='X'><InlineMath math="X"/></span>
                         <InlineMath math={")=\\{"}/>
                         {!check_input(ic3, components[2]) ?
-                        <input value={ic3} onChange={e => handleInputChange(e, set_ic3)}></input>
+                        <input ref={input3_ref} value={ic3} onChange={e => handleInputChange(e, set_ic3)}></input>
                         :
                         <span>{beauty(2, components[2])}</span>}
                         <InlineMath math={"\\}"}/>
@@ -222,8 +229,8 @@ function SplittingT() {
                     check_input(ic1, components[0]) && 
                     check_input(ic2, components[1]) && 
                     check_input(ic3, components[2]) 
-                    ? <button onClick={() => set_page_state(page_state+1)}>Next Exercise</button>
-                    : <button onClick={() => set_page_state(page_state+1)} className='disable'>Skip Exercise</button>
+                    ? <button ref={button_ref} onClick={() => set_page_state(page_state+1)}>Next Exercise</button>
+                    : <button ref={button_ref} onClick={() => set_page_state(page_state+1)} className='disable'>Skip Exercise</button>
                 }
 
             </div>)
