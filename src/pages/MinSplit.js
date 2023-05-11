@@ -219,7 +219,7 @@ function MinSplit() {
         <p>As seen on the previous page, not all splits produce tree decompositions of equal quality.</p>
         <p>The algorithm evaluates the quality of a split by 
             prioritizing two criteria: first, it minimizes the size of the balanced separator set <InlineMath math="X"/>; and 
-            second, it minimizes the sum of distances, <InlineMath math="d(X)"/>, from the homebag of each vertex in <InlineMath math="X"/> to the 
+            second, it minimizes the sum of distances, <InlineMath math="d(X)"/>, from the home bag of each vertex in <InlineMath math="X"/> to the 
             bag <InlineMath math="W"/> in <InlineMath math="T"/>.
         </p>
         <p>A split found this way is considered to be a minimum split.</p>
