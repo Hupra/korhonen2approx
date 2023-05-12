@@ -187,7 +187,7 @@ export function valid_split(cccx, w, h) {
 export function make_nice(input) {
     let tree = JSON.parse(JSON.stringify(input));
 
-    let rootNode = {id: 0, bag: [], name: 'r'};
+    let rootNode = {id: 0, bag: [], name: 'r', x: 45, y: 85, stuck: true};
     tree.nodes.push(rootNode);
     tree.edges.push({ "source": 0, "target": tree.nodes[0].id})
 
@@ -241,6 +241,7 @@ export function make_nice(input) {
         if (children.length===0 && node.bag.length>0){
 
             let cur = node;
+            console.log(cur)
             for (let i = 1; i < node.bag.length+1; i++) { // +1 to length gives the empty bags that we need for the DP
                 const next = {
                     id: ++nextNodeId,
@@ -641,8 +642,11 @@ export function try_h(U, target_bag, h, g, nice) {
             
             // check |(Ci cap W) cup X| < W
             // check |(Ci cap W)| <= W/2
-            if((Math.max(c1_size, c2_size, c3_size)+X_size < stop) &&
-                Math.max(c1_size, c2_size, c3_size) <= stop/2) {
+            // check |(Ci cap X)| <= h
+            if( (Math.max(c1_size, c2_size, c3_size)+h < stop) &&
+                (Math.max(c1_size, c2_size, c3_size) <= stop/2) &&
+                (X_size <= h) ){
+
                 f(i,h,combine(c1,c2,c3,X,stop));
             }
             // f(i,h,combine(c1,c2,c3,X,stop));

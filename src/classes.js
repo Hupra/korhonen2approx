@@ -154,7 +154,7 @@ export class Graph {
         this.link_width  = 5;
         this.link_color  = "#ccc";
         this.node_radius = 16;
-        this.node_color  = "honeydew";
+        this.node_color  = "white";
         this.node_class = "";
         this.w_ratio = 0;
         this.h_ratio = 0;
@@ -520,6 +520,7 @@ export class Graph {
     }
 
     remove_node(id){
+        this.simulation.stop();
 
         const nodes = split(this.nodes, node => node.id === id);
         const links = split(this.links, link => link.source.id===id || link.target.id===id);
@@ -531,10 +532,12 @@ export class Graph {
     }
 
     add_nodes(nodes){
+        this.simulation.stop();
         this.nodes = this.nodes.concat(nodes);
     }
 
-    add_links(links){ 
+    add_links(links){
+        this.simulation.stop();
         this.links = this.links.concat(links);
     }
 
@@ -970,10 +973,10 @@ create_svg_node_labels(text_function = node => node.id) {
                 // node.fx = w/2;
                 node.fy = (h/node.y_div)+node.y_offset;
             }
-            else if(node.name === "W" && (!node.sup || node.sup === "X")){
-                node.fx = w/2;
-                node.fy = (h/2)-60;
-            }
+            // else if(node.name === "W" && (!node.sup || node.sup === "X")){
+            //     node.fx = w/2;
+            //     node.fy = (h/2)-60;
+            // } 
             // else if(node.name === "X" && (!node.sup || node.sup === "X")){
             //     node.fx = w/2;
             //     node.fy = (h/2)-10;

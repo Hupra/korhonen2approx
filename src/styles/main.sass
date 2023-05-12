@@ -335,15 +335,29 @@ line.xclude
             position: absolute
             border: $border-settings
             border-radius: 7px
-            width: 80%
-            left: 10%
-            height: 80%
-            top: 10%
+            width: 94%
+            left: 3%
+            height: 94%
+            top: 3%
             background-color: #252525
-            z-index: 2
+            z-index: 3
             box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
             // transition: filter 0.2s ease-in-out
             transition: 0.2s ease-in-out
+
+        .overlay
+            position: absolute
+            border-radius: 7px
+            left: 4px
+            right: 4px
+            top: 4px
+            bottom: 4px
+            background-color: rgba(0,0,0,0.5)
+            z-index: 2
+            transition: background 0.2s ease-in-out
+            &.gone
+                background-color: rgba(0,0,0,0)
+                visibility: hidden !important
 
 .small-svg
     border: $border-settings
@@ -682,6 +696,7 @@ circle.node_in_w
 
 .node_w
     font-size: 12px
+    // fill: pink
 .items
     color: white
     border-radius: 5px
