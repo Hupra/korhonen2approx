@@ -8,11 +8,11 @@ import { HashRouter as Router, useLocation } from 'react-router-dom';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <Router  basename="/korhonen2approx/">
-  <React.StrictMode>
+  //<React.StrictMode>
   <Router>
     <App />
   </Router>
-  </React.StrictMode>
+  //</React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -102,4 +102,108 @@ export function T_2_TD(tree, C, X){
   return Tp;
 }
 
+export function int_to_alphabet(i, alphabet="ABZDEFGHIJKLMNOPQRSTUV") {
+  if(i<=0) return ""
+  if(i===1) return "W"
+  const A = alphabet.split('');
+  const AL = A.length
+  function f(i)
+  {
+    if(i<AL) return alphabet[i%AL];
+    return f(Math.floor(i/AL)-1) + alphabet[i%AL]
+  }
+  return f(i-2);
+}
+
+
+export function svg_tree_to_file(t){
+
+  let counter = 1;
+
+  // convert edges
+  let edges = t.links.map(edge => {
+      return {
+          old_source: edge.source.id,
+          old_target: edge.target.id
+      }
+  });
+
+  // convert nodes
+  let nodes = t.nodes.map(node => {
+      return {
+          id: node.id,
+          bag: [...node.bag],
+      }
+  });
+
+  nodes.sort((a,b) => b.bag.length - a.bag.length);
+
+  nodes = nodes.map(node => {
+      for (let i = 0; i < edges.length; i++)
+      {
+          if (edges[i].old_source === node.id) edges[i].source = counter;
+          if (edges[i].old_target === node.id) edges[i].target = counter;
+      }
+      return {
+          name: int_to_alphabet(counter),
+          id: counter++,
+          bag: [...node.bag],
+      }
+  });
+
+  edges = edges.map(edge => {return {source: edge.source, target: edge.target}})
+
+
+  return {nodes, edges};
+}
+
+export function svg_graph_to_file(g){
+
+  // convert edges
+  let edges = g.links.map(edge => {
+      return {
+          source: edge.source.id,
+          target: edge.target.id
+      }
+  });
+
+  // convert nodes
+  let nodes = g.nodes.map(node => {
+      return {id: node.id};
+  });
+
+  return {nodes, edges};
+}
+
+export function set_graph_direction(graph) {
+  const nodes = graph.nodes;
+  let edges = graph.edges;
+  let new_edges = [];
+
+  let visited = new Array(nodes.reduce((max, node) => Math.max(max, node.id), 0)+1).fill(false);
+  let used = new Array(edges.length).fill(false);
+
+  function dfs(parent)
+  {
+      visited[parent] = true;
+
+      for (let i = 0; i < edges.length; i++)
+      {
+          const edge = edges[i];
+          if(!used[i] && (edge.source === parent||edge.target === parent))
+          {
+              used[i] = true;
+              // add new correct edge
+              const child = edge.source===parent ? edge.target : edge.source;
+              new_edges.push({source: parent, target: child});
+              // visit child
+              if(!visited[child]) dfs(child);
+          }
+      }
+  }
+  dfs(nodes[0].id);
+
+  return {nodes, edges: new_edges}
+}
+
 
