@@ -266,7 +266,7 @@ function SplittingT() {
         },[i])
         return<>
             <h2>Attention</h2>
-            <p>An improved tree decomposition <span className='ref' onMouseOver={() => mi("T'")} onMouseOut={mo}><InlineMath math="T'"/></span> has been made, but there can still exists a problem with it, which will be explained in the next section.</p>
+            <p>An improved tree decomposition <span className='ref' onMouseOver={() => mi("T'")} onMouseOut={mo}><InlineMath math="T'"/></span> has been made, but there can still exist a problem with it, which will be explained in the next section.</p>
         </>
     }
     
@@ -303,10 +303,11 @@ function SplittingT() {
             { page_ready && page_state === 1 && <Puzzle i={page_state}/>}
             { page_ready && page_state === 2 && <Puzzle i={page_state}/>}
             { page_ready && page_state === 3 && <PuzzleSeparator i={page_state}/>}
-            { page_ready && page_state === 4 && <PuzzleDone i={page_state}/>}
+            
         
         </div>
         <br/><hr/>
+        { page_ready && page_state === 4 && <PuzzleDone i={page_state}/>}
 
         {(page_state > 3) ?
         <><Link to="/continuity" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Continuity Issue</i></>

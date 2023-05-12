@@ -58,7 +58,10 @@ function Introduction() {
     <div className='sidebar'>
       <div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
       <h2>Introduction</h2>
-      <p>The algorithm takes a graph <InlineMath math="G"/>, integer <InlineMath math="k"/>, and a tree decomposition <InlineMath math="T"/> of <InlineMath math="G"/> with width at most <InlineMath math="4k+3"/>, then iteratively attempts to construct a new tree decomposition with a smaller width. 
+      <p>The algorithm takes a graph <InlineMath math="G"/>, integer <InlineMath math="k"/>, and a 
+      tree decomposition <InlineMath math="T"/> of <InlineMath math="G"/> with width at most <InlineMath math="4k+3"/>, 
+      then iteratively attempts to construct a new tree decomposition with a smaller width by splitting the 
+      largest bag <InlineMath math="W"/>. 
       The process continues until a tree decomposition with width <InlineMath math="\leq 2k + 1"/> is found
        or it returns that <InlineMath math="tw(G) > k"/>.</p>
       <hr/>
@@ -75,17 +78,18 @@ function Introduction() {
       ))}
       </code><br/>
       <p>
-        The primary objective of the algorithm is to iteratively 
-        attempt to minimize the size of one of the largest bags 
-        in <InlineMath math="T"/>. To accomplish this, the algorithm identifies a 
+        The primary objective of the algorithm is to iteratively attempt to reduce the size of 
+        the largest bag <InlineMath math="W"/> in <InlineMath math="T"/>. To accomplish this, the algorithm identifies a 
         separator in the graph that effectively separates the 
-        vertices of the largest bag into two or more distinct groups. 
+        vertices of <InlineMath math="W"/> into two or more distinct groups. 
         Subsequently, a new tree decomposition is created for each vertex set 
-        and combined to form a new and improved tree decomposition.
+        and combined to form a new and improved tree decomposition <InlineMath math="T'"/>.
         </p>
         <hr/>
-        <p>The subsequent pages provide a clearer and more comprehensive 
-          explanation of each concept, beginning with an introduction to separators.</p>
+        <p>
+          <i>
+            The subsequent pages provide a clearer and more comprehensive 
+          explanation of each concept, beginning with an introduction to separators.</i></p>
       <Link to="/separators" className='button'>Start<ion-icon name="arrow-forward-outline"></ion-icon></Link>
       <br/><i>Next: Separators</i>
 

@@ -34,7 +34,7 @@ function Home() {
     <div className='content frontpage'>
     <div className='intro-img' ref={image}>
       <div className='intro-content'>
-      <h1>Treewidth 2 Approximation</h1>
+      <h1>Treewidth 2-Approximation</h1>
       <h3>Welcome to an interactive learning experience for<br/> Korhonen's 2-approximation algorithm for treewidth!</h3>
       <Link to="/treedecomposition" className='button focus'>Start<ion-icon name="arrow-forward-outline"></ion-icon></Link>
       </div>

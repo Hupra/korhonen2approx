@@ -212,7 +212,7 @@ function ConnectComponents() {
 
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Combining Components</h2>
-        <p>A balanced separator that results in, at most,
+        <p>A balanced separator of the largest bag <InlineMath math="W"/> of <InlineMath math="T"/> that results in, at most,
              three components is considered a split of <InlineMath math="W"/>.</p>
 
         <p>Given a balanced separator, each component contains no 
@@ -226,12 +226,12 @@ function ConnectComponents() {
         <button className={gbp===1 ? "":"hidden"} onClick={() => {set_show_G(!show_G); set_gbp(2)}}>{show_G ? "Hide Graph" : "Show Graph"}</button>
         
         <h4>Description</h4>
-        <p>To the right, we have 3 windows, one for each final component 
+        <p>We have 3 windows, one for each final component 
             that are needed for a split. The first window is now filled 
             with all the initial separated components obtained from removing the 
             separator <InlineMath math="X"/> from <InlineMath math="G"/>. <br/>Since we 
-            require at most 3 final components for a split, the task is to drag 
-            the lesser component to the other two windows until all the vertices from <InlineMath math="W"/> 
+            require at most 3 final components for a split, the task is to drag some of
+            the lesser components to the other two windows until all the vertices from <InlineMath math="W"/> 
             are balanced such that no combined component contains more than half of <InlineMath math="W"/>.</p>
         <h4>Tasks</h4>
         <div className='task'>
@@ -256,13 +256,20 @@ function ConnectComponents() {
         <br/>
         <div>
         <hr/>
+        <p>
+            <i>
+            The number of components can now be reduced to two or three for a split of <InlineMath math={"W"}/>.
+            The subsequent page will explore how this split is utilized to decrease the width of 
+            the tree decomposition, <InlineMath math={"T"} />.
+            </i>
+        </p>
         {(
             container_size[0]<=W.bag.length/2 && 
             container_size[1]<=W.bag.length/2 && 
             container_size[2]<=W.bag.length/2) ?
-        <><Link to="/splitting-t" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting Tree Decomposition</i></>
+        <><Link to="/splitting-t" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting a Tree Decomposition</i></>
         :
-        <><Link to="/splitting-t" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting Tree Decomposition</i></>
+        <><Link to="/splitting-t" className='button disable'>Skip<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Splitting a Tree Decomposition</i></>
         }
 
         </div>  

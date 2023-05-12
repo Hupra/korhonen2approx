@@ -274,6 +274,14 @@ function TreeDecomposition() {
         <p><i>We briefly explain tree decomposition and treewidth, 
             as these concepts are essential for the algorithm.</i></p>
             <hr/>
+            <h4>Note</h4>
+            <p>
+                <i>
+                Text that looks like 
+                this: <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> is hoverable
+                and will reference something in a specific window. Try to hover the mouse over it to highlight what it references.
+                </i>
+            </p>
             <ul className="mytabs auto" ref={tabsref}>
                 <div className={page_state===1?"tab active":"tab"} onClick={() => set_page_state(1)}>Explanation</div>
                 <div className={page_state===2?"tab active":"tab"} onClick={() => set_page_state(2)}>Exercises</div>
@@ -300,7 +308,10 @@ function TreeDecomposition() {
         </div>
 
         
-        An example of a such graph with a corresponding tree decomposition can be seen on the right side.
+        An example of such a 
+        graph <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> with a corresponding 
+        tree decomposition <span className='ref' onMouseOver={() => mi("T")} onMouseOut={() => mo("T")}><InlineMath math="T"/></span> can 
+        be seen on the right side.
         <h3>Tree width</h3>
         <p>The width of a tree decomposition is defined as <InlineMath math="|largest"/> <InlineMath math="bag| − 1"/>, and the treewidth of a graph <InlineMath math="tw(G)"/> is the minimum width among all its valid tree decompositions.</p>
         <button className='button' onClick={() => {set_page_state(2)}}>Exercises<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Go to exercises</i>
@@ -308,7 +319,9 @@ function TreeDecomposition() {
         </>}
 
         {page_state === 2 && <>
+                    
             <h2 style={{marginTop: 0}}>Exercises</h2>
+            
             <div className='exercise'>
                 <i>
             <p>Play around with the graph <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> to the right and see 
@@ -329,7 +342,15 @@ function TreeDecomposition() {
                         releasing the button.
                     </li>
                 </ol>
-                
+            <i>
+                <p>
+                    If at any time you want to start over, you can 
+                    reset <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath 
+                    math="G"/></span> and <span className='ref' onMouseOver={() => mi("T")} 
+                    onMouseOut={() => mo("T")}><InlineMath math="T"/></span> by clicking the "Reset" button in the bottom left 
+                    of <span className='ref' onMouseOver={() => mi("G")} onMouseOut={() => mo("G")}><InlineMath math="G"/></span> .
+                </p>
+            </i>
             <h4>Description</h4>
             <p>Add at least 3 new vertices and edges to the graph.</p>
             <h4>Tasks</h4>
@@ -344,6 +365,11 @@ function TreeDecomposition() {
             </div>
 
             <br/><hr/>
+            <p>
+                <i>
+                Now that you've gained an understanding of tree decompositions, we will proceed to provide a general introduction to the algorithm.
+                </i>
+            </p>
             {(tasks[0]>=3 && tasks[1]>=3) ?
             <><Link to="/introduction" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Introduction to the algorithm</i></>
             :

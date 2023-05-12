@@ -507,6 +507,12 @@ are highlighted in white:</p>
             {/* <button onClick={() => set_page_state(page_state+1)}>dev cheat</button> */}
             </div>
             <hr/>
+            <p>
+                <i>
+                The continuity issue has been resolved. 
+                The next page will explain how to find an improved split of <InlineMath math="W" /> called a minimum split.
+                </i>
+            </p>
             {page_state>=7 ?
             <><Link to="/min-split" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Minimum Split</i></>
             :

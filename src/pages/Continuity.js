@@ -67,8 +67,8 @@ function Continuity() {
                 <button onClick={() => button_handler(10)} className={selected===10 ? "error disable" : "disable"}>10 <ion-icon name="close-outline" /></button>
             </div>
             
-            <p style={{marginTop: "13px"}}>After clicking all the buttons, it should become evident that bags in <InlineMath math="T'"/> containing vertices 9 or 10 are not connected, thus violating rule 3 for tree decompositions. We will refer to this as the continuity issue, and the following pages will explore a method to resolve it, beginning with the introduction of home bags.</p>
             <hr/>
+            <p style={{marginTop: "13px"}}>After clicking all the buttons, it should become evident that bags in <InlineMath math="T'"/> containing vertices 9 or 10 are not connected, thus violating rule 3 for tree decompositions. We will refer to this as the continuity issue, and the following pages will explore a method to resolve it, beginning with the introduction of home bags.</p>
         <Link to="/homebag" className='button'>Continue <ion-icon name="arrow-forward-outline"></ion-icon></Link>
         <br/><i>Next: Home Bag</i>
         </SB></div></div>

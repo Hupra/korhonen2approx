@@ -302,6 +302,13 @@ function MinSplit() {
         
         {page_state === 3 && <>
             <br/><hr/>
+            <p>
+                <i>
+                While the minimum split of <InlineMath math="W" /> has improved <InlineMath math="T'"/>, additional 
+                improvements are still possible. One such issue is the creation of redundant bags, 
+                which the following section will solve.
+                </i>
+            </p>
             {(tasks[0] && tasks[1] && tasks[2]) ?
             <><Link to="/pruning" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Pruning Operation</i></>
             :

@@ -428,6 +428,9 @@ function Separators() {
         {page_state === 3 ? <>
             <br/>
         <hr/>
+        <p>
+        The following page will introduce balanced separators, which have constraints that make them important for the algorithm.
+        </p>
         {components.length>=4 ?
         <><Link to="/balanced-separators" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Balanced Separators</i></>
         :

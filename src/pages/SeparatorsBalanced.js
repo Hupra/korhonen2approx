@@ -424,6 +424,12 @@ function SeparatorsBalanced() {
 {
     page_state===3 ? <>
         <br/><hr/>
+        <p>
+            <i>
+            Now that you know how to find a balanced separator, 
+            the next page will teach you to combine the resulting components to create a split of W.
+            </i>
+        </p>
         {components && components.reduce((acc, x)=> Math.max(acc, x.filter(y => state_W.includes(y)).length), 0)<=((state_W.length)/2) ?
         <><Link to="/connect-components" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Combining Components</i></>
         :
