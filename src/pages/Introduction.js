@@ -51,6 +51,18 @@ function Introduction() {
 
     ];
 
+    function mi(x) {
+      if(x === "T") {
+        tree_container1.current.parentNode.classList.add('reftar');
+      }
+      if(x === "T'") {
+        tree_container2.current.parentNode.classList.add('reftar');
+      }
+    }
+    function mo() {
+      tree_container1.current.parentNode.classList.remove('reftar');
+      tree_container2.current.parentNode.classList.remove('reftar');
+    }
   return (
     <>
     <AnimatedPage>
@@ -84,6 +96,11 @@ function Introduction() {
         vertices of <InlineMath math="W"/> into two or more distinct groups. 
         Subsequently, a new tree decomposition is created for each vertex set 
         and combined to form a new and improved tree decomposition <InlineMath math="T'"/>.
+        </p>
+        <p>
+          An example of how a tree decomposition would look before and after an iteration of the algorithm can be seen 
+          in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> and <span className='ref' 
+          onMouseOver={() => mi("T'")} onMouseOut={mo}><InlineMath math="T'"/></span>.
         </p>
         <hr/>
         <p>
