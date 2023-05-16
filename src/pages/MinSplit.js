@@ -210,17 +210,39 @@ function MinSplit() {
         setTimeout(() => {tab.current.style.left = (37*page_state-37).toString() + "px"}, 2);
     }, [page_state, reset]);
 
+    function mi(x) {
+        if(x === "G") {
+            graph_container.current.parentNode.classList.add('reftar');
+        }
+        if(x === "T") {
+            tree_container.current.parentNode.classList.add('reftar');
+        }
+    }
+    function mo() {
+        graph_container.current.parentNode.classList.remove('reftar');
+        tree_container.current.parentNode.classList.remove('reftar');
+    }
   return (
     <>
     <AnimatedPage>
 
     <div className='sidebar'><div className='sidebar_bubble'><SB style={{ height: '100vh', width: '100vw' }}>
         <h2>Minimum Split</h2>
-        <p>As seen on the previous page, not all splits produce tree decompositions of equal quality.</p>
-        <p>The algorithm evaluates the quality of a split by 
-            prioritizing two criteria: first, it minimizes the size of the balanced separator set <InlineMath math="X"/>; and 
-            second, it minimizes the sum of distances, <InlineMath math="d(X)"/>, from the home bag of each vertex in <InlineMath math="X"/> to the 
-            bag <InlineMath math="W"/> in <InlineMath math="T"/>.
+        <p>As seen on the previous page, not all splits of <InlineMath math="W"/> produce tree decompositions of equal quality. 
+            Consequently, the algorithm requires a way to evaluate the quality of these splits. 
+            This is achieved by prioritizing the two following criteria when selecting a split of <InlineMath math="W"/>:
+            <ol>
+                <li>
+                First, it prioritizes balanced separators <InlineMath math="X"/> of minimum size.
+                </li>
+                <li>
+                Among the splits with minimum-sized balanced separators, the algorithm prioritizes splits with minimum 
+                distance <InlineMath math="d(X)"/>. This distance is measured by summing the distances for every vertex 
+                in <InlineMath math="X"/> from the vertex's home bag to the 
+                bag <InlineMath math="W"/> in <InlineMath math="T"/>.
+                </li>
+            </ol>
+            
         </p>
         <p>A split found this way is considered to be a minimum split.</p>
         <hr/>
@@ -233,9 +255,11 @@ function MinSplit() {
             </ul>
             <div className='exercise'>
                 <p><i>A number is placed at the bottom right 
-                    of each vertex, indicating the distance 
-                    from its home bag to <InlineMath math="W"/> in <InlineMath math="T"/>.
-                    We want to minimize the summed distance of <InlineMath math="X"/> in task 3.</i></p>
+                    of each vertex 
+                    in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={mo}><InlineMath math="G"/></span>, 
+                    indicating the distance from its home bag to <InlineMath math="W"/> 
+                    in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>.
+                    We want to minimize the summed distances of <InlineMath math="X"/> in task 3.</i></p>
                 <h4>Description</h4>
                 <p>Find a balanced separator that gives a minimum split.</p>
                 <h4>Tasks</h4>
