@@ -1,0 +1,31 @@
+{
+    "nodes": [
+        { "id": 1, "bag": [11,14,15,16,17], "name": "W"},
+        { "id": 2, "bag": [11,16], "name": "L"},
+        { "id": 3, "bag": [11,12,13,16], "name": "F"},
+        { "id": 4, "bag": [15,16,17], "name": "H"},
+        { "id": 5, "bag": [15,16,17,18,19], "name": "A"},
+        { "id": 6, "bag": [3,9,10,11,17], "name": "Z"},
+        { "id": 7, "bag": [3,4,6,9], "name": "D"},
+        { "id": 8, "bag": [4,6,9], "name": "I"},
+        { "id": 9, "bag": [4,6,7,8,9], "name": "B"},
+        { "id": 10, "bag": [3,4], "name": "K"},
+        { "id": 11, "bag": [1,2,3,4], "name": "E"},
+        { "id": 12, "bag": [4,6], "name": "J"},
+        { "id": 13, "bag": [4,5,6], "name": "G"}
+    ],
+    "edges": [
+        { "source": 1, "target": 2},
+        { "source": 2, "target": 3},
+        { "source": 1, "target": 4},
+        { "source": 4, "target": 5},
+        { "source": 1, "target": 6},
+        { "source": 6, "target": 7},
+        { "source": 7, "target": 8},
+        { "source": 8, "target": 9},
+        { "source": 7, "target": 10},
+        { "source": 10, "target": 11},
+        { "source": 7, "target": 12},
+        { "source": 12, "target": 13}
+    ]
+}

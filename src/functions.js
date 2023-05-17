@@ -59,6 +59,18 @@ export function split(list, remove) {
   }, { keep: [], remove: []});
 }
 
+
+export function split2(list, f) {
+  return list.reduce((acc, x) => {
+      if (f(x)){
+          acc.T.push(x);
+      } else {
+          acc.F.push(x);
+      }
+      return acc;
+  }, { T: [], F: []});
+}
+
 export function cap(a,b){
   return a.filter(x => b.includes(x));
 }
@@ -73,16 +85,22 @@ export function list_is_same(a,b){
   return (JSON.stringify(x) === JSON.stringify(y))
 }
 
-export function T_2_TD(tree, C, X){
+export function T_2_TD(tree, C, X, max_id=false){
+
+  console.log(tree);
+
+  if(!max_id) max_id = tree.nodes.length;
+
   const Tp = {
     "nodes" : [{ "id": 0, "bag": X, "name": "X"}],
     "edges" : []
   };
   for (let i = 0; i < C.length; i++) {
+    if(C[i].length === 0) continue; // skip component if empty
     for (let j = 0; j < tree.nodes.length; j++) {
       const tree_node = {...tree.nodes[j]};
       tree_node.sup = (i+1).toString();
-      tree_node.id = tree_node.id + (i*tree.nodes.length);
+      tree_node.id = tree_node.id + (i*max_id);
       tree_node.group = i+1;
       const Ci_union_X = Array.from(new Set([...C[i], ...X]));
       const CiX_intersect_bag = Ci_union_X.filter(x => tree_node.bag.includes(x));
@@ -94,18 +112,18 @@ export function T_2_TD(tree, C, X){
     }
     for (let j = 0; j < tree.edges.length; j++) {
       const tree_edge = {...tree.edges[j]};
-      tree_edge.source = tree_edge.source + (i*tree.nodes.length);
-      tree_edge.target = tree_edge.target + (i*tree.nodes.length);
+      tree_edge.source = tree_edge.source + (i*max_id);
+      tree_edge.target = tree_edge.target + (i*max_id);
       Tp.edges.push(tree_edge);
     }
   }
   return Tp;
 }
 
-export function int_to_alphabet(i, alphabet="ABZDEFGHIJKLMNOPQRSTUV") {
+export function int_to_alphabet(i, alphabet="ABZDEFGHIJKLMNOPQRSUV") {
   if(i<=0) return ""
   if(i===1) return "W"
-  const A = alphabet.split('');
+  let A = alphabet.split('');
   const AL = A.length
   function f(i)
   {
@@ -114,6 +132,7 @@ export function int_to_alphabet(i, alphabet="ABZDEFGHIJKLMNOPQRSTUV") {
   }
   return f(i-2);
 }
+
 
 
 export function svg_tree_to_file(t){

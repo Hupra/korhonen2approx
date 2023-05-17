@@ -396,7 +396,8 @@ export function helper_structures(g, nice) {
     let tn = t.nodes.reduce((pre, cur) => Math.max(pre, cur.id), 0)+1;
     let find_bag = Array.from({ length: tn }, () => []);
     for (const node of t.nodes) {
-        find_bag[node.id] = node.bag;
+        find_bag[node.id] = [...node.bag];
+        find_bag[node.id].sort();
     }
 
     // find children
@@ -690,6 +691,7 @@ export function find_res(U, target_bag, h, g, nice, cccx) {
         // current parti
         let [Bi_c1, Bi_c2, Bi_c3, Bi_X] = extract(cccx);
 
+        
         // save this x in X
         let this_X = idx_2_value(decode_set(Bi_X), Bi);
         let this_C1 = idx_2_value(decode_set(Bi_c1), Bi);
@@ -699,6 +701,9 @@ export function find_res(U, target_bag, h, g, nice, cccx) {
         for (const x of this_C1) r_C1.add(x);
         for (const x of this_C2) r_C2.add(x);
         for (const x of this_C3) r_C3.add(x);
+        
+        // console.log(this_X, this_C1, this_C2, this_C3);
+
 
         if (children.length === 1) {
 
@@ -730,6 +735,9 @@ export function find_res(U, target_bag, h, g, nice, cccx) {
                 // forget
                 let v = find_bag_diff(Bj,Bi); // big,small
 
+
+                
+                
                 // next part
                 let Bj_c1 = add_ith_bit_f(Bi_c1, v);
                 let Bj_c2 = add_ith_bit_f(Bi_c2, v);
@@ -740,11 +748,49 @@ export function find_res(U, target_bag, h, g, nice, cccx) {
                 let Bj_c2_v = add_ith_bit_t(Bi_c2, v);
                 let Bj_c3_v = add_ith_bit_t(Bi_c3, v);
                 let Bj_X_v  = add_ith_bit_t(Bi_X,  v);
-
+                
                 let cvccx = combine(Bj_c1_v, Bj_c2,   Bj_c3,   Bj_X);
                 let ccvcx = combine(Bj_c1,   Bj_c2_v, Bj_c3,   Bj_X);
                 let cccvx = combine(Bj_c1,   Bj_c2,   Bj_c3_v, Bj_X);
                 let cccxv = combine(Bj_c1,   Bj_c2,   Bj_c3,   Bj_X_v);
+              
+                
+
+
+                // if(i === 21){
+                    // console.log("h", h)
+                    // console.log(i);
+                    // console.log("v", v);
+                    // console.log(Bj,Bi);
+                    
+                    
+                    // goooood help
+                    // console.log(i)
+                    // print_state(cccx, Bi);
+                    // console.log(Bi, Bj);
+                    // console.log("next options:::")
+                    // print_state(cvccx, Bj);
+                    // print_state(ccvcx, Bj);
+                    // print_state(cccvx, Bj);
+                    // print_state(cccxv, Bj);
+                    // console.log("-----------------")
+
+
+
+                    // console.log(Bi_c1, Bj_c1);
+                    // console.log(Bi_c2, Bj_c2);
+                    // console.log(Bi_c3, Bj_c3);
+                    // console.log(Bi_X, Bj_X);
+                    // decode()
+                    // let s1 = decode_set(cvccx);
+                    // let s2 = decode_set(ccvcx);
+                    // let s3 = decode_set(cccvx);
+                    // let s4 = decode_set(cccxv);
+                    // console.log(s1,s2,s3,s4)
+                // }
+
+
+
 
                 // when i swap to min instead of max, i have to take care to avoid -1
                 // done by chaning default value to 42069 instead of -1

@@ -222,7 +222,7 @@ export class Graph {
         .attr('stroke', 'black')
         .attr('stroke-width', 2)
         .attr('idx', node => node.id)
-        // .classed("node_in_w", d => this.W.includes(d.id))
+        .classed("node_in_w", d => this.W.includes(d.id))
         .call(d3.drag()
             .on('start', (e,d) => {
                 if (!e.active) this.simulation.alphaTarget(0.3).restart();
@@ -552,7 +552,7 @@ export class Graph {
     }
 
     find_components(combine = false, f = id => parseInt(id)){
-        const fc = new FindComponents(100); // hard coded WATCH OUT, fix add max N to the graph
+        const fc = new FindComponents(200); // hard coded WATCH OUT, fix add max N to the graph
         this.links.forEach(link => fc.add_edge(f(link.source.id), f(link.target.id)));
         this.nodes.forEach(node => fc.v[f(node.id)] = false);
         return fc.run(combine);
@@ -582,6 +582,7 @@ export class Tree {
     }
 
     render(){
+        if(this.simulation) this.simulation.stop(); 
         this.svg.selectAll("*").remove();
         this.simulation      = this.create_svg_simulation();
         // this.svg_groups      = this.create_svg_groups();
@@ -937,8 +938,8 @@ create_svg_node_labels(text_function = node => node.id) {
     .text(function(d) { return d; });
     return label;
 }
-
-    create_svg_node_names(text_function = node => node.name){
+    // DANIEL -> change node.id to node.name
+    create_svg_node_names(text_function = node => node.id.toString() + " - " + node.name){
         return this.svg
         .append("g")
         .attr("class", "node-labels")
