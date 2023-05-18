@@ -385,7 +385,7 @@ line.xclude
         font-size: 14px
         border: $border-settings
         // font-weight: 300
-    .svg_reset
+    .svg_reset, .svg_restart
         position: absolute
         bottom: 7px
         left: 7px
@@ -409,6 +409,9 @@ line.xclude
             transition: all 500ms
             transform: rotate(360deg)
             color: orange
+    .svg_restart:after
+        content: "Restart"
+
 
 
     .svg_counter
@@ -680,11 +683,31 @@ circle.X
     // stroke: #202020 !important
 circle
     stroke-width: 2px
-circle.node_in_w
+
+.node_w
+    font-size: 13px
+    // fill: pink
+.nodes-W
+    pointer-events: none
+    circle
+        fill: white
+        stroke: black
+        &.selected
+            display: none
+            // fill: #252525
+            // stroke: transparent
+
+rect.node_in_w
+    // fill: pink
     stroke-width: 2px
-    // filter: drop-shadow(0px 0px 2px rgba(0,0,0, 1))
-    // fill: rgb(169, 169, 213)
-    fill: rgb(169, 169, 213)
+    stroke: white !important
+    filter: drop-shadow(0px 0px 3px black)
+    
+// text.node_in_w
+    // fill: black
+    // font-size: 17px
+    // transform: translateY(1px)
+
 .opacity
     opacity: 15%
 .opa-0
@@ -695,9 +718,6 @@ circle.node_in_w
 //     stroke: black !important
 //     // stroke-width: 5px !important
 
-.node_w
-    font-size: 12px
-    // fill: pink
 .items
     color: white
     border-radius: 5px
@@ -1229,3 +1249,22 @@ g
 
 svg, .svg_label
     transition: background 0.3s ease-in-out
+
+.progress
+    margin: 0
+    border: $border-settings
+    height: 12px
+    background-color: darken($cx, 25%)
+    .determinate
+        transition: all 0.3s
+        background-color: $cx
+
+.flex
+    display: flex
+    align-items: center
+
+.adjust-ion
+    display: inline-block
+    ion-icon
+        margin-bottom: -2px
+        margin-left: 2px

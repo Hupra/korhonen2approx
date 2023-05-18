@@ -81,9 +81,10 @@ function Playground() {
     const tree_container = useRef();
     const tree_container2 = useRef();
     const tree_container3 = useRef();
-    const [tasks, set_tasks] = useState([0, 0]);
     const [reset, set_reset] = useState(0);
     const [page_state, set_page_state] = useState(1);
+    const [components, set_components] = useState([]);
+    const [separator, set_separator] = useState([]);
     const tabsref = useRef();
     const tabref = useRef();
     const [show_nice, set_show_nice] = useState(false);
@@ -95,6 +96,8 @@ function Playground() {
     const separate_subtrees = useRef();
     const connect_subtrees = useRef();
     const continue_result = useRef();
+    const progress_bar = useRef();
+    const max_length = 10;
     
     
     useEffect(() => {
@@ -124,6 +127,12 @@ function Playground() {
             let newt = set_graph_direction(svg_tree_to_file(t));
             newt = DP.make_nice(newt);
 
+            // render nice
+            DP.nice_color(newt);
+            let t2 = new Tree(newt, d3.select(tree_container2.current));
+            t2.charge = -500
+            t2.render();
+
             let newg = svg_graph_to_file(g);
             let U = DP.init_U(newt);
             let W = newt.nodes.find(node => node.id === 1);
@@ -136,30 +145,52 @@ function Playground() {
                 console.log("h", h, res);
                 if(res.length>0) break;
             }    
-            let winner_d = Infinity;
-            let winner;
 
-            // notice we sort by number of comps, more is better.
-            // this is comps in W tho <<<
-            res.sort((a,b) => b[0].split(",").slice(0,3).map(x => parseInt(x)).filter(Boolean).length - a[0].split(",").slice(0,3).map(x => parseInt(x)).filter(Boolean).length);
+            // worst res
+            // res.sort((a,b) => b[1]-a[1]);
+            
+            // best res
+            // res.sort((a,b) => a[1]-b[1]);
+            
+            function compare_res(a,b){
 
-            for(const pair of res){
-                let enc = pair[0];
-                let dis = pair[1];
+                // compare dist - less is better
+                if(a[1]!==b[1]) return a[1]-b[1];
 
-                if(dis<winner_d){
-                    // console.log(DP.find_res(U,W.id,best_h,newg,newt,enc));
-                    
-                    DP.print_state(enc, DP.get_bag(newt, W.id));
+                // compare size of biggest comp - smaller is better
+                let set_a = a[0].split(",").slice(0,3).map(DP.decode_set).map(x=>x.length);
+                let set_b = b[0].split(",").slice(0,3).map(DP.decode_set).map(x=>x.length);
 
-                    winner = DP.find_res(U,W.id,best_h,newg,newt,enc);
+                set_a.sort((aa,bb) => aa-bb);
+                set_b.sort((aa,bb) => aa-bb);
 
-                    console.log("winner", winner)
-                    winner_d = dis;
-                }
+                if(set_a[2] !== set_b[2]) return set_a[2]-set_b[2];
+                if(set_a[1] !== set_b[1]) return set_a[1]-set_b[1];
+                return set_a[0]-set_b[0];
+            }
+            
+            res.sort(compare_res);
+
+            for (const r of res) {
+
+                // console.log(DP.find_res(U,W.id,best_h,newg,newt,r[0]))
+                DP.print_state(r[0], W.bag);
+                
             }
 
-            if(winner){
+            if(res.length>0){
+
+                console.log(res[0]);
+
+                let enc = res[0][0];
+                let dis = res[0][1];
+                
+                // DP.print_state(enc, DP.get_bag(newt, W.id));
+                console.log("W", W)
+                let winner = DP.find_res(U,W.id,best_h,newg,newt,enc);
+
+                console.log("winner", winner)
+         
                 // DELETE THESE TWO LINES, used to test X padding
                 // winner["X"].push(10);
                 // winner["C1"] = winner["C1"].filter(ele => ele !== 10); 
@@ -171,6 +202,8 @@ function Playground() {
                 t.X = winner["X"];
                 t.C = [winner["C1"], winner["C2"], winner["C3"]];
                 t.render();
+                set_components([winner["C1"], winner["C2"], winner["C3"]]);
+                set_separator([winner["X"]]);
                 set_page_state(2);
             }
 
@@ -251,7 +284,6 @@ function Playground() {
 
 
             t.render();
-            t.svg_set_node_and_edge_if_name("xclude", blobs.slice(1).flatMap(blob => blob.bags));
 
             // split nodes and edges into two groups: edit grp, non-edit grp
             // so we can just split the edit grp and append non-edit grp after
@@ -294,14 +326,12 @@ function Playground() {
 
             t.render();
 
+            t.svg_set_node_and_edge_if_name("xclude", blobs.slice(1).flatMap(blob => blob.bags));
 
-            // t.svg_set_node_and_edge_if_name("xclude", blobs.slice(1).flatMap(blob => blob.bags));
+
             vertexLock.unlock();
 
         });
-
-
-
         
         connect_subtrees.current.addEventListener('click', async function(){
 
@@ -323,6 +353,8 @@ function Playground() {
             let node_x = t.nodes.find(node => node.name === "x")
             for (const x of t.X) fix_T(t, x, node_x);
             t.render();
+
+            t.svg_set_node_and_edge_if_name("xclude", blobs.slice(1).flatMap(blob => blob.bags));
 
 
             vertexLock.unlock();
@@ -401,13 +433,6 @@ function Playground() {
                 const [x, y] = d3.pointer(event);
                 add_vertex({id: ++counter, x, y});
                 if((g.nodes.length-6===3 && g.links.length-6>=3)) correcto(event.clientX, event.clientY, "Perfect!");
-
-                // render nice
-                let newt = DP.make_nice(set_graph_direction(svg_tree_to_file(t)));
-                DP.nice_color(newt);
-                let t2 = new Tree(newt, d3.select(tree_container2.current));
-                t2.charge = -500
-                t2.render();
                 
                 vertexLock.unlock();
             });
@@ -513,8 +538,6 @@ function Playground() {
             t = new Tree(newt, d3.select(tree_container.current));
             t.render();
 
-            set_tasks([g.nodes.length-6, g.links.length-6]);
-
         }
 
         function add_edge(edge){
@@ -531,15 +554,6 @@ function Playground() {
             
             t = new Tree(newt, d3.select(tree_container.current));
             t.render();
-            
-            newt = DP.make_nice(newt);
-            DP.nice_color(newt);
-            let t2 = new Tree(newt, d3.select(tree_container2.current));
-            t2.charge = -500;
-            t2.render();
-            
-
-
 
             // let newg = svg_graph_to_file(g);
             // let U = DP.init_U(newt);
@@ -579,12 +593,12 @@ function Playground() {
             //     t.render();
             // }
 
-            set_tasks([g.nodes.length-6, g.links.length-6]);
         }
 
         
         g.render();
         t.render();
+
 
         add_functionality();
 
@@ -594,12 +608,21 @@ function Playground() {
     function mi(x) {
         if(x === "G") graph_container.current.parentNode.classList.add('reftar');
         if(x === "T") tree_container.current.parentNode.classList.add('reftar');
+        if(x === "TB") tree_container3.current.parentNode.classList.add('reftar');
     }
     function mo() {
         graph_container.current.parentNode.classList.remove('reftar');
         tree_container.current.parentNode.classList.remove('reftar');
+        tree_container3.current.parentNode.classList.remove('reftar');
     }
 
+    useEffect(() => {
+        // animate progress bar
+        let prev = Math.max(((page_state-2)/5)*100, 0);
+        let next = ((page_state-1)/5)*100;
+        progress_bar.current.style.width = prev.toString() + "%";
+        setTimeout(() => {progress_bar.current.style.width = next.toString() + "%";}, 2);
+    },[page_state]);
 
 
   return (
@@ -611,71 +634,193 @@ function Playground() {
     <SB style={{ height: '100vh', width: '100vw' }}>
 
         <h2>Playground</h2>
-        <p><i>The following page lets you modify and build a graph, and 
-            with an intitial far-from-perfect tree decomposition, it 
-            enables you to keep running the algorithm until the 
-            tree decomposition can no longer be reduced.</i></p>
+        <p><i>The following page lets you modify and build a graph 
+            with a corresponding initial far-from-perfect 
+            tree decomposition. This 
+            tree decomposition will then be improved by 
+            iteratively running the algorithm.</i></p>
         <hr/>
 
-        <button className={page_state===1?"":"hidden"} ref={find_min_split}>Min Split</button>
+
+        {/* <button className={page_state===1?"":"hidden"} ref={find_min_split}><ion-icon name="arrow-forward-outline"></ion-icon></button>
         <button className={page_state===2?"":"hidden"} ref={start_pruning}>Pruning</button>
         <button className={page_state===3?"":"hidden"} ref={find_subtrees}>Find Subtrees</button>
         <button className={page_state===4?"":"hidden"} ref={separate_subtrees}>Remove Subtrees</button>
         <button className={page_state===5?"":"hidden"} ref={connect_subtrees}>Connect Subtrees</button>
         <button className={page_state===6?"":"hidden"} ref={continue_result}>Continue Result</button>
+         */}
+
+         <p style={{margin: 0}}><i>Use the below button to iterate through the algorithm.</i></p>
+
+        <div className='flex'>
+        <button className={page_state===1?"":"hidden"} ref={find_min_split}><ion-icon name="play-forward-outline"></ion-icon></button>
+        <button className={page_state===2?"":"hidden"} ref={start_pruning}><ion-icon name="play-forward-outline"></ion-icon></button>
+        <button className={page_state===3?"":"hidden"} ref={find_subtrees}><ion-icon name="play-forward-outline"></ion-icon></button>
+        <button className={page_state===4?"":"hidden"} ref={separate_subtrees}><ion-icon name="play-forward-outline"></ion-icon></button>
+        <button className={page_state===5?"":"hidden"} ref={connect_subtrees}><ion-icon name="play-forward-outline"></ion-icon></button>
+        <button className={page_state===6?"":"hidden"} ref={continue_result}><ion-icon name="play-forward-outline"></ion-icon></button>
         
-        
+        <div className="progress">
+            <div className="determinate" ref={progress_bar} style={{borderRight: (page_state>1 && page_state<6)? "2px solid black" : "none"}}></div>
+        </div>
+        </div>
+
+        <hr></hr>
         {page_state === 1 &&<>
 
-        
+        <h2 style={{marginTop: "10px"}}>Modify The Graph</h2>
+        <div className='exercise'>
+            <p>Add vertices to <span className='ref' onMouseOver={() => mi("G")} onMouseOut={mo}><InlineMath math="G"/></span> by 
+            clicking somewhere in the canvas, or edges by dragging the mouse from one vertex to another.</p>
+
+            <p>The current tree decomposition <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> will
+            automatically be adjusted as vertices and edges are added. Furhermore, 
+            once an iteration of the algorithm has been run 
+            the new improved tree decomposition will be shown 
+            in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>.</p>
+        </div>
+
+        <p><i>Click the <span className='adjust-ion'><ion-icon name="play-forward-outline"></ion-icon></span> button 
+        to find a minimum split of <InlineMath math="W"/>.</i></p>
         </>}
+
+
 
 
         {page_state === 2 &&<>
-        
-        
-        </>}
+        <h2 style={{marginTop: "10px"}}>Minimum Split</h2>
+        <div className='exercise'>
 
+        <p style={{margin: 0}}><i>Optionally chek the nice tree decomposition used to find this minimum split:</i></p>
+        <button onClick={() => set_show_nice(!show_nice)}>{show_nice ? "Hide nice tree decomposition" : "Show nice tree decomposition"}</button>
+
+            
+            <div className='items'>
+                <div>
+                    <span className="X" style={{marginRight: "4px"}}><InlineMath math={"X"}/></span><InlineMath math={"  = \\{"}/>
+                    {separator.length<=max_length 
+                    ? <div className={"X"}><InlineMath math={separator.toString()} /></div>
+                    : <div className={"X"}><InlineMath math={separator.slice(0,max_length).toString() + ", ..."} /></div>
+                    }
+                    <InlineMath math={"\\}"}/>
+                </div>
+            </div>
+            {components.map((item, idx) => {
+            return (
+                <React.Fragment key={idx}>
+                    <div className='items'><div>
+
+
+                    <span className={"C"+(idx+1).toString()}  style={{marginRight: "4px"}}>
+                    <InlineMath math={"C_"+(idx+1).toString()}/></span>
+                    <InlineMath math={" = \\{"} />
+                    {
+                    item.length<=max_length 
+                    ? <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
+                    : <div className={"C"+(idx+1).toString()}><InlineMath math={item.slice(0,max_length).toString() + ", ..."} /></div>
+                    }
+                    <InlineMath math={"\\}"} />
+                    </div></div>
+                </React.Fragment>
+            )})}
+        <br></br>
+            <p>A minimum split of <InlineMath math="W"/> was found and is shown 
+            in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={mo}><InlineMath math="G"/></span>.</p>
+        <p>Using this minimum split we will improve the tree decomposition by reducing the size of <InlineMath math="W"/>.</p>
+
+        
+        </div>
+        
+        <p><i>Click the <span className='adjust-ion'><ion-icon name="play-forward-outline"></ion-icon></span> button 
+        to start the pruning process of <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>.</i></p>
+        </>}
+        
         {page_state === 3 &&<>
 
+        <h2 style={{marginTop: "10px"}}>Pruning</h2>
+        <div className='exercise'>
 
-        </>}    
+        <p>Now that a minimum split is found, we will initialize the pruning process 
+            by finding <span className='ref' onMouseOver={() => mi("TB")} onMouseOut={mo}><InlineMath math="T"/></span>'s different 
+            editable and non-editable subtrees.</p>
+        </div>
+
+        <p><i>Click the <span className='adjust-ion'><ion-icon name="play-forward-outline"></ion-icon></span> button 
+        to continue the pruning process of <span className='ref' onMouseOver={() => mi("TB")} onMouseOut={mo}><InlineMath math="T"/></span>.</i></p>
+        
+        </>}
         
         {page_state === 4 &&<>
+
+        <h2 style={{marginTop: "10px"}}>Subtrees</h2>
+        <div className='exercise'>
+
+        <p>The different editable and non-editable subtrees are now highlighted 
+            in <span className='ref' onMouseOver={() => mi("TB")} onMouseOut={mo}><InlineMath math="T"/></span>.</p>
+            
+            <p>Next, we disconnect the editable subtree 
+                from the non-editable subtrees by eliminating the 
+                connecting edges. Following this, we split the editable 
+                subtree into <InlineMath>T^1, T^2, T^3</InlineMath>. These trees 
+                are then connected using a newly 
+                created node with a bag that contains the separator <InlineMath>X</InlineMath>.
+            </p>
+        </div>
+
+        <p><i>Click the <span className='adjust-ion'><ion-icon name="play-forward-outline"></ion-icon></span> button 
+        to continue the pruning process of <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>.</i></p>
         
-        
-        </>}
-        
+
+        </>}   
+
+
         {page_state === 5 &&<>
 
+        <h2 style={{marginTop: "10px"}}>Splittng <InlineMath math="T"/></h2>
+        <div className='exercise'>
+            
+            <p>Now that the editable subtree has been split, the 
+        only thing left to do is reattach the non-editable 
+        subtrees to the editable subtree. We do this 
+        by making an edge from the root of 
+        the non-editable subtree to the 
+        version of its original parent node 
+        that intersects the same component.   
+            </p>
+        </div>
 
-        </>}        
-        
-        {page_state === 1 &&<>
-        
-        
+        <p><i>Click the <span className='adjust-ion'><ion-icon name="play-forward-outline"></ion-icon></span> button 
+        to continue the pruning process of <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>.</i></p>
+
+
         </>}
 
 
-        <button onClick={() => set_show_nice(!show_nice)}>{show_nice ? "Hide Nice" : "Show Nice"}</button>
+        {page_state === 6 &&<>
 
-        {page_state === 1 && <>
-        Hej1
-        
-        {/* <button className='button' onClick={() => {set_page_state(2)}}>Exercises<ion-icon name="arrow-forward-outline"></ion-icon></button><br/><i>Go to exercises</i> */}
-               
-        </>}
+        <h2 style={{marginTop: "10px"}}>Iteration Done</h2>
+        <div className='exercise'>
+            
+            <p>A full iteration has now been completed, reducing the width of the largest bag 
+                in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>.</p>
+            <p>We will continue to implement this procedure until we 
+                reach a point where the size of the largest bag can no longer be reduced.</p>
+        </div>
 
-        {page_state === 2 && <>
-        Hej2
-        </>}
+        <p><i>Click the <span className='adjust-ion'><ion-icon name="play-forward-outline"></ion-icon></span> button 
+        to start a new iteration.</i></p>
+
+
+        </>}  
+
+
     </SB>
     </div>
     </div>
     <div className='content'>
-        <div className={(page_state === 2 ? 'svg_container interactive plus focus-svg' : 'svg_container interactive plus') + (page_state>=3 ? " hidden": "")}>
+        <div className={(page_state === 1 ? 'svg_container interactive plus focus-svg' : 'svg_container') + (page_state>=3 ? " hidden": "")}>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
-            <div className='svg_reset' onClick={()=>set_reset(reset+1)}><ion-icon name="refresh-outline"></ion-icon></div>
+            <div className='svg_restart' onClick={()=>{set_reset(reset+1);set_page_state(1);}}><ion-icon name="refresh-outline"></ion-icon></div>
             <svg ref={graph_container} className="cy" width="100%" height="100%"></svg>
         </div>
         <div className={('svg_container') + (page_state>=3 ? " hidden": "")}>
@@ -684,6 +829,7 @@ function Playground() {
         </div>
         <div className={('svg_container') + (page_state>=3 ? "": " hidden")}>
             <div className={'svg_label'}>Tree Decomposition - <InlineMath math="T"/></div>
+            <div className='svg_restart' onClick={()=>{set_reset(reset+1);set_page_state(1);}}><ion-icon name="refresh-outline"></ion-icon></div>
             <svg ref={tree_container3} className="cy" width="100%" height="100%"></svg>
         </div>
         <div className={'overlay' + (show_nice?"":" gone")} onClick={() => set_show_nice(false)}/>

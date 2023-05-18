@@ -66,6 +66,8 @@ export function add_ith_bit_t(x, i) {
 
 // a>b
 export function find_bag_diff(big,small){
+    // big.sort((a,b) => b-a);
+    // small.sort((a,b) => b-a)
     for (let i = 0; i < small.length; i++) {
         if(big[i]!==small[i]) return i;
     }
@@ -321,6 +323,9 @@ export function make_nice(input) {
     }
   
     processNode(rootNode);
+    for (let i = 0; i < tree.nodes.length; i++) {
+        tree.nodes[i].bag.sort((a,b)=> b-a)        
+    }
     return tree;
 }
 
@@ -684,7 +689,6 @@ export function find_res(U, target_bag, h, g, nice, cccx) {
     
     function dfs_X(i,h,cccx)
     {
-        // console.log("dfs", i);
         let Bi = find_bag[i];
         let children = find_children[i];
 

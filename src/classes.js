@@ -210,6 +210,7 @@ export class Graph {
 
     create_svg_nodes(){
         this.create_svg_nodes_bg() // bg nodes
+        this.create_svg_nodes_W() // bg nodes
 
         return this.svg
         .append('g')
@@ -222,7 +223,7 @@ export class Graph {
         .attr('stroke', 'black')
         .attr('stroke-width', 2)
         .attr('idx', node => node.id)
-        .classed("node_in_w", d => this.W.includes(d.id))
+        // .classed("node_in_w2", d => this.W.includes(d.id))
         .call(d3.drag()
             .on('start', (e,d) => {
                 if (!e.active) this.simulation.alphaTarget(0.3).restart();
@@ -248,6 +249,16 @@ export class Graph {
         .data(this.nodes)
         .enter().append('circle')
         .attr('r', this.node_radius)
+        .attr('idx', node => node.id);
+    }
+    create_svg_nodes_W(){
+        this.node_W = this.svg
+        .append('g')
+        .attr('class', 'nodes-W')
+        .selectAll('circle')
+        .data(this.nodes.filter(node => this.W.includes(node.id)))
+        .enter().append('circle')
+        .attr('r', this.node_radius+3)
         .attr('idx', node => node.id);
     }
     create_svg_node_labels(text_function = node => node.id){
@@ -323,6 +334,12 @@ export class Graph {
         this.svg_links.classed("opacity", d => {
             return this.X.includes(f(d.source.id)) || this.X.includes(f(d.target.id));
         });
+
+        if(this.node_W) {
+            this.node_W.classed("selected", d => {
+                return this.X.includes(f(d.id));
+            });
+        }
     }
 
     // think this can be removed now
@@ -506,6 +523,11 @@ export class Graph {
                 .attr('cx', d => d.x) // use 'cx' and 'cy' attributes to set the circle center
                 .attr('cy', d => d.y) // use 'cx' and 'cy' attributes to set the circle center    
             }
+            if(this.node_W){
+                this.node_W
+                .attr('cx', d => d.x) // use 'cx' and 'cy' attributes to set the circle center
+                .attr('cy', d => d.y) // use 'cx' and 'cy' attributes to set the circle center    
+            }
             if(this.svg_blobs){
                 try {       
                     this.update_blobs();
@@ -544,6 +566,7 @@ export class Graph {
     svg_show_only(show){
         this.svg_nodes.classed("hidden", d => !show.includes(d.id));
         this.node_bg.classed("hidden", d => !show.includes(d.id));
+        this.node_W.classed("hidden", d => !show.includes(d.id));
         this.svg_node_W_label.classed("hidden", d => !show.includes(d.id));
         this.svg_node_labels.classed("hidden", d => !show.includes(d.id));
         this.svg_links.classed("hidden", d => !show.includes(d.source.id) || !show.includes(d.target.id)); //show sebbe when this is hidden
@@ -556,6 +579,13 @@ export class Graph {
         this.links.forEach(link => fc.add_edge(f(link.source.id), f(link.target.id)));
         this.nodes.forEach(node => fc.v[f(node.id)] = false);
         return fc.run(combine);
+    }
+
+    svg_set_node_class(clazz, indices){
+        console.log(indices);
+        // let indices = this.nodes.filter(node => names.includes(node.name)).map(node => node.id);
+        this.svg_nodes.classed(clazz, node => indices.includes(node.id));
+        this.svg_node_labels.classed(clazz, node => indices.includes(node.id));
     }
 }
 
@@ -878,7 +908,8 @@ export class Tree {
         .enter().append('rect')
         .attr('width', node => Math.max(24, node.bag.length*20))
         .attr('height', 30)
-        .attr('stroke', node => node.color ? node.color : this.node_color)
+        .attr('stroke', this.node_color)
+        .attr("class", node => node.name==="W" ? "node_in_w" : "") // assign a different color to each letter
         // .attr('stroke', node => node.name === "W<<<" ? "pink" : "#454545")
         .attr('fill', '#101010')
         .attr('stroke-width', 2)
@@ -938,8 +969,7 @@ create_svg_node_labels(text_function = node => node.id) {
     .text(function(d) { return d; });
     return label;
 }
-    // DANIEL -> change node.id to node.name
-    create_svg_node_names(text_function = node => node.id.toString() + " - " + node.name){
+    create_svg_node_names(text_function = node => node.name){
         return this.svg
         .append("g")
         .attr("class", "node-labels")
