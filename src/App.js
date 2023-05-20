@@ -14,8 +14,6 @@ import ConnectComponents from './pages/ConnectComponents';
 import Continuity from './pages/Continuity';
 import HomeBag from './pages/HomeBag';
 import Color from './pages/Color';
-import Nicu from './pages/Nicu';
-import Radu from './pages/Radu';
 import { AnimatePresence } from 'framer-motion';
 import Pruning from './pages/Pruning';
 import Introduction from './pages/Introduction';
@@ -41,21 +39,19 @@ function App() {
         
         <div className={!fullNav ? ' location active' : 'location'}>
         <a href='' onClick={() => setFullNav(!fullNav)}><ion-icon name="reorder-four-outline"></ion-icon></a>
-          <NavLink activeclassname='active' to="/" exact="true"><ion-icon name="home-outline"></ion-icon></NavLink>
-          <NavLink activeclassname='active' to="/treedecomposition"><ion-icon name="leaf-outline"></ion-icon></NavLink>
+          <NavLink activeclassname='active' to="/" exact="true">H</NavLink>
+          <NavLink activeclassname='active' to="/treedecomposition">T</NavLink>
           <NavLink activeclassname='active' to="/introduction">I</NavLink>
           <NavLink activeclassname='active' to="/separators">S</NavLink>
           <NavLink activeclassname='active' to="/balanced-separators">BS</NavLink>
           <NavLink activeclassname='active' to="/connect-components">CC</NavLink>
-          <NavLink activeclassname='active' to="/splitting-t">S1</NavLink>
+          <NavLink activeclassname='active' to="/splitting-t">ST</NavLink>
           <NavLink activeclassname='active' to="/continuity">CI</NavLink>
           <NavLink activeclassname='active' to="/homebag">HB</NavLink>
           <NavLink activeclassname='active' to="/min-split">MS</NavLink>
           <NavLink activeclassname='active' to="/pruning">P</NavLink>
           <NavLink activeclassname='active' to="/nice-treedecomposition">NT</NavLink>
-          <NavLink activeclassname='active' to="/playground"><ion-icon name="rocket-outline"></ion-icon></NavLink>
-          <NavLink activeclassname='active' to="/nicu">N</NavLink>
-          <NavLink activeclassname='active' to="/radu">RD</NavLink>
+          <NavLink activeclassname='active' to="/sandbox">SB</NavLink>
     </div>
 
     <div className={fullNav ? ' location-full active' : 'location-full'}>
@@ -72,9 +68,7 @@ function App() {
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/min-split">Minimum Split</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/pruning">Pruning</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/nice-treedecomposition">Nice Tree Decomposition</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/playground">Playground</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/nicu">Nicu</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/radu">Radu Demo</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/sandbox">Sandbox</NavLink>
     </div>
         
         <div className={fullNav ? ' main active' : 'main'}>
@@ -96,9 +90,7 @@ function App() {
               <Route path="color/*"                   element={<Color />} /> 
               <Route path="pruning/*"                 element={<Pruning />} />
               <Route path="nice-treedecomposition/*"  element={<NiceTreeDecomposition />} />
-              <Route path="playground/*"              element={<Playground />} />
-              <Route path="nicu/*"                    element={<Nicu />} /> 
-              <Route path="radu/*"                    element={<Radu />} /> 
+              <Route path="sandbox/*"              element={<Playground />} />
             </Routes>
          </AnimatePresence>
         </div>

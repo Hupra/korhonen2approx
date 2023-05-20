@@ -275,10 +275,10 @@ function HomeBag() {
             <h4>Note</h4>
             <p>
                 <i>
-                In <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> ( and <span className='ref' 
-                onMouseOver={() => mi("TX")} onMouseOut={mo}><InlineMath math="T^X"/></span> and <span className='ref' 
-                onMouseOver={() => mi("TTX")} onMouseOut={mo}><InlineMath math="T \cup T^X"/></span> that will appear later )
-                the bag <InlineMath math="X"/> is added to the top for visual purposes only. 
+                In <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>, 
+                <span className='ref' onMouseOver={() => mi("TX")} onMouseOut={mo}><InlineMath math="T^X"/></span>, 
+                <span className='ref' onMouseOver={() => mi("TTX")} onMouseOut={mo}><InlineMath math="T \cup T^X"/></span> <i>(Some of which will appear later)</i> the 
+                bag <InlineMath math="X"/> is added to the top for visual purposes only. 
                 This is done to demonstrate how the separator <InlineMath math="X"/> of <InlineMath math="W"/> will serve as the connecting point 
                 for <InlineMath math="T^1"/>, <InlineMath math="T^2"/> and <InlineMath math="T^3"/> when constructing <InlineMath math="T'"/>.
                 </i>

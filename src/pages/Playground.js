@@ -633,7 +633,7 @@ function Playground() {
         <div className='sidebar_bubble'>
     <SB style={{ height: '100vh', width: '100vw' }}>
 
-        <h2>Playground</h2>
+        <h2>Sandbox</h2>
         <p><i>The following page lets you modify and build a graph 
             with a corresponding initial far-from-perfect 
             tree decomposition. This 
@@ -691,7 +691,7 @@ function Playground() {
         <h2 style={{marginTop: "10px"}}>Minimum Split</h2>
         <div className='exercise'>
 
-        <p style={{margin: 0}}><i>Optionally chek the nice tree decomposition used to find this minimum split:</i></p>
+        <p style={{margin: 0}}><i>Optionally check the nice tree decomposition used to find this minimum split:</i></p>
         <button onClick={() => set_show_nice(!show_nice)}>{show_nice ? "Hide nice tree decomposition" : "Show nice tree decomposition"}</button>
 
             

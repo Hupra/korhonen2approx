@@ -43,6 +43,14 @@ function SeparatorsBalanced() {
     function init_exercise(graph, graphs, tree) {
 
 
+        tree = JSON.parse(JSON.stringify(tree));
+        let node = tree.nodes.find(node => node.name === "W");
+        node.stuck = true;
+        node.x = tree_container.current.clientWidth/2;
+        node.y = tree_container.current.clientHeight*(2/5);
+        
+
+
         // mini info svg:
         let blobs2 = []
         blobs2.push({ 

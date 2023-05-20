@@ -17,7 +17,15 @@ function Introduction() {
   const tree_container2 = useRef();
 
     useEffect(() => {
-        let node = treef.nodes.find(node => node.name === "X");
+
+        tree = JSON.parse(JSON.stringify(tree));
+
+        let node = tree.nodes.find(node => node.name === "W");
+        node.stuck = true;
+        node.x = tree_container1.current.clientWidth/2;
+        node.y = tree_container1.current.clientHeight*(5/11);
+
+        node = treef.nodes.find(node => node.name === "X");
         node.stuck = true;
         node.x = tree_container2.current.clientWidth/2-5;
         node.y = tree_container2.current.clientHeight*(1/3);

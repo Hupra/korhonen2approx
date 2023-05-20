@@ -452,8 +452,8 @@ export function try_h(U, target_bag, h, g, nice) {
 
         if (children.length === 0)
         {
-            if(h>0) return Infinity;
-            return 0;
+            if(h>0) U[i][h][cccx] = Infinity;
+            U[i][h][cccx] = 0;
         }
         else if (children.length === 2)
         {
@@ -510,6 +510,9 @@ export function try_h(U, target_bag, h, g, nice) {
                             return Infinity;
                 }}};
 
+                // to improve speed of code, we could change the above
+                // edge cheking to just the V vertex, this will limit the
+                // number of operations.
                 let v = find_bag_diff(Bi,Bj);
                 
                 // |{v} ∩ X|             [h − |{v} ∩ X|] <---- this is how we determine an X is used!

@@ -151,7 +151,7 @@ export class Graph {
         this.links = graph.edges.map(link => {return {...link}});
         this.svg   = svg;
 
-        this.link_width  = 5;
+        this.link_width  = 4;
         this.link_color  = "#ccc";
         this.node_radius = 16;
         this.node_color  = "white";
@@ -908,8 +908,8 @@ export class Tree {
         .enter().append('rect')
         .attr('width', node => Math.max(24, node.bag.length*20))
         .attr('height', 30)
-        .attr('stroke', this.node_color)
-        .attr("class", node => node.name==="W" ? "node_in_w" : "") // assign a different color to each letter
+        .attr('stroke', d => d.color ? d.color : this.node_color)
+        .attr("class", node => (node.name==="W" && !node.color) ? "node_in_w" : "") // assign a different color to each letter
         // .attr('stroke', node => node.name === "W<<<" ? "pink" : "#454545")
         .attr('fill', '#101010')
         .attr('stroke-width', 2)

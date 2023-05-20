@@ -19,6 +19,12 @@ function NiceTreeDeomposition() {
 
 
     useEffect(() => {
+
+        let node = tree.nodes.find(node => node.name === "W");
+        node.stuck = true;
+        node.x = tree_container1.current.clientWidth/2;
+        node.y = tree_container1.current.clientHeight*(5/11);
+
         const t1 = new Tree(tree, d3.select(tree_container1.current));
         t1.render();
 
@@ -229,7 +235,7 @@ function NiceTreeDeomposition() {
       </div>
       <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>
       <div className='svg_container'>
-        <div className='svg_label'>Nice Tree Decomposition - <InlineMath math="niceT"/> <InlineMath math={"\\quad\\quad\\quad r=root"}/></div>
+        <div className='svg_label'>Nice Tree Decomposition - <InlineMath math="T_{nice}"/> <InlineMath math={"\\quad\\quad\\quad r=root"}/></div>
         <svg ref={tree_container2} className="cy" width="100%" height="100%"></svg>
       </div>
     </div>

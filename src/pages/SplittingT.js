@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 // import graph from '../graphs/intro-treedecomposition-graph.json'
 import graph from '../graphs/graph1.json'
-import tree from '../graphs/graph1-tree.json'
+import treee from '../graphs/graph1-tree.json'
 import { BlockMath, InlineMath } from 'react-katex';
 import { Routes, Route, Link } from 'react-router-dom';
 import 'katex/dist/katex.min.css';
@@ -15,8 +15,6 @@ import SB from './components/SB';
 
 function SplittingT() {
 
-
-
     const graph_container = useRef();
     const graph_container2 = useRef();
     const tree_container = useRef();
@@ -28,9 +26,9 @@ function SplittingT() {
     const [tprime, set_tprime] = useState(null);
     const [page_ready, set_page_ready] = useState(false);
     const [page_state, set_page_state] = useState(0);
-    const w = tree.nodes.find(node => node.name === "W");
-    const node_name = tree.nodes.map(x => x.name);
-    const node_bag = tree.nodes.map(x => x.bag);
+    const w = treee.nodes.find(node => node.name === "W");
+    const node_name = treee.nodes.map(x => x.name);
+    const node_bag = treee.nodes.map(x => x.bag);
     
     function mi(x) {
         if(x === "T") tree_container.current.parentNode.classList.add('reftar');
@@ -42,6 +40,15 @@ function SplittingT() {
     }
 
     useEffect(() => {
+        
+        let tree = JSON.parse(JSON.stringify(treee));
+        let treeBig = JSON.parse(JSON.stringify(treee));
+        let node = tree.nodes.find(node => node.name === "W");
+        node.stuck = true;
+        node.x = tree_container.current.clientWidth/2;
+        node.y = tree_container.current.clientHeight*(2/5);
+
+
         let removed_nodes = [];
         let removed_links = [];
         let nodes1 = graph.nodes.map(node => w.bag.some(x => x === node.id) ? {...node, color: w.color} : node);
@@ -81,7 +88,7 @@ function SplittingT() {
         setSeparator(X);
         setComponents(C);
 
-        const Tp = T_2_TD(tree, C, X);
+        const Tp = T_2_TD(treeBig, C, X);
         const t2 = new Tree(Tp, d3.select(tree_container2.current));
         t2.X = X;
         t2.C = C;
@@ -266,7 +273,7 @@ function SplittingT() {
         },[i])
         return<>
             <h2>Attention</h2>
-            <p>An improved tree decomposition <span className='ref' onMouseOver={() => mi("T'")} onMouseOut={mo}><InlineMath math="T'"/></span> has been made, but there can still exist a problem with it, which will be explained in the next section.</p>
+            <p>An improved tree decomposition <span className='ref' onMouseOver={() => mi("T'")} onMouseOut={mo}><InlineMath math="T'"/></span> has been made, however there might exist a problem, which will be explained in the next section.</p>
         </>
     }
     

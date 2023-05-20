@@ -48,6 +48,13 @@ function MinSplit() {
 
     function init_exercise(graph, tree, min_x, min_dx) {
 
+        
+        tree = JSON.parse(JSON.stringify(tree));
+        let node = tree.nodes.find(node => node.name === "W");
+        node.stuck = true;
+        node.x = tree_container.current.clientWidth/2;
+        node.y = tree_container.current.clientHeight*(2/5);
+
         //reset graphs
         const tx = new Tree({edges: [], nodes: []}, d3.select(tree_container3.current));
         tx.render();
@@ -158,6 +165,12 @@ function MinSplit() {
                 const nodeux = {"id": node.id, "name": node.name, "bag": node.bag.concat(nodex.bag)}
                 treeux.nodes.push(nodeux);
             });
+    
+            let big_tree = JSON.parse(JSON.stringify(treeux)); 
+            let Wnode = treeux.nodes.find(node => node.name === "W");
+            Wnode.stuck = true;
+            Wnode.x = tree_container.current.clientWidth/2;
+            Wnode.y = tree_container.current.clientHeight*(2/5);
 
             // swap treeux for treex if desired
             const tx = new Tree(treeux, d3.select(tree_container3.current));
@@ -166,11 +179,12 @@ function MinSplit() {
             const treexn    = treex.nodes.find(node => node.name === "W");
             treexn.y_div    = 3.1;
             treexn.y_offset = -1;
+            
             tx.render();
 
 
 
-            const Tp = T_2_TD(treeux, C, X);
+            const Tp = T_2_TD(big_tree, C, X);
             const t2  = new Tree(Tp, d3.select(tree_container2.current));
             t2.X = X;
             t2.C = C;
