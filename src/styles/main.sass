@@ -1262,9 +1262,44 @@ svg, .svg_label
 .flex
     display: flex
     align-items: center
+    &.vert
+        flex-direction: column
+ 
 
 .adjust-ion
     display: inline-block
     ion-icon
         margin-bottom: -2px
         margin-left: 2px
+
+.button-loading
+    display: flex
+    align-items: center
+    justify-content: center
+    margin: 10px 0
+    width: 60px
+    height: 33px
+    // border: 1px solid red
+    overflow: hidden
+    .preloader-wrapper
+        height: 25px
+        width: 25px
+        .spinner-layer
+            border-color: orange
+
+.done
+    display: flex
+    justify-content: center
+    align-items: center
+    // 
+
+    ion-icon
+        border: $border-settings
+        border-radius: 6px
+        border-color: black
+        background: #303030
+        font-size: 24px
+        color: $cx
+        height: 20px
+        width: 35px
+        margin-right: 8px
