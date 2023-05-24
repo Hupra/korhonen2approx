@@ -344,6 +344,12 @@ line.xclude
             box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3)
             // transition: filter 0.2s ease-in-out
             transition: 0.2s ease-in-out
+            &.rev
+                display: block
+                color: white !important
+                background-color: #303030 !important
+                padding: 7px
+                font-size: 13px
 
         .overlay
             position: absolute
@@ -1303,3 +1309,11 @@ svg, .svg_label
         height: 20px
         width: 35px
         margin-right: 8px
+
+.codeblock
+    display: inline-block
+    padding: 10px
+    border-radius: 6px
+    border: $border-settings
+    background-color: white
+    color: black

@@ -7,6 +7,8 @@ import hourglass_graph from '../graphs/graphBS2.json'
 import hourglass_tree from '../graphs/graphBS2-tree.json'
 import baby_graph from '../graphs/baby-graph.json'
 import baby_tree from '../graphs/baby-graph-tree.json'
+import empty_graph from '../graphs/empty-graph.json'
+import empty_tree from '../graphs/empty-graph-tree.json'
 // import tree from '../graphs/graphBS2-tree-TEST.json'
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
@@ -106,6 +108,7 @@ function Playground() {
     const quickload1 = useRef();
     const quickload2 = useRef();
     const quickload3 = useRef();
+    const quickload4 = useRef();
     const max_length = 10;
     
     
@@ -130,7 +133,7 @@ function Playground() {
         let tcounter = Math.max(...XX_tree.nodes.map(node => node.id));
 
         // find and highlight min split if any exist!
-        find_min_split.current.addEventListener('click', async function(){
+        find_min_split.current.addEventListener('click', async function(e){
 
             set_loading(true);
             
@@ -223,6 +226,7 @@ function Playground() {
                 set_page_state(2);
             }else{
                 set_done(true);
+                correcto(e.clientX, e.clientY, "Perfect!");
             }
 
             set_loading(false);
@@ -476,6 +480,10 @@ function Playground() {
             await init_graph(XX_graph, XX_tree);
         });
 
+        quickload4.current.addEventListener('click', async function(){
+            await init_graph(empty_graph, empty_tree);
+        });
+
 
 
 
@@ -515,7 +523,6 @@ function Playground() {
 
                 const [x, y] = d3.pointer(event);
                 add_vertex({id: ++counter, x, y});
-                if((g.nodes.length-6===3 && g.links.length-6>=3)) correcto(event.clientX, event.clientY, "Perfect!");
                 
                 vertexLock.unlock();
                 set_done(false);
@@ -800,6 +807,7 @@ function Playground() {
                 <button ref={quickload1}>Simple</button>
                 <button ref={quickload2}>Hourglass</button>
                 <button ref={quickload3}>Square</button>
+                <button ref={quickload4}>Empty</button>
             </div>
 
         </div>

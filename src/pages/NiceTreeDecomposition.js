@@ -1,12 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import AnimatedPage from './components/AnimatedPage';
-import { InlineMath } from 'react-katex';
+import { InlineMath, BlockMath } from 'react-katex';
 import SB from './components/SB';
 import {Tree} from "../classes.js"
 import * as d3 from 'd3';
 import graph from '../graphs/graph1.json'
-import tree from '../graphs/graph1-tree.json'
+import treeee from '../graphs/graph1-tree.json'
 import * as DP from '../DP.js'
+import { Link } from 'react-router-dom';
+
 
 
 
@@ -15,10 +17,14 @@ function NiceTreeDeomposition() {
   const tree_container1 = useRef();
   const tree_container2 = useRef();
   const leaf = useRef();
+  const [show_nice, set_show_nice] = useState(true);
   const [data, set_data] = useState([]);
 
 
+
     useEffect(() => {
+
+        let tree = JSON.parse(JSON.stringify(treeee));
 
         let node = tree.nodes.find(node => node.name === "W");
         node.stuck = true;
@@ -122,46 +128,52 @@ function NiceTreeDeomposition() {
 
         const t3 = new Tree(test, d3.select(leaf.current));
         t3.render();
-        
 
-
-
-
-        let U = DP.init_U(nice_td);
-
-        let target_bag = 1;
-        let res;
-        let best_h;
-        for (let h = 0; h <= 4; h++) {
-            DP.try_h(U , target_bag, h, graph, nice_td);
-            res = DP.res_h(U, target_bag, h);
-            best_h = h;
-            if(res.length>1) break;
-        }
-        // console.log(DP.res_h(U, 1, 2)[0][0]);
-        // DP.print_state(DP.res_h(U, 1, 2)[0][0],[1,2,3,4,5,6,7,8])
-
-        t2.svg_nodes.call(d3.drag()
-        .on('start', (e,d) => 
-        {
-          let curRes = DP.res_h(U, d.id, best_h);
-          console.log(curRes);
-
-          let data = curRes.map(inst => {
-            let h    = best_h;
-            let cccx = inst[0];
-            let dist = inst[1];
-
-            return [h, dist, DP.find_res(U, d.id, h, graph, nice_td, cccx)];
-          })
-          console.log("data", data);
-          set_data(data);
-          })
-      );
-
-      
 
     }, []);
+
+
+    const forget = `
+    f(h,i,p)  =  (h - |X \\cap B_i|) + \\min \\begin{cases} 
+    f(h,j,(v \\cup (C_1\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_2\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_3\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (X\\cap B_i))), \\\\
+    f(h,j,(\\phantom{\\mathstrut v \\cup\\,}(C_1\\cap B_i), v \\cup (C_2\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_3\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (X\\cap B_i))), \\\\
+    f(h,j,(\\phantom{\\mathstrut v \\cup\\,}(C_1\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_2\\cap B_i), v \\cup (C_3\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (X\\cap B_i))), \\\\
+    f(h,j,(\\phantom{\\mathstrut v \\cup\\,}(C_1\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_2\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_3\\cap B_i), v \\cup (X\\cap B_i))) 
+    \\end{cases}
+    `;
+    const introduce = `
+    f(h,i,p)  =  (h - |X \\cap B_i|) + f(h_v,j,((C_1 \\cap B_i)\\setminus v, (C_2 \\cap B_i)\\setminus v, (C_3 \\cap B_i)\\setminus v, (X \\cap B_i)\\setminus v))
+    `;
+    const introduce2 = `
+    f(h,i,p)  = (h - |X \\cap B_i|) +  
+    \\begin{cases} 
+    f(h-1,j,((C_1 \\cap B_i)\\phantom{\\setminus v}, (C_2 \\cap B_i)\\phantom{\\setminus v}, (C_3 \\cap B_i)\\phantom{\\setminus v}, (X \\cap B_i)\\setminus v)) & \\text{if } v \\subseteq X, \\\\
+    f(h\\phantom{-1},j,((C_1 \\cap B_i)\\setminus v, (C_2 \\cap B_i)\\phantom{\\setminus v}, (C_3 \\cap B_i)\\phantom{\\setminus v}, (X \\cap B_i)\\phantom{\\setminus v})) & \\text{if } v \\subseteq C_1, \\\\
+    f(h\\phantom{-1},j,((C_1 \\cap B_i)\\phantom{\\setminus v}, (C_2 \\cap B_i)\\setminus v, (C_3 \\cap B_i)\\phantom{\\setminus v}, (X \\cap B_i)\\phantom{\\setminus v})) & \\text{if } v \\subseteq C_2, \\\\
+    f(h\\phantom{-1},j,((C_1 \\cap B_i)\\phantom{\\setminus v}, (C_2 \\cap B_i)\\phantom{\\setminus v}, (C_3 \\cap B_i)\\setminus v, (X \\cap B_i)\\phantom{\\setminus v})) & \\text{if } v \\subseteq C_3 \\\\
+\\end{cases}
+
+    `;
+    const leaftxt = `
+            f(h,i,p) = 
+            \\begin{cases} 
+                \\infty & \\text{if } h \\neq 0, \\\\
+                0 & \\text{otherwise}
+            \\end{cases}
+        `;
+
+        const join = `f(h,i,p) = \\min_{h_1 + h_2 = h_{\\notin B_i}} \\, f(h_{\\in B_i} + h_1, j, p) + f(h_{\\in B_i} + h_2, k, p)
+    `;
+
+    function mi(x) {
+      if(x === "T") tree_container1.current.parentNode.classList.add('reftar');
+      if(x === "nice") tree_container2.current.parentNode.classList.add('reftar');
+    }
+
+    function mo() {
+        tree_container1.current.parentNode.classList.remove('reftar');
+        tree_container2.current.parentNode.classList.remove('reftar');
+    }
 
 
   return (
@@ -178,51 +190,44 @@ function NiceTreeDeomposition() {
         </div>
         <div>
         <h4>Leaf</h4>
-        <p><InlineMath>{'\\text{No children, } B_i=\\emptyset'}</InlineMath></p>
+        <p><InlineMath>{'\\text{No children with, } B_i=\\emptyset'}</InlineMath></p>
         <h4 style={{marginTop: 0}}>Introduce</h4>
         <p><InlineMath>{'\\text{One child } j \\text{ with } B_i=B_j \\cup \\{v\\} \\text{ for some vertex } v, B_i \\supset B_j'}</InlineMath></p>
         <h4 style={{marginTop: 0}}>Forget</h4>
         <p><InlineMath>{'\\text{One child } j \\text{ with } B_i=B_j \\setminus \\{v\\} \\text{ for some vertex } v, B_i \\subset B_j'}</InlineMath></p>
         <h4 style={{marginTop: 0}}>Join</h4>
-        <p><InlineMath>{'\\text{Two children } j_1, j_2 \\text{ with } B_i = B_{j_1} = B_{j_2}'}</InlineMath></p>
+        <p><InlineMath>{'\\text{Two children } j, k \\text{ with } B_i = B_j = B_k'}</InlineMath></p>
         <hr></hr>
-        <p>Write about r as root, because we want W to be split.</p>
+        <h3 className={"mt0"}>Finding a minimum split of <InlineMath>W</InlineMath></h3>
+        <p>To find a minimum split 
+          of <InlineMath>W</InlineMath>, we 
+          transform <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> into a nice tree 
+          decomposition <span className='ref' onMouseOver={() => mi("nice")} onMouseOut={mo}><InlineMath math="T_{nice}"/></span> by creating a 
+          node <InlineMath>r</InlineMath> followed by a set 
+          of forget nodes until we 
+          reach <InlineMath>W</InlineMath>, at which point we 
+          transform the rest 
+          of <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> into <span className='ref' onMouseOver={() => mi("nice")} onMouseOut={mo}><InlineMath math="T_{nice}"/></span> with 
+          leaf, introduce, forget and join nodes.
+          Once we have 
+          created <span className='ref' onMouseOver={() => mi("nice")} onMouseOut={mo}><InlineMath math="T_{nice}"/></span>, we run a 
+          dynamic programming algorithm over this tree decomposition to obtain a minimum split 
+          of <InlineMath>W</InlineMath>.
+            </p><p>
+To see the dynamic programming algorithm, click the 'Show DP' button, but feel free to skip this if you are not interested at a technical level.</p>
+        <button onClick={() => set_show_nice(!show_nice)}>{show_nice ? "Hide DP" : "Show DP"}</button>
 
+        <hr/>
 
-        {data.map((item, idx) => {
-          console.log("yup")
-        const [h, dist, cccx] = item;
-        const {C1, C2, C3, X} = cccx;
+    <p><i>On the next and final page, you can create a 
+      graph and run the entire algorithm, including 
+      finding a minimum split, finding the different 
+      subtrees, and splitting the editable subtree.</i></p>
+      <Link to="/sandbox" className='button'>Continue<ion-icon name="arrow-forward-outline"></ion-icon></Link><br/><i>Next: Algorithm Sandbox</i>
 
-        return (<> 
-      <div className='items'>
-        <InlineMath math={"|X|=" + h.toString() }/>
-        <InlineMath math={"d(X)=" + dist.toString() }/>
-      </div>
-
-        <div className='items'><div>
-            <InlineMath math={"X  = \\{"}/>
-            <div className={"X"}><InlineMath math={X.toString()} /></div>
-            <InlineMath math={"\\}"}/>
-        </div></div>
- 
-        {[C1,C2,C3].map((item, idx) => {
-            const e = "\\}";
-            return (
-            <React.Fragment key={idx}>
-                <div className='items'><div>
-                <InlineMath math={"C_"+(idx+1).toString()+"=\\{"} />
-                <div className={"C"+(idx+1).toString()}><InlineMath math={item.toString()} /></div>
-                <InlineMath math={e} />
-                </div></div>
-            </React.Fragment>
-        )})}
-      <br/>
-
-        </>)
         
-        })}
 
+       
     </div>
       </SB></div>
     </div>
@@ -235,8 +240,43 @@ function NiceTreeDeomposition() {
       </div>
       <div className='wall'><ion-icon name="arrow-forward-outline"></ion-icon></div>
       <div className='svg_container'>
-        <div className='svg_label'>Nice Tree Decomposition - <InlineMath math="T_{nice}"/> <InlineMath math={"\\quad\\quad\\quad r=root"}/></div>
+        <div className='svg_label'>Nice Tree Decomposition - <InlineMath math="T_{nice}"/> <InlineMath math={"\\quad\\mid\\quad r=root"}/></div>
         <svg ref={tree_container2} className="cy" width="100%" height="100%"></svg>
+      </div>
+      <div className={'overlay' + (show_nice?"":" gone")} onClick={() => set_show_nice(false)}/>
+
+      <div className={'svg_popup rev'  + (show_nice?"":" to_the_depths")}>
+      <SB style={{ height: '100vh', width: '100vw' }}>
+        <div>
+
+          <h2>Dynamic Programming for finding a Minimum split</h2>
+          <h4>Leaf</h4>
+          <div className='exercise'>
+          <p>explanation</p>
+          <div className={"codeblock"}><InlineMath math={leaftxt} /></div>
+          </div>
+
+          <h4>Introduce</h4>
+          <div className='exercise'>
+          <p>explanation</p>
+          <div className={"codeblock"}><InlineMath math={introduce2} /></div>
+          </div>
+
+          <h4>Forget</h4>
+          <div className='exercise'>
+          <p>explanation</p>
+          <div className={"codeblock"}><InlineMath math={forget} /></div>
+          </div>
+
+
+          <h4>Join</h4>
+          <div className='exercise'>
+          <p>explanation</p>
+          <div className={"codeblock"}><InlineMath math={join} /></div>
+          </div>
+          <div style={{height: "500px"}}></div>
+        </div>
+        </SB>
       </div>
     </div>
     </AnimatedPage>

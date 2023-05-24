@@ -6,7 +6,7 @@ import SB from './components/SB';
 import {Graph, Tree} from "../classes.js"
 import * as d3 from 'd3';
 import graph from '../graphs/graph1.json'
-import tree from '../graphs/graph1-tree.json'
+import treee from '../graphs/graph1-tree.json'
 import treef from '../graphs/graph1-tree-fixed.json'
 
 
@@ -18,7 +18,7 @@ function Introduction() {
 
     useEffect(() => {
 
-        tree = JSON.parse(JSON.stringify(tree));
+        let tree = JSON.parse(JSON.stringify(treee));
 
         let node = tree.nodes.find(node => node.name === "W");
         node.stuck = true;
@@ -135,7 +135,6 @@ function Introduction() {
             <div className='svg_label'>Tree Decomposition - <InlineMath math="T'"/></div>
             <svg ref={tree_container2} className="cy" width="100%" height="100%"></svg>
         </div>
-    {/* <Sandbox/> */}
     </div>
     </AnimatedPage>
 
