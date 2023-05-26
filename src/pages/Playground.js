@@ -727,11 +727,8 @@ function Playground() {
     <SB style={{ height: '100vh', width: '100vw' }}>
 
         <h2>Sandbox</h2>
-        <p><i>The following page lets you modify and build a graph 
-            with a corresponding initial far-from-perfect 
-            tree decomposition. This 
-            tree decomposition will then be improved by 
-            iteratively running the algorithm.</i></p>
+        <p><i>This page lets you modify and build a graph with a corresponding initial unoptimized tree decomposition. 
+            This tree decomposition can then be improved by iteratively running the algorithm.</i></p>
         <hr/>
 
 
@@ -774,12 +771,10 @@ function Playground() {
 
             {done && <>
                 <p>
-                The tree 
-                decomposition  <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> has reached the minimal form 
-                guaranteed by the algorithm, as no further minimum 
-                splits can be found. This brings us to the end of our 
-                exploration of the algorithm. We hope that this 
-                walkthrough has been educational for you.
+                The tree decomposition  <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> has 
+                reached the minimum width guaranteed by the algorithm, as no further minimum splits can be found. 
+                This brings us to the end of our exploration of the algorithm. 
+                We hope that this walkthrough has been educational and enjoyable for you.
                 </p>
 
                 <hr/><br/>
@@ -794,11 +789,10 @@ function Playground() {
             <p>Add vertices to <span className='ref' onMouseOver={() => mi("G")} onMouseOut={mo}><InlineMath math="G"/></span> by 
             clicking somewhere in the canvas, or edges by dragging the mouse from one vertex to another.</p>
 
-            <p>The current tree decomposition <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> will
-            automatically be adjusted as vertices and edges are added. Furhermore, 
-            once an iteration of the algorithm has been run 
-            the new improved tree decomposition will be shown 
-            in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>.</p>
+            <p>The current tree decomposition <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span> will 
+            automatically be adjusted as vertices and edges are added. 
+            Furthermore, once an iteration of the algorithm has been run, the new improved tree decomposition 
+            will be shown in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>.</p>
             </>}
             <div>
                 <h3>Quickload</h3>
@@ -827,10 +821,11 @@ function Playground() {
         <h2 style={{marginTop: "10px"}}>Minimum Split</h2>
         <div className='exercise'>
 
-        <p style={{margin: 0}}><i>Optionally check the nice tree decomposition used to find this minimum split:</i></p>
-        <button onClick={() => set_show_nice(!show_nice)}>{show_nice ? "Hide nice tree decomposition" : "Show nice tree decomposition"}</button>
-
-            
+        <p>A minimum split of <InlineMath math="W"/> was found and is shown 
+            in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={mo}><InlineMath math="G"/></span>.</p>
+        <p>Using this minimum split we will improve the tree decomposition by reducing the size of <InlineMath math="W"/>.</p>
+        
+                    
             <div className='items'>
                 <div>
                     <span className="X" style={{marginRight: "4px"}}><InlineMath math={"X"}/></span><InlineMath math={"  = \\{"}/>
@@ -860,9 +855,9 @@ function Playground() {
                 </React.Fragment>
             )})}
         <br></br>
-            <p>A minimum split of <InlineMath math="W"/> was found and is shown 
-            in <span className='ref' onMouseOver={() => mi("G")} onMouseOut={mo}><InlineMath math="G"/></span>.</p>
-        <p>Using this minimum split we will improve the tree decomposition by reducing the size of <InlineMath math="W"/>.</p>
+        <p style={{margin: 0}}><i>Optional: Click the button below if you want to see the nice tree decomposition used to find this minimum split:</i></p>
+        <button onClick={() => set_show_nice(!show_nice)}>{show_nice ? "Hide nice tree decomposition" : "Show nice tree decomposition"}</button>
+            
 
         
         </div>
@@ -879,7 +874,7 @@ function Playground() {
         <div className='exercise'>
 
         <p>Now that a minimum split is found, we will initialize the pruning process 
-            by finding <span className='ref' onMouseOver={() => mi("TB")} onMouseOut={mo}><InlineMath math="T"/></span>'s different 
+            by finding <span className='ref' onMouseOver={() => mi("TB")} onMouseOut={mo}><InlineMath math="T"/></span>'s 
             editable and non-editable subtrees.</p>
         </div>
 
@@ -894,7 +889,7 @@ function Playground() {
         <h2 style={{marginTop: "10px"}}>Subtrees</h2>
         <div className='exercise'>
 
-        <p>The different editable and non-editable subtrees are now highlighted 
+        <p>The editable and non-editable subtrees are now highlighted 
             in <span className='ref' onMouseOver={() => mi("TB")} onMouseOut={mo}><InlineMath math="T"/></span>.</p>
             
             <p>Next, we disconnect the editable subtree 
@@ -913,7 +908,7 @@ function Playground() {
 
         <h2 style={{marginTop: "10px"}}>Splittng <InlineMath math="T"/></h2>
         <div className='exercise'>
-            <p>Next we split the editable 
+            <p>Next, we split the editable 
                 subtree into <InlineMath>T^1, T^2, T^3</InlineMath>. These trees 
                 are then connected using a newly 
                 created node with a bag that contains the separator <InlineMath>X</InlineMath>.
@@ -933,13 +928,10 @@ function Playground() {
         <h2 style={{marginTop: "10px"}}>Combining subtrees</h2>
         <div className='exercise'>
             
-            <p>Now that the editable subtree has been split, the 
-        only thing left to do is reattach the non-editable 
-        subtrees to the editable subtree. We do this 
-        by making an edge from the root of 
-        the non-editable subtree to the 
-        version of its original parent node 
-        that intersects the same component.   
+            <p>Now that the editable subtree has been split, 
+                the last step is to reattach the non-editable subtrees to the editable subtree. 
+                This is done by making an edge from the root of the non-editable subtree 
+                to the version of its original parent node that intersects the same component.   
             </p>
         </div>
 
@@ -954,10 +946,10 @@ function Playground() {
         <h2 style={{marginTop: "10px"}}>Iteration Done</h2>
         <div className='exercise'>
             
-            <p>A full iteration has now been completed, reducing the width of the largest bag 
+            <p>A full iteration of the algorithm has now been completed, reducing the width of a largest bag 
                 in <span className='ref' onMouseOver={() => mi("T")} onMouseOut={mo}><InlineMath math="T"/></span>.</p>
-            <p>We will continue to implement this procedure until we 
-                reach a point where the size of the largest bag can no longer be reduced.</p>
+                <p>We will continue to implement this procedure until we reach a point 
+                    where the size of a largest bag can no longer be reduced.</p>
         </div>
 
         <p><i>Click the <span className='adjust-ion'><ion-icon name="play-forward-outline"></ion-icon></span> button 
