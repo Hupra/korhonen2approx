@@ -1,0 +1,31 @@
+{
+    "nodes": [
+        { "id": 1, "bag": [1,2,3,7,9], "name": "W", "sup": 1},
+        { "id": 2, "bag": [1,2,9], "name": "A", "sup": 1},
+        { "id": 3, "bag": [3,7], "name": "B", "sup": 1},
+
+        { "id": 4, "bag": [3,4,7,8,9], "name": "W", "sup": 2},
+        { "id": 5, "bag": [9], "name": "A", "sup": 2},
+        { "id": 6, "bag": [3,4,7,8,10], "name": "B", "sup": 2},
+
+        { "id": 7, "bag": [3,5,6,7,9], "name": "W", "sup": 3},
+        { "id": 8, "bag": [5,6,9], "name": "A", "sup": 3},
+        { "id": 9, "bag": [3,7], "name": "B", "sup": 3},
+
+        { "id": 10, "bag": [3,7,9], "name": "X"}
+    ],
+    "edges": [
+        { "source": 1, "target": 2},
+        { "source": 1, "target": 3},
+
+        { "source": 4, "target": 5},
+        { "source": 4, "target": 6},
+
+        { "source": 7, "target": 8},
+        { "source": 7, "target": 9},
+
+        { "source": 10, "target": 1},
+        { "source": 10, "target": 4},
+        { "source": 10, "target": 7}
+    ]
+}

@@ -7,7 +7,7 @@ import {Graph, Tree} from "../classes.js"
 import * as d3 from 'd3';
 import graph from '../graphs/graph1.json'
 import treee from '../graphs/graph1-tree.json'
-import treef from '../graphs/graph1-tree-fixed.json'
+import treef from '../graphs/graph1-tree-fixed3.json'
 
 
 
@@ -27,8 +27,30 @@ function Introduction() {
 
         node = treef.nodes.find(node => node.name === "X");
         node.stuck = true;
-        node.x = tree_container2.current.clientWidth/2-5;
-        node.y = tree_container2.current.clientHeight*(1/3);
+        node.x = tree_container2.current.clientWidth/2;
+        node.y = tree_container2.current.clientHeight*(1.6/4);
+
+
+        for (let node of treef.nodes) {
+          if(node.name === "W"){
+            node.stuck = true;
+            node.x = tree_container2.current.clientWidth*((parseInt(node.sup))/4);
+            node.y = tree_container2.current.clientHeight*(1/2);
+          }
+
+          if(node.name === "A"){
+            node.stuck = true;
+            node.x = tree_container2.current.clientWidth*(((parseInt(node.sup)*2)-1)/7);
+            node.y = tree_container2.current.clientHeight*(2.4/4);
+          }
+
+          if(node.name === "B"){
+            node.stuck = true;
+            node.x = tree_container2.current.clientWidth*(((parseInt(node.sup)*2))/7);
+            node.y = tree_container2.current.clientHeight*(2.4/4);
+          }
+
+        }
 
         const t1 = new Tree(tree, d3.select(tree_container1.current));
         const t2 = new Tree(treef, d3.select(tree_container2.current));

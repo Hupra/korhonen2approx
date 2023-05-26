@@ -39,7 +39,7 @@ function App() {
         
         <div className={!fullNav ? ' location active' : 'location'}>
         <a href='' onClick={() => setFullNav(!fullNav)}><ion-icon name="reorder-four-outline"></ion-icon></a>
-          <NavLink activeclassname='active' to="/" exact="true">H</NavLink>
+          <NavLink activeclassname='active' to="/" exact="true"><ion-icon name="home-outline"></ion-icon></NavLink>
           <NavLink activeclassname='active' to="/treedecomposition">T</NavLink>
           <NavLink activeclassname='active' to="/introduction">I</NavLink>
           <NavLink activeclassname='active' to="/separators">S</NavLink>
