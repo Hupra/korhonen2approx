@@ -293,13 +293,14 @@ function SplittingT() {
             results in three new bags consisting of the following 
             sets:
         </p>
-            <ul style={{marginTop: "10px", marginLeft: "15px"}}>
+            <ul>
                 <li><InlineMath math=" B^1 = B \cap (C_1 \cup X)"/></li>
                 <li><InlineMath math=" B^2 = B \cap (C_2 \cup X)"/></li>
                 <li><InlineMath math=" B^3 = B \cap (C_3 \cup X)"/></li>
             </ul>
             
             
+        {page_ready && page_state < 4 && <>
         <hr/>
         <h2>Exercises</h2>
         <div className='exercise'>
@@ -312,8 +313,9 @@ function SplittingT() {
             { page_ready && page_state === 3 && <PuzzleSeparator i={page_state}/>}
             
         
-        </div>
-        <br/><hr/>
+        </div><br/>
+        </>}
+        <hr/>
         { page_ready && page_state === 4 && <PuzzleDone i={page_state}/>}
 
         {(page_state > 3) ?

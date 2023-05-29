@@ -346,10 +346,20 @@ line.xclude
             transition: 0.2s ease-in-out
             &.rev
                 display: block
-                color: white !important
-                background-color: #303030 !important
+                background-color: white !important
+                color: #101010 !important
+                left: 50%
+                transform: translateX(-50%)
                 padding: 7px
                 font-size: 13px
+                max-width: 940px
+                width: 90%
+                height: 90%
+                transition: 0
+
+                ul
+                    li
+                        margin-left: 20px
 
         .overlay
             position: absolute
@@ -361,6 +371,7 @@ line.xclude
             background-color: rgba(0,0,0,0.5)
             z-index: 2
             transition: background 0.2s ease-in-out
+            cursor: pointer
             &.gone
                 background-color: rgba(0,0,0,0)
                 visibility: hidden !important
@@ -1315,5 +1326,11 @@ svg, .svg_label
     padding: 10px
     border-radius: 6px
     border: $border-settings
-    background-color: white
-    color: black
+    color: white
+    background-color: #151515
+
+ul
+    margin-top: 0
+    li
+        margin-left: 20px
+        list-style: circle !important

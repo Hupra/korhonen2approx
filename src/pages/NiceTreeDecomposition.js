@@ -17,7 +17,7 @@ function NiceTreeDeomposition() {
   const tree_container1 = useRef();
   const tree_container2 = useRef();
   const leaf = useRef();
-  const [show_nice, set_show_nice] = useState(false);
+  const [show_nice, set_show_nice] = useState(true);
   const [data, set_data] = useState([]);
 
 
@@ -131,38 +131,75 @@ function NiceTreeDeomposition() {
 
 
     }, []);
-
-
+    
+    // \\phantom{\\mathstrut v \\cup\\,}
     const forget = `
-    f(h,i,p)  =  (h - |X \\cap B_i|) + \\min \\begin{cases} 
-    f(h,j,(v \\cup (C_1\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_2\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_3\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (X\\cap B_i))), \\\\
-    f(h,j,(\\phantom{\\mathstrut v \\cup\\,}(C_1\\cap B_i), v \\cup (C_2\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_3\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (X\\cap B_i))), \\\\
-    f(h,j,(\\phantom{\\mathstrut v \\cup\\,}(C_1\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_2\\cap B_i), v \\cup (C_3\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (X\\cap B_i))), \\\\
-    f(h,j,(\\phantom{\\mathstrut v \\cup\\,}(C_1\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_2\\cap B_i),\\phantom{\\mathstrut v \\cup\\,} (C_3\\cap B_i), v \\cup (X\\cap B_i))) 
+    U[h,i,p]  =  (h - |X \\cap B_i|) + \\min \\begin{cases} 
+    U[h,j,(
+      (C_1\\cap B_i)\\cup \\{v\\},
+      (C_2\\cap B_i),\\phantom{\\cup \\{v\\},}
+      (C_3\\cap B_i),\\phantom{\\cup \\{v\\},}
+      (X\\cap B_i)\\phantom{\\cup \\{v\\}}
+      )], \\\\
+    U[h,j,(
+      (C_1\\cap B_i),\\phantom{\\cup \\{v\\},}
+      (C_2\\cap B_i)\\cup \\{v\\},
+      (C_3\\cap B_i),\\phantom{\\cup \\{v\\},}
+      (X\\cap B_i)\\phantom{\\cup \\{v\\}}
+      )], \\\\
+    U[h,j,(
+      (C_1\\cap B_i),\\phantom{\\cup \\{v\\},}
+      (C_2\\cap B_i),\\phantom{\\cup \\{v\\},}
+      (C_3\\cap B_i)\\cup \\{v\\}, 
+      (X\\cap B_i)\\phantom{\\cup \\{v\\}}
+      )], \\\\
+    U[h,j,(
+      (C_1\\cap B_i),\\phantom{\\cup \\{v\\},}
+      (C_2\\cap B_i),\\phantom{\\cup \\{v\\},}
+      (C_3\\cap B_i),\\phantom{\\cup \\{v\\},}
+      (X\\cap B_i)\\cup \\{v\\}
+      )] 
     \\end{cases}
     `;
-    const introduce = `
-    f(h,i,p)  =  (h - |X \\cap B_i|) + f(h_v,j,((C_1 \\cap B_i)\\setminus v, (C_2 \\cap B_i)\\setminus v, (C_3 \\cap B_i)\\setminus v, (X \\cap B_i)\\setminus v))
-    `;
     const introduce2 = `
-    f(h,i,p)  = (h - |X \\cap B_i|) +  
+    U[h,i,p]  = (h - |X \\cap B_i|) +  
     \\begin{cases} 
-    f(h-1,j,((C_1 \\cap B_i)\\phantom{\\setminus v}, (C_2 \\cap B_i)\\phantom{\\setminus v}, (C_3 \\cap B_i)\\phantom{\\setminus v}, (X \\cap B_i)\\setminus v)) & \\text{if } v \\subseteq X, \\\\
-    f(h\\phantom{-1},j,((C_1 \\cap B_i)\\setminus v, (C_2 \\cap B_i)\\phantom{\\setminus v}, (C_3 \\cap B_i)\\phantom{\\setminus v}, (X \\cap B_i)\\phantom{\\setminus v})) & \\text{if } v \\subseteq C_1, \\\\
-    f(h\\phantom{-1},j,((C_1 \\cap B_i)\\phantom{\\setminus v}, (C_2 \\cap B_i)\\setminus v, (C_3 \\cap B_i)\\phantom{\\setminus v}, (X \\cap B_i)\\phantom{\\setminus v})) & \\text{if } v \\subseteq C_2, \\\\
-    f(h\\phantom{-1},j,((C_1 \\cap B_i)\\phantom{\\setminus v}, (C_2 \\cap B_i)\\phantom{\\setminus v}, (C_3 \\cap B_i)\\setminus v, (X \\cap B_i)\\phantom{\\setminus v})) & \\text{if } v \\subseteq C_3 \\\\
+    U[h-1,j,(
+      (C_1 \\cap B_i),\\phantom{\\setminus \\{v\\}a} 
+      (C_2 \\cap B_i),\\phantom{\\setminus \\{v\\}a} 
+      (C_3 \\cap B_i),\\phantom{\\setminus \\{v\\}a} 
+      (X \\cap B_i)\\setminus \\{v\\})
+     ] & \\text{if } v \\in X, \\\\
+    U[h,\\phantom{WA}j,(
+      (C_1 \\cap B_i)\\setminus \\{v\\}, 
+      (C_2 \\cap B_i),\\phantom{\\setminus \\{v\\}a} 
+      (C_3 \\cap B_i),\\phantom{\\setminus \\{v\\}a} 
+      (X \\cap B_i)\\phantom{\\setminus \\{v\\}}
+      )] & \\text{if } v \\in C_1, \\\\
+    U[h,\\phantom{WA}j,(
+      (C_1 \\cap B_i),\\phantom{\\setminus \\{v\\}a} 
+      (C_2 \\cap B_i)\\setminus \\{v\\}, 
+      (C_3 \\cap B_i),\\phantom{\\setminus \\{v\\}a} 
+      (X \\cap B_i)\\phantom{\\setminus \\{v\\}})
+     ] & \\text{if } v \\in C_2, \\\\
+    U[h,\\phantom{WA}j,(
+      (C_1 \\cap B_i),\\phantom{\\setminus \\{v\\}a} 
+      (C_2 \\cap B_i),\\phantom{\\setminus \\{v\\}a} 
+      (C_3 \\cap B_i)\\setminus \\{v\\}, 
+      (X \\cap B_i)\\phantom{\\setminus \\{v\\}})
+     ] & \\text{if } v \\in C_3 \\\\
 \\end{cases}
 
     `;
     const leaftxt = `
-            f(h,i,p) = 
+            U[h,i,p] = 
             \\begin{cases} 
                 \\infty & \\text{if } h \\neq 0, \\\\
                 0 & \\text{otherwise}
             \\end{cases}
         `;
 
-        const join = `f(h,i,p) = \\min_{h_1 + h_2 = h_{\\notin B_i}} \\, f(h_{\\in B_i} + h_1, j, p) + f(h_{\\in B_i} + h_2, k, p)
+        const join = `U[h,i,p] = \\min_{h_1 + h_2 = h_{\\notin B_i}} \\, U[h_{\\in B_i} + h_1, j, p] + U[h_{\\in B_i} + h_2, k, p]
     `;
 
     function mi(x) {
@@ -189,14 +226,15 @@ function NiceTreeDeomposition() {
           <svg ref={leaf} className="cy" width="100%" height="100%"></svg>
         </div>
         <div>
+          
         <h4>Leaf</h4>
-        <p><InlineMath>{'\\text{No children with, } B_i=\\emptyset'}</InlineMath></p>
+        <p><InlineMath>{'\\text{No children, and } B_i=\\emptyset'}</InlineMath>.</p>
         <h4 style={{marginTop: 0}}>Introduce</h4>
-        <p><InlineMath>{'\\text{One child } j \\text{ with } B_i=B_j \\cup \\{v\\} \\text{ for some vertex } v, B_i \\supset B_j'}</InlineMath></p>
+        <p><InlineMath>{'\\text{One child } j \\text{ with } B_i=B_j \\cup \\{v\\} \\text{ for some vertex } v \\notin B_j'}</InlineMath>.</p>
         <h4 style={{marginTop: 0}}>Forget</h4>
-        <p><InlineMath>{'\\text{One child } j \\text{ with } B_i=B_j \\setminus \\{v\\} \\text{ for some vertex } v, B_i \\subset B_j'}</InlineMath></p>
+        <p><InlineMath>{'\\text{One child } j \\text{ with } B_i=B_j \\setminus \\{v\\} \\text{ for some vertex } v \\in B_j'}</InlineMath>.</p>
         <h4 style={{marginTop: 0}}>Join</h4>
-        <p><InlineMath>{'\\text{Two children } j, k \\text{ with } B_i = B_j = B_k'}</InlineMath></p>
+        <p><InlineMath>{'\\text{Two children } j \\text{ and } k \\text{ with } B_i = B_j = B_k'}</InlineMath>.</p>
         <hr></hr>
         <h3 className={"mt0"}>Finding a minimum split of <InlineMath>W</InlineMath></h3>
         <p>To find a minimum split 
@@ -247,34 +285,147 @@ To see the dynamic programming algorithm, click the 'Show DP' button, but feel f
 
       <div className={'svg_popup rev'  + (show_nice?"":" to_the_depths")}>
       <SB style={{ height: '100vh', width: '100vw' }}>
-        <div>
+        <div className='DP-text-container'>
 
-          <h2>Dynamic Programming for finding a Minimum split</h2>
-          <h4>Leaf</h4>
+          <h2 style={{marginTop: 0}}>Dynamic Programming for finding a Minimum split</h2>
+
+
+          <h4>General Information</h4>
           <div className='exercise'>
-          <p>explanation</p>
+                  <p>We store the state of our DP in the following table:</p>
+      <p><InlineMath math={'U[h,i,p] = d_i(X)'} /></p>
+      <p>Where <InlineMath math={'d_i(X) = \\infty'} /> is an invalid result, and the variables mean the following:</p>
+      <ul>
+        <li><InlineMath math={'h = |X|'} />, the cardinality of <InlineMath math={'X'} />.</li>
+        <li><InlineMath math={'i'} /> is an integer pointing to a specific bag <InlineMath math={'B_i'} />.</li>
+        <li><InlineMath math={'p'} /> is a 4-partition of the vertices in bag <InlineMath math={'B_i'} />: <InlineMath math={'(C_1\\cap B_i, C_2\\cap B_i, C_3\\cap B_i, X\\cap B_i)'} /></li>
+        <li><InlineMath math={'d_i(X)'} /> is the sum of the distances <InlineMath math={'hb(x)'} /> for all <InlineMath math={'x \\in X'} /> to the bag <InlineMath math={'B_i'} /> in <InlineMath math={'T_{nice}'} /> for a valid split; otherwise, <InlineMath math={'\\infty'} />. <br/>In the case where <InlineMath math={'hb(x)'} /> is above <InlineMath math={'i'} /> in <InlineMath math={'T_{nice}'} />, we consider its distance to <InlineMath math={'B_i'} /> as 0.</li>
+      </ul>
+      <p>Each DP table entry contains the outcome of a split for the subgraph of <InlineMath math={'G'} /> defined by the vertices in <InlineMath math={'B_i'} /> <br/>and the bags located beneath it in <InlineMath math={'T_{nice}'} />.</p>
+      <p>To clarify, as we want to find a minimum split of <InlineMath math={'W'} />, <br/>we first want to find a valid result that minimizes <InlineMath math={'h'} /> for <InlineMath math={'U[h,W,\\dots] = d_W(X)'} /> and secondly <InlineMath math={'d_W(X)'} />.</p>
+      <p>We now explain the logic for the 4 different cases (leaf , forget, introduce, join) and
+<br/>the initial checks that keep the algorithm from recalculating the same states multiple
+times.</p>
+    </div>
+
+          <h4>Initial check</h4>
+          <div className='exercise'>
+            <p>
+              First, if <InlineMath>{'h<0'}</InlineMath>, we set{' '}
+              <InlineMath>{'U[h,i,p] = \\infty'}</InlineMath>. as you can not have a
+              separator of negative cardinality.
+            </p>
+            <p>
+              Secondly we check if the requested state{' '}
+              <InlineMath>{'(h, i, p)'}</InlineMath> has already been determined<br/> by
+              checking <InlineMath>{'U[h,i,p]'}</InlineMath>. If there is a stored
+              result, we simply return it; Otherwise, we continue the recursion.
+            </p>
+          </div>
+
+
+          <h4>Leaf node</h4>
+          <div className='exercise'>
+          <p>
+        As the bag of a leaf node is empty, the only valid size of{' '}
+        <InlineMath>{'X'}</InlineMath> is <InlineMath>{'0'}</InlineMath>; <br/>And because of that, we
+        set <InlineMath>{'U[h,i,p]'}</InlineMath> accordingly:
+      </p>
           <div className={"codeblock"}><InlineMath math={leaftxt} /></div>
           </div>
 
-          <h4>Introduce</h4>
+          <h4>Introduce node</h4>
           <div className='exercise'>
-          <p>explanation</p>
-          <div className={"codeblock"}><InlineMath math={introduce2} /></div>
+          
+          <div>
+      <p>
+        Let <InlineMath>{'j'}</InlineMath> be the child of <InlineMath>{'i'}</InlineMath> and{' '}
+        <InlineMath>{'B_i \\supset B_j'}</InlineMath>, with{' '}
+        <InlineMath>{'\\{v\\} = B_i \\setminus B_j'}</InlineMath>.
+      </p>
+      <p>
+        The first step is to verify that <InlineMath>{'p'}</InlineMath> provides a valid partition of{' '}
+        <InlineMath>{'B_i'}</InlineMath>. <br/>In other words, no edges exist between any of the three
+        components <InlineMath>{'(C_1 \\cap B_i), (C_2 \\cap B_i), (C_3 \\cap B_i)'}</InlineMath> within
+        the graph <InlineMath>{'G'}</InlineMath>. <br/>If such an edge is present, we set{' '}
+        <InlineMath>{'U[h,i,p] = \\infty'}</InlineMath>.
+      </p>
+      <p>
+        Otherwise, to find the result for an introduce case, we look at partition{' '}
+        <InlineMath>{'p'}</InlineMath> of <InlineMath>{'i'}</InlineMath> after the removal of{' '}
+        <InlineMath>{'v'}</InlineMath>. <br/>This entails reducing <InlineMath>{'h'}</InlineMath> by{' '}
+        <InlineMath>{'1'}</InlineMath> in the case where <InlineMath>{'v'}</InlineMath> is in{' '}
+        <InlineMath>{'X'}</InlineMath> for <InlineMath>{'i'}</InlineMath>, but not for{' '}
+        <InlineMath>{'j'}</InlineMath>:
+      </p>
+    </div>
+
+          <p><div className={"codeblock"}><InlineMath math={introduce2} /></div></p>
+      <p>The result is incremented by <InlineMath>{'h-|X \\cap B_i|'}</InlineMath> as we have 
+      moved up in the tree decomposition.</p>
           </div>
 
-          <h4>Forget</h4>
+          <h4>Forget node</h4>
           <div className='exercise'>
-          <p>explanation</p>
-          <div className={"codeblock"}><InlineMath math={forget} /></div>
+          <div>
+            <p>
+              Let <InlineMath>{'j'}</InlineMath> be the child of <InlineMath>{'i'}</InlineMath> and <InlineMath>{'B_i \\subset B_j'}</InlineMath>,
+              with <InlineMath>{'\\{v\\} = B_j\\backslash B_i'}</InlineMath>.
+            </p>
+            <p>
+              The outcome of a forget node is determined by the best result obtained from the various <br/>partitions of <InlineMath>{'B_j'}</InlineMath> that can be reached from the current partition. <br/>This is equivalent to considering 
+              the different strategies for incorporating <InlineMath>{'v'}</InlineMath> into <InlineMath>{'p'}</InlineMath>. 
+              <br/>Therefore, we have the following equation:
+            </p>
+          </div>
+
+          <p><div className={"codeblock"}><InlineMath math={forget} /></div></p>
+          <p>The result is incremented by <InlineMath>{'h-|X \\cap B_i|'}</InlineMath> as we have 
+      moved up in the tree decomposition.</p>
           </div>
 
 
-          <h4>Join</h4>
+          <h4>Join node</h4>
           <div className='exercise'>
-          <p>explanation</p>
+          
+
+          <div>
+      <p>
+        Let <InlineMath>{'j'}</InlineMath> and <InlineMath>{'k'}</InlineMath> be the two children of <InlineMath>{'i'}</InlineMath> with <InlineMath>{'B_i = B_j = B_k'}.</InlineMath>
+      </p>
+
+      <p>
+        The join case comes down to finding the optimal way of dividing 
+        <br/>the variable <InlineMath>{'h'}</InlineMath> between <InlineMath>{'U[h_1, j, p]'}</InlineMath> and <InlineMath>{'U[h_2, k, p]'}</InlineMath>. Some 
+        part of <InlineMath>{'X'}</InlineMath> might be 
+        part of <InlineMath>{'B_i'}</InlineMath>, 
+        <br/>and as such, also <InlineMath>{'B_j'}</InlineMath> and <InlineMath>{'B_k'}</InlineMath>, therefore 
+        the fraction of <InlineMath>{'h'}</InlineMath> that 
+        we want to partition between 
+        <br/>the two child nodes is the 
+        part of <InlineMath>{'h'}</InlineMath>, for which <InlineMath>{'X'}</InlineMath> does not 
+        intersect with <InlineMath>{'B_i'}</InlineMath>. <br/>We denote these fractions of <InlineMath>{'h'}</InlineMath> as follows:  
+      </p>
+
+<p>
+      <div className={"codeblock"}><InlineMath>
+        {'h_{\\in B_i} = |X\\cap B_i| \\text{ and } h_{\\notin B_i} = h-|X \\cap B_i|'}
+      </InlineMath></div></p>
+
+      <p>
+        The result is going to be the most advantageous way of 
+        <br/>splitting <InlineMath>{'h_{\\notin B_i}'}</InlineMath> into two 
+        integers, namely <InlineMath>{'h_1'}</InlineMath> and <InlineMath>{'h_2'}</InlineMath>, 
+        <br/>such that <InlineMath>{'h_1 + h_2 = h_{\\notin B_i}'}</InlineMath> and the constraints <InlineMath>{'0 \\leq h_1, h_2 \\leq h_{\\notin B_i}'}</InlineMath> are met:
+      </p>
+    </div>
+
+
+
+
           <div className={"codeblock"}><InlineMath math={join} /></div>
           </div>
-          <div style={{height: "500px"}}></div>
+          {/* <div style={{height: "500px"}}></div> */}
         </div>
         </SB>
       </div>

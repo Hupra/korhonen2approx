@@ -61,7 +61,7 @@ function App() {
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/introduction">Introducton</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/separators">Separators</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/balanced-separators">Balanced Separatos</NavLink>
-          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/connect-components">Connected Components</NavLink>
+          <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/connect-components">Combining Components</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/splitting-t">Splitting T</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/continuity">Continuity Issue</NavLink>
           <NavLink onClick={() => setFullNav(false)} activeclassname='active' to="/homebag">Home Bag</NavLink>
