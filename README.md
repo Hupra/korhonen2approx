@@ -1,5 +1,3 @@
-# README.md
-
 # Korhonen's 2-Approximation for Treewidth Interactive Website
 
 Welcome to the repository of Korhonen's 2-Approximation for Treewidth Interactive Website! This web app aims to provide an intuitive and engaging platform for learning and understanding Korhonen's 2-Approximation algorithm.
@@ -15,13 +13,10 @@ Through dynamic visualizations and interactive content, you will be introduced t
     ![Separator Image](./src/images/bs.png) 
     ![Combining Components Image](./src/images/cc.png)
     ![Sanbox Image](./src/images/sandbox2.png)
-
-- **Hands-on Examples**: The site provides hands-on examples to help you understand the concepts of the algorithm.
-
+    
 ## How to use
 
 Simply visit our [website](https://hupra.github.io/korhonen2approx/) to start learning and exploring.
-
 
 ## License
 
