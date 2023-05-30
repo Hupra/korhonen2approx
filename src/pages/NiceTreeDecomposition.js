@@ -17,7 +17,7 @@ function NiceTreeDeomposition() {
   const tree_container1 = useRef();
   const tree_container2 = useRef();
   const leaf = useRef();
-  const [show_nice, set_show_nice] = useState(true);
+  const [show_nice, set_show_nice] = useState(false);
   const [data, set_data] = useState([]);
 
 
