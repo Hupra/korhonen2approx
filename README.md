@@ -2,8 +2,6 @@
 
 Welcome to the repository of Korhonen's 2-Approximation for Treewidth Interactive Website! This web app aims to provide an intuitive and engaging platform for learning and understanding Korhonen's 2-Approximation algorithm.
 
-Through dynamic visualizations and interactive content, you will be introduced to the concepts of separators, tree decomposition, and dynamic programming, all key in understanding treewidth. 
-
 ## Features
 
 - **Interactive lessons**: The website offers interactive lessons explaining the main concepts behind Korhonen's 2-Approximation for Treewidth. 
