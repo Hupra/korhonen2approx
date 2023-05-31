@@ -435,6 +435,8 @@ export function try_h(U, target_bag, h, g, nice) {
     let newcounter = 0;
     let repcounter = 0;
 
+    let startTime = Date.now(); // start time in milliseconds
+
     function rec(i,h,cccx){
         // out of bounds
         if(h<0) return Infinity;
@@ -488,33 +490,53 @@ export function try_h(U, target_bag, h, g, nice) {
                 // introduce
                 
                 // check if C1∩Bi, C2∩Bi, C3∩Bi are connected
-                let arr1 = idx_2_value(decode_set(Bi_c1), Bi);
-                let arr2 = idx_2_value(decode_set(Bi_c2), Bi);
-                let arr3 = idx_2_value(decode_set(Bi_c3), Bi);
+                // let arr1 = idx_2_value(decode_set(Bi_c1), Bi);
+                // let arr2 = idx_2_value(decode_set(Bi_c2), Bi);
+                // let arr3 = idx_2_value(decode_set(Bi_c3), Bi);
 
-                for (const u of arr1) {
-                    for (const v of arr2) { // C1 <-> C2
-                        if(has_edge[u][v]){
-                            U[i][h][cccx] = Infinity;
-                            return Infinity;
-                    }}                        
-                    for (const v of arr3) { // C1 <-> C3
-                        if(has_edge[u][v]){
-                            U[i][h][cccx] = Infinity;
-                            return Infinity;
-                }}};
-                for (const u of arr2) {
-                    for (const v of arr3) { // C2 <-> C3
-                        if(has_edge[u][v]){
-                            U[i][h][cccx] = Infinity;
-                            return Infinity;
-                }}};
+                // for (const u of arr1) {
+                //     for (const v of arr2) { // C1 <-> C2
+                //         if(has_edge[u][v]){
+                //             U[i][h][cccx] = Infinity;
+                //             return Infinity;
+                //     }}                        
+                //     for (const v of arr3) { // C1 <-> C3
+                //         if(has_edge[u][v]){
+                //             U[i][h][cccx] = Infinity;
+                //             return Infinity;
+                // }}};
+                // for (const u of arr2) {
+                //     for (const v of arr3) { // C2 <-> C3
+                //         if(has_edge[u][v]){
+                //             U[i][h][cccx] = Infinity;
+                //             return Infinity;
+                // }}};
 
                 // to improve speed of code, we could change the above
                 // edge cheking to just the V vertex, this will limit the
                 // number of operations.
                 let v = find_bag_diff(Bi,Bj);
-                
+                // Better
+                let bin_v = encode(v);
+                if(bin_v&Bi_c1){
+                    if(!ctest(bin_v,Bi_c2,Bi_c3,i)){
+                        U[i][h][cccx] = Infinity;
+                        return Infinity;
+                    }
+                }
+                else if(bin_v&Bi_c2){
+                    if(!ctest(bin_v,Bi_c1,Bi_c3,i)){
+                        U[i][h][cccx] = Infinity;
+                        return Infinity;
+                    }
+                }
+                else if(bin_v&Bi_c3){
+                    if(!ctest(bin_v,Bi_c1,Bi_c2,i)){
+                        U[i][h][cccx] = Infinity;
+                        return Infinity;
+                    }
+                }
+
                 // |{v} ∩ X|             [h − |{v} ∩ X|] <---- this is how we determine an X is used!
                 let v_cap_X = Math.max((encode(v)&Bi_X)>0,0);
                 
@@ -622,7 +644,9 @@ export function try_h(U, target_bag, h, g, nice) {
             // console.log(c1.toString(2),c2.toString(2),c3.toString(2),X.toString(2))
         }
     }
-    
+
+    let counter = 0;
+
     // sped up version of combi, that reduces dublicate checks, and validates the split before attempting it.
     function combi2(c1,c2,c3,X,next,stop,f,i,h){
         if(next<stop){
@@ -646,23 +670,76 @@ export function try_h(U, target_bag, h, g, nice) {
             let c3_size = get_bin_size(c3);
             let  X_size = get_bin_size(X);
 
-            // f(i,h,combine(c1,c2,c3,X,stop));
-
-            
             // check |(Ci cap W) cup X| < W
             // check |(Ci cap W)| <= W/2
             // check |(Ci cap X)| <= h
             if( (Math.max(c1_size, c2_size, c3_size)+h < stop) &&
                 (Math.max(c1_size, c2_size, c3_size) <= stop/2) &&
                 (X_size <= h) ){
-
-                f(i,h,combine(c1,c2,c3,X,stop));
+                    
+                    f(i,h,combine(c1,c2,c3,X,stop));
+                    counter += 1;
             }
             // f(i,h,combine(c1,c2,c3,X,stop));
         }
     }
 
-    combi2(0,0,0,0,0,find_bag[target_bag].length,rec,target_bag,h);
+    // ctest + combi3 for ultimate speed
+    function ctest(bin_v,c1,c2,i){
+        let bagg = find_bag[i];
+        let arr1 = idx_2_value(decode_set(c1), bagg);
+        let arr2 = idx_2_value(decode_set(c2), bagg);
+        let idxx = decode(bin_v);
+        let valv = bagg[idxx];
+        for (const u of arr1){
+            if(has_edge[u][valv]) return false;
+        }
+        for (const u of arr2){
+            if(has_edge[u][valv]) return false;
+        }
+        return true;
+    }
+
+
+    function combi3(c1,c2,c3,X,next,stop,f,i,h){
+        if(next<stop){
+            let mask = encode(next);
+            if(c1===0 && c2===0 && c3===0){
+                if(ctest(mask,c2,c3,target_bag)) combi3(c1|mask,c2,c3,X,next+1,stop,f,i,h);
+                combi3(c1,c2,c3,X|mask,next+1,stop,f,i,h);
+            } else if (c2 === 0 && c3 === 0) {
+                if(ctest(mask,c2,c3,target_bag)) combi3(c1|mask,c2,c3,X,next+1,stop,f,i,h);
+                if(ctest(mask,c1,c3,target_bag)) combi3(c1,c2|mask,c3,X,next+1,stop,f,i,h);
+                combi3(c1,c2,c3,X|mask,next+1,stop,f,i,h);
+            } else {
+                if(ctest(mask,c2,c3,target_bag)) combi3(c1|mask,c2,c3,X,next+1,stop,f,i,h);
+                if(ctest(mask,c1,c3,target_bag)) combi3(c1,c2|mask,c3,X,next+1,stop,f,i,h);
+                if(ctest(mask,c1,c2,target_bag)) combi3(c1,c2,c3|mask,X,next+1,stop,f,i,h);
+                combi3(c1,c2,c3,X|mask,next+1,stop,f,i,h);
+            }
+        }else{
+            let c1_size = get_bin_size(c1);
+            let c2_size = get_bin_size(c2);
+            let c3_size = get_bin_size(c3);
+            let  X_size = get_bin_size(X);
+
+            // check |(Ci cap W) cup X| < W
+            // check |(Ci cap W)| <= W/2
+            // check |(Ci cap X)| <= h
+            if( (Math.max(c1_size, c2_size, c3_size)+h < stop) &&
+                (Math.max(c1_size, c2_size, c3_size) <= stop/2) &&
+                (X_size <= h) ){
+                    
+                    f(i,h,combine(c1,c2,c3,X,stop));
+                    counter += 1;
+            }
+            // f(i,h,combine(c1,c2,c3,X,stop));
+        }
+    }
+
+    combi3(0,0,0,0,0,find_bag[target_bag].length,rec,target_bag,h);
+    let elapsedTime = Date.now() - startTime;
+    console.log(h, "TIME:", elapsedTime, counter);
 }
 
 

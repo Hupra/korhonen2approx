@@ -190,12 +190,12 @@ function Playground() {
             
             res.sort(compare_res);
 
-            for (const r of res) {
+            // for (const r of res) {
 
-                // console.log(DP.find_res(U,W.id,best_h,newg,newt,r[0]))
-                DP.print_state(r[0], W.bag);
+            //     // console.log(DP.find_res(U,W.id,best_h,newg,newt,r[0]))
+            //     DP.print_state(r[0], W.bag);
                 
-            }
+            // }
 
             if(res.length>0){
 
