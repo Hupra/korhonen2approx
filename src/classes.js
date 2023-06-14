@@ -1,6 +1,6 @@
 import * as d3 from 'd3';
 import forceBoundary from 'd3-force-boundary';
-import {split} from "./functions.js"
+import {split, cap} from "./functions.js"
 
 // const forceBoundary = d3fb.forceBoundary;
 
@@ -85,7 +85,7 @@ export class FindHomebags {
 }
 
 export class FindComponents{
-    constructor(n) {
+    constructor(n, W=[]) {
         this.n          = n;
         this.v          = Array(n).fill(true);
         this.adj        = Array.from({ length: n }, () => []);
@@ -125,18 +125,18 @@ export class FindComponents{
         return component;
       }
 
-      run(combine = false) {
+      run(combine = false, W) {
         for (let i = 0; i < this.n; i++) {
           if (this.visited(i)) continue;
           this.components.push(this.dfs(i));
         }
         if(combine){
             while(this.components.length>3){
-                this.components.sort((a, b) => b.length - a.length);
+                this.components.sort((a, b) => cap(b, W).length - cap(a, W).length);
                 let li = this.components.length-1;
                 let comb = [...this.components[li - 1], ...this.components[li]];
                 this.components.splice(li - 1, 2, comb);
-                this.components.sort((a, b) => b.length - a.length);
+                this.components.sort((a, b) => cap(b, W).length - cap(a, W).length);
             }
         }
         this.components.sort((a, b) => b.length - a.length);
@@ -578,7 +578,7 @@ export class Graph {
         const fc = new FindComponents(200); // hard coded WATCH OUT, fix add max N to the graph
         this.links.forEach(link => fc.add_edge(f(link.source.id), f(link.target.id)));
         this.nodes.forEach(node => fc.v[f(node.id)] = false);
-        return fc.run(combine);
+        return fc.run(combine, this.W);
     }
 
     svg_set_node_class(clazz, indices){

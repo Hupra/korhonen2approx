@@ -87,7 +87,6 @@ function Playground() {
     const tree_container = useRef();
     const tree_container2 = useRef();
     const tree_container3 = useRef();
-    const [reset, set_reset] = useState(0);
     const [page_state, set_page_state] = useState(1);
     const [components, set_components] = useState([]);
     const [separator, set_separator] = useState([]);
@@ -109,6 +108,8 @@ function Playground() {
     const quickload2 = useRef();
     const quickload3 = useRef();
     const quickload4 = useRef();
+    const r1 = useRef();
+    const r2 = useRef();
     const max_length = 10;
     
     
@@ -484,6 +485,14 @@ function Playground() {
             await init_graph(empty_graph, empty_tree);
         });
 
+        // fixed reset button
+        r1.current.addEventListener('click', async function(){
+            await init_graph(XX_graph, XX_tree);
+        });
+        r2.current.addEventListener('click', async function(){
+            await init_graph(XX_graph, XX_tree);
+        });
+
 
 
 
@@ -695,7 +704,7 @@ function Playground() {
 
         add_functionality();
 
-    }, [reset]);
+    }, []);
 
 
     function mi(x) {
@@ -965,7 +974,7 @@ function Playground() {
     <div className='content'>
         <div className={(page_state === 1 ? 'svg_container interactive plus focus-svg' : 'svg_container') + (page_state>=3 ? " hidden": "")}>
             <div className='svg_label'>Graph - <InlineMath math="G"/></div>
-            <div className='svg_restart' onClick={()=>{set_reset(reset+1);set_done(false);set_page_state(1);}}><ion-icon name="refresh-outline"></ion-icon></div>
+            <div className='svg_restart' ref={r1}><ion-icon name="refresh-outline"></ion-icon></div>
             <svg ref={graph_container} className="cy" width="100%" height="100%"></svg>
         </div>
         <div className={('svg_container') + (page_state>=3 ? " hidden": "")}>
@@ -974,7 +983,7 @@ function Playground() {
         </div>
         <div className={('svg_container') + (page_state>=3 ? "": " hidden")}>
             <div className={'svg_label'}>Tree Decomposition - <InlineMath math="T"/></div>
-            <div className='svg_restart' onClick={()=>{set_reset(reset+1);set_page_state(1);}}><ion-icon name="refresh-outline"></ion-icon></div>
+            <div className='svg_restart' ref={r2}><ion-icon name="refresh-outline"></ion-icon></div>
             <svg ref={tree_container3} className="cy" width="100%" height="100%"></svg>
         </div>
         <div className={'overlay' + (show_nice?"":" gone")} onClick={() => set_show_nice(false)}/>
